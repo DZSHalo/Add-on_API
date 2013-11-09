@@ -277,10 +277,10 @@ namespace util {
 			d_stack* insert;
 			if (iter!=NULL) {
 				insert = (d_stack*)util::Alloc(sizeof(d_stack));
-				insert->d_type = iter.ptr_->d_type;
-				iter.ptr_->d_type = (T*)util::Alloc(sizeof(T));
-				*iter.ptr_->d_type = newData;
-				insert->next_d_type = iter.ptr_;
+				insert->d_type = (T*)util::Alloc(sizeof(T));
+				*insert->d_type = newData;
+				insert->next_d_type = iter.ptr_->next_d_type;
+				iter.ptr_->next_d_type = insert;
 
 			} else {
 				d_stack* src = stack;
@@ -292,7 +292,7 @@ namespace util {
 					return;
 				}
 				while(src) {
-					if (src==iter.ptr_) {
+					if (src->next_d_type==iter.ptr_) {
 						break;
 					}
 					src = src->next_d_type;
