@@ -1,13 +1,25 @@
 #ifndef utilH
 #define utilH
 
+#define WINAPIC     __cdecl
+
+//Attempt to fix the new/delete operator.
+/*inline void * __cdecl operator new(size_t _count) {
+    return my_operator_new_replacement(_count);
+}
+inline void __cdecl operator delete(void * _ptr) {
+    my_operator_delete_replacement(_ptr);
+}*/
+
 namespace util {
-	static char colon = ':';
-	static char newline = '\n';
-	static char pipe = '|';
-	static wchar_t commaW = L',';
-	static wchar_t me[] = L"me";
+	
+	static const char colon = ':';
+	static const char newline = '\n';
+	static const char pipe = '|';
+	static const wchar_t commaW = L',';
+	static const wchar_t me[] = L"me";
 	static const wchar_t backslash = L'\\';
+	static const wchar_t dotW = L'.';
 	static GAME_MODE_S modeAll = {1,1,1};
 	static GAME_MODE_S modeSingle = {1, 0, 0};
 	static GAME_MODE_S modeSingleMulti = {1, 1, 0};
@@ -16,11 +28,8 @@ namespace util {
 	static GAME_MODE_S modeMultiHost = {0,1,1};
 	static GAME_MODE_S modeHost = {0,0,1};
 	#define PI 3.141592653589793f
-	#define TOGGLE(val, on) val = (on==-1 ? !val : on)
-
-	extern "C" void dllport *Alloc(size_t Size);
-	extern "C" void dllport Free(void* Address);
-
+	extern "C" dllport void* WINAPIC AllocMem(size_t Size);
+	extern "C" dllport void WINAPIC FreeMem(void* Address);
 	extern "C" class dllport ArgContainer {
 	private:
 		wchar_t* args[10];
@@ -28,47 +37,23 @@ namespace util {
 	public:
 		size_t argc;
 		ArgContainer();
+		//dllport ArgContainer(const ArgContainer&);
+		//ArgContainer(const ArgContainer&);
 		ArgContainer(const wchar_t arg[]);
 		ArgContainer(const wchar_t arg[], int numArrayLink);
 		ArgContainer(ArgContainer const &copy);
 		wchar_t* WINAPIC operator[](size_t i);
 		ArgContainer& WINAPIC operator=(ArgContainer const &copy);
+		//ArgContainer& operator=(ArgContainer &copy);
+		//ArgContainer(wchar_t arg[]);
+		//wchar_t* operator[](size_t i);
 		ArgContainer WINAPIC operator*();
-		virtual ~ArgContainer();
+		~ArgContainer();
 	};
-
-	extern "C" void dllport toCharW(char* charA, int len, wchar_t* charW);
-	extern "C" void dllport toCharA(wchar_t* charW, int len, char* charA);
-	extern "C" toggle dllport StrToBooleanA(const char str[]);
-	extern "C" toggle dllport StrToBooleanW(const wchar_t str[]);
-	extern "C" toggle dllport StrToTeamA(const char str[]);
-	extern "C" toggle dllport StrToTeamW(const wchar_t str[]);
-	extern "C" void dllport ReplaceA(char* regStr);
-	extern "C" void dllport ReplaceW(wchar_t* regStr);
-	extern "C" void dllport ReplaceUndoA(char* regStr);
-	extern "C" void dllport ReplaceUndoW(wchar_t* regStr);
-	extern "C" bool dllport isnumberA(const char* str);
-	extern "C" bool dllport isnumberW(const wchar_t* str);
-	extern "C" bool dllport hashCheckA(const char* str);
-	extern "C" bool dllport hashCheckW(const wchar_t* str);
-	extern "C" void dllport shiftStrA(char regStr[], int len, int pos, int lenShift, bool leftRight);
-	extern "C" void dllport shiftStrW(wchar_t regStr[], int len, int pos, int lenShift, bool leftRight);
-	extern "C" void dllport regexReplaceW(wchar_t regStr[], bool isDB);
-	extern "C" bool dllport regexMatchW(wchar_t srcStr[], wchar_t regex[]);
-	extern "C" bool dllport regexiMatchW(wchar_t srcStr[], wchar_t regex[]);
-	extern "C" bool dllport FormatVarArgsA(const char* _Format, va_list ArgList, char* writeTo);
-	extern "C" bool dllport FormatVarArgsW(const wchar_t* _Format, va_list ArgList, wchar_t* writeTo);
-	extern "C" bool dllport dirExistsW(const wchar_t dirName[]);
-	#pragma pack(push,1)
-	struct haloConsole	{
-			int r;
-			char output[1024];
-	};
-	#pragma pack(pop)
-
 	template<class T>
 	class ThreadSafeObject {
 	public:
+		//inline ThreadSafeObject(){}
 		inline ThreadSafeObject(T* type):m_type(type){InitializeCriticalSection(&m_cs);}
 		~ThreadSafeObject() {
 			EnterCriticalSection (&m_cs);
@@ -91,6 +76,8 @@ namespace util {
 	private:
 		T* m_type;
 		CRITICAL_SECTION m_cs;
+		//ThreadSafeObject(const ThreadSafeObject&):m_type(new T){InitializeCriticalSection(&m_cs);}
+		//ThreadSafeObject<T>& operator=(const ThreadSafeObject&);
 	};
 	template<class T>
 	class dynamicStack {
@@ -113,8 +100,8 @@ namespace util {
 				stack = NULL;
 				return;
 			} else {
-				stack = (d_stack*)util::Alloc(sizeof(d_stack));
-				stack->d_type = (T*)util::Alloc(sizeof(T));
+				stack = (d_stack*)util::AllocMem(sizeof(d_stack));
+				stack->d_type = (T*)util::AllocMem(sizeof(T));
 				*stack->d_type = *scan->d_type;
 				scan = scan->next_d_type;
 				stack->next_d_type = NULL;
@@ -122,8 +109,8 @@ namespace util {
 
 			}
 			while(scan) {
-				d_stack* newStack = (d_stack*)util::Alloc(sizeof(d_stack));
-				newStack->d_type = (T*)util::Alloc(sizeof(T));
+				d_stack* newStack = (d_stack*)util::AllocMem(sizeof(d_stack));
+				newStack->d_type = (T*)util::AllocMem(sizeof(T));
 				*newStack->d_type = *clone->d_type;
 				newStack->next_d_type = NULL;
 				clone->next_d_type = newStack;
@@ -139,8 +126,8 @@ namespace util {
 		class const_iterator;
 		void push_back(T type) {
 			if (!stack) {
-				stack = (d_stack*)util::Alloc(sizeof(d_stack));
-				stack->d_type = (T*)util::Alloc(sizeof(T));
+				stack = (d_stack*)util::AllocMem(sizeof(d_stack));
+				stack->d_type = (T*)util::AllocMem(sizeof(T));
 				*stack->d_type = type;
 				stack->next_d_type = NULL;
 			} else {
@@ -148,8 +135,8 @@ namespace util {
 				while (src->next_d_type) {
 					src = src->next_d_type;
 				}
-				d_stack* newSrc = (d_stack*)util::Alloc(sizeof(d_stack));
-				newSrc->d_type = (T*)util::Alloc(sizeof(T));
+				d_stack* newSrc = (d_stack*)util::AllocMem(sizeof(d_stack));
+				newSrc->d_type = (T*)util::AllocMem(sizeof(T));
 				*newSrc->d_type = type;
 				newSrc->next_d_type = NULL;
 				src->next_d_type = newSrc;
@@ -159,8 +146,8 @@ namespace util {
 			if (stack) {
 				d_stack* src = stack;
 				d_stack* nextSrc = stack->next_d_type;
-				util::Free(stack->d_type);
-				util::Free(stack);
+				util::FreeMem(stack->d_type);
+				util::FreeMem(stack);
 				stack = nextSrc;
 			}
 		}
@@ -182,8 +169,8 @@ namespace util {
 					prevSrc->next_d_type = src->next_d_type;
 				} else
 					stack = src->next_d_type;
-				util::Free(src->d_type);
-				util::Free(src);
+				util::FreeMem(src->d_type);
+				util::FreeMem(src);
 			}
 			return isDel;
 		}
@@ -239,8 +226,8 @@ namespace util {
 						prevSrc->next_d_type = src->next_d_type;
 					} else
 						stack = prevSrc = src->next_d_type;
-					util::Free(src->d_type);
-					util::Free(src);
+					util::FreeMem(src->d_type);
+					util::FreeMem(src);
 					return prevSrc;
 				}
 				prevSrc = src;
@@ -276,8 +263,8 @@ namespace util {
 		void insert(iterator iter, T newData) {
 			d_stack* insert;
 			if (iter!=NULL) {
-				insert = (d_stack*)util::Alloc(sizeof(d_stack));
-				insert->d_type = (T*)util::Alloc(sizeof(T));
+				insert = (d_stack*)util::AllocMem(sizeof(d_stack));
+				insert->d_type = (T*)util::AllocMem(sizeof(T));
 				*insert->d_type = newData;
 				insert->next_d_type = iter.ptr_->next_d_type;
 				iter.ptr_->next_d_type = insert;
@@ -285,8 +272,8 @@ namespace util {
 			} else {
 				d_stack* src = stack;
 				if (!src) {
-					stack = (d_stack*)util::Alloc(sizeof(d_stack));
-					stack->d_type = (T*)util::Alloc(sizeof(T));
+					stack = (d_stack*)util::AllocMem(sizeof(d_stack));
+					stack->d_type = (T*)util::AllocMem(sizeof(T));
 					*stack->d_type = newData;
 					stack->next_d_type = NULL;
 					return;
@@ -299,8 +286,8 @@ namespace util {
 				}
 				if (!src)
 					src = stack;
-				insert = (d_stack*)util::Alloc(sizeof(d_stack));
-				insert->d_type = (T*)util::Alloc(sizeof(T));
+				insert = (d_stack*)util::AllocMem(sizeof(d_stack));
+				insert->d_type = (T*)util::AllocMem(sizeof(T));
 				*insert->d_type = newData;
 				insert->next_d_type = src->next_d_type;
 				src->next_d_type = insert;
@@ -312,14 +299,15 @@ namespace util {
 				d_stack* holder = NULL;
 				while (src) {
 					if (src->d_type)
-						util::Free(src->d_type);
+						util::FreeMem(src->d_type);
 					holder = src;
 					src = src->next_d_type;
-					util::Free(holder);
+					util::FreeMem(holder);
 				}
 				stack=NULL;
 			}
 		}
+		//example of https:// gist.github.com/jeetsukumaran/307264 with nessary modifications.
 		class iterator {
 			private:
 				d_stack* ptr_;
@@ -397,6 +385,37 @@ namespace util {
 
 		};
 	};
+	
+	extern "C" dllport void WINAPIC toCharW(const char* charA, int len, wchar_t* charW);
+	extern "C" dllport void WINAPIC toCharA(const wchar_t* charW, int len, char* charA);
+	extern "C" dllport toggle WINAPIC StrToBooleanA(const char str[]);
+	extern "C" dllport toggle WINAPIC StrToBooleanW(const wchar_t str[]);
+	extern "C" dllport toggle WINAPIC StrToTeamA(const char str[]);
+	extern "C" dllport toggle WINAPIC StrToTeamW(const wchar_t str[]);
+	extern "C" dllport void WINAPIC ReplaceA(char* regStr);
+	extern "C" dllport void WINAPIC ReplaceW(wchar_t* regStr);
+	extern "C" dllport void WINAPIC ReplaceUndoA(char* regStr);
+	extern "C" dllport void WINAPIC ReplaceUndoW(wchar_t* regStr);
+	extern "C" dllport bool WINAPIC isnumberA(const char* str);
+	extern "C" dllport bool WINAPIC isnumberW(const wchar_t* str);
+	extern "C" dllport bool WINAPIC hashCheckA(const char* str);
+	extern "C" dllport bool WINAPIC hashCheckW(const wchar_t* str);
+	extern "C" dllport void WINAPIC shiftStrA(char regStr[], int len, int pos, int lenShift, bool leftRight);
+	extern "C" dllport void WINAPIC shiftStrW(wchar_t regStr[], int len, int pos, int lenShift, bool leftRight);
+	extern "C" dllport void WINAPIC regexReplaceW(wchar_t regStr[], bool isDB);
+	extern "C" dllport bool WINAPIC regexMatchW(wchar_t srcStr[], wchar_t regex[]);
+	extern "C" dllport bool WINAPIC regexiMatchW(wchar_t srcStr[], wchar_t regex[]);
+
+	#pragma pack(push,1)
+	struct haloConsole	{
+			int r;
+			char output[1024];
+	};
+	#pragma pack(pop)
+
+	extern "C" dllport bool WINAPIC FormatVarArgsA(const char* _Format, va_list ArgList, char* writeTo);
+	extern "C" dllport bool WINAPIC FormatVarArgsW(const wchar_t* _Format, va_list ArgList, wchar_t* writeTo);
+	extern "C" dllport bool WINAPIC dirExistsW(const wchar_t dirName[]);
 	extern "C" dllport bool WINAPIC findSubStrFirstA(const char* dest, const char* src);
 	extern "C" dllport bool WINAPIC findSubStrFirstW(const wchar_t* dest, const wchar_t* src);
 }

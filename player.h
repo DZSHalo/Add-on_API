@@ -10,7 +10,7 @@
 #define MSG_ERROR		6
 #define MSG_ALERT		7
 
-extern "C" class Player {
+extern "C" class IPlayer {
 public:
 	#pragma pack(push,1)
 	struct PlayerExtended {
@@ -74,27 +74,26 @@ public:
 		PlayerInfo plList[32];
 	};
 	#pragma pack(pop)
-	Player();
-	~Player();
-	Player& operator=(Player const &);
-	PlayerInfo WINAPIC getPlayerMindex(machineindex m_ind);
-	PlayerInfo WINAPIC getPlayer(DWORD playerId);
-	PlayerInfo WINAPIC getPlayerIdent(ident pl_Tag);
-	PlayerInfo WINAPIC getPlayerByNickname(const wchar_t nickname[]);
-	PlayerInfo WINAPIC getPlayerByUsername(const wchar_t username[]);
-	PlayerInfo WINAPIC getPlayerByUniqueID(long uniqueID);
-	short WINAPIC StrToPlayerList(const wchar_t src[], util::dynamicStack<Player::PlayerInfo> &plMatch, Player::PlayerInfo* plOwner);
-	int WINAPIC GetIDFullName(wchar_t fullName[]);
-	int WINAPIC GetIDIpAddress(wchar_t ipAddress[]);
-	int WINAPIC GetIDPort(wchar_t port[]);
-	void WINAPIC GetFullNameID(int ID, wchar_t fullName[13]);
-	void WINAPIC GetIpAddressID(int ID, wchar_t ipAddress[16]);
-	void WINAPIC GetPortID(int ID, wchar_t port[10]);
-	bool WINAPIC Update(PlayerInfo& plI);
-	bool WINAPIC setNickname(PlayerInfo& plI, wchar_t nickname[]);
-	bool WINAPIC sendCustomMsg(char formatMsg, toggle chatRconRemote, PlayerInfo& plI, const wchar_t *Msg, ...);
-	bool WINAPIC isAdmin(machineindex m_ind);
+	virtual PlayerInfo WINAPIC getPlayerMindex(machineindex m_ind)=0;
+	virtual PlayerInfo WINAPIC getPlayer(DWORD playerId)=0;
+	virtual PlayerInfo WINAPIC getPlayerIdent(ident pl_Tag)=0;
+	virtual PlayerInfo WINAPIC getPlayerByNickname(const wchar_t nickname[])=0;
+	virtual PlayerInfo WINAPIC getPlayerByUsername(const wchar_t username[])=0;
+	virtual PlayerInfo WINAPIC getPlayerByUniqueID(long uniqueID)=0;
+	virtual short WINAPIC StrToPlayerList(const wchar_t src[], util::dynamicStack<IPlayer::PlayerInfo> &plMatch, IPlayer::PlayerInfo* plOwner)=0;
+	virtual int WINAPIC GetIDFullName(wchar_t fullName[])=0;
+	virtual int WINAPIC GetIDIpAddress(wchar_t ipAddress[])=0;
+	virtual int WINAPIC GetIDPort(wchar_t port[])=0;
+	virtual void WINAPIC GetFullNameID(int ID, wchar_t fullName[13])=0;
+	virtual void WINAPIC GetIpAddressID(int ID, wchar_t ipAddress[16])=0;
+	virtual void WINAPIC GetPortID(int ID, wchar_t port[10])=0;
+	virtual bool WINAPIC Update(PlayerInfo& plI)=0;
+	virtual bool WINAPIC setNickname(PlayerInfo& plI, wchar_t nickname[])=0;
+	virtual bool WINAPIC sendCustomMsg(char formatMsg, toggle chatRconRemote, PlayerInfo& plI, const wchar_t *Msg, ...)=0;
+	virtual bool WINAPIC isAdmin(machineindex m_ind)=0;
+	virtual PlayerInfo WINAPIC getPlayerByBipedTagCurrent(ident bipedTag)=0;
+	virtual PlayerInfo WINAPIC getPlayerByBipedTagPrevious(ident bipedTag)=0;
 };
-extern "C" dllport Player* player;
+extern "C" dllport IPlayer* pIPlayer;
 
 #endif

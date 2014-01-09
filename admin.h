@@ -5,25 +5,14 @@
 #define LOGINFAIL 0
 #define LOGINPASS 1
 
-extern "C" class dllport Admin {
+extern "C" class IAdmin {
 public:
-	Admin();
-	~Admin();
-	Admin(Admin const &);
-	short unlimit;
-	bool reqUser;
-	bool reqAddr;
-	bool reqPort;
-	bool reqLoginAddr;
-	bool reqLoginPort;
-	bool reqRemoteAddr;
-	bool reqRemotePort;
-	toggle WINAPIC isPlayerAuthorized(Player::PlayerInfo* plI, wchar_t* cmd, util::ArgContainer* arg, CmdFunc* func);
-	toggle WINAPIC UsernameExist(wchar_t username[]);
-	toggle WINAPIC Add(wchar_t hashW[], wchar_t IP_Addr[], wchar_t IP_Port[], wchar_t username[],wchar_t password[],short level,bool remote, bool pass_force);
-	toggle WINAPIC Del(wchar_t username[]);
-	toggle WINAPIC Login(Player::PlayerInfo& plI, char chatRconRemote, wchar_t user[], wchar_t pass[]);
+	virtual toggle WINAPIC isPlayerAuthorized(IPlayer::PlayerInfo* plI, const wchar_t* cmd, util::ArgContainer* arg, CmdFunc* func)=0;
+	virtual toggle WINAPIC UsernameExist(wchar_t username[])=0;
+	virtual toggle WINAPIC Add(wchar_t hashW[32], wchar_t IP_Addr[15], wchar_t IP_Port[6], wchar_t username[24],wchar_t password[],short level,bool remote, bool pass_force)=0;
+	virtual toggle WINAPIC Del(wchar_t username[24])=0;
+	virtual toggle WINAPIC Login(IPlayer::PlayerInfo& plI, char chatRconRemote, wchar_t user[], wchar_t pass[])=0;
 };
-extern "C" dllport Admin* admin;
+extern "C" dllport IAdmin* pIAdmin;
 
 #endif

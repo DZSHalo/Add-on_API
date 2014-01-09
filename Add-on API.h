@@ -19,7 +19,7 @@
 #include "database.h"
 #include "object.h"
 #include "player.h"
-typedef toggle (WINAPIC *CmdFunc)(Player::PlayerInfo plI, util::ArgContainer arg,char chatRconRemote, short stage, LPVOID stack, bool* showChat);
+typedef toggle (WINAPIC *CmdFunc)(IPlayer::PlayerInfo plI, util::ArgContainer arg,char chatRconRemote, short stage, LPVOID stack, bool* showChat);
 #include "admin.h"
 #include "command.h"
 
@@ -76,10 +76,10 @@ namespace addon {
 }
 extern "C" dllAPI addon::versionEAO EXTversion = {
 	sizeof(addon::versionEAO),	//size	
-				3,				//requiredAPI (required)
-				3,				//general (optional, set to 0 if not using)
-				1,				//iniFile (optional, set to 0 if not using)
-				2,				//database (optional, set to 0 if not using)
+				4,				//requiredAPI (required)
+				4,				//general (optional, set to 0 if not using)
+				2,				//iniFile (optional, set to 0 if not using)
+				3,				//database (optional, set to 0 if not using)
 				0,				//external (optional, set to 0 if not using)
 				0,				//reserved
 				0 };			//reserved

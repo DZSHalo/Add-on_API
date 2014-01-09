@@ -419,55 +419,62 @@ static_assert_check(sizeof(actionFlags) == 0x02, "Incorrect size of aFlag");
 
 
 struct BipedS {
-	ObjectS sObject;			// 0x0000
-	long	Unknown[4];			// 0x01F4
-	short	IsInvisible;		// 0x0204	normal = 0x41 invis = 0x51 (bitfield?)
-	char	Flashlight;			// 0x0206
-	char	Frozen;				// 0x0207
-	actionFlags	actionBits;		// 0x0208 & 0x0209
-	char	Unknown1[2];		// 0x020A
-	long	UnknownCounter1;	// 0x020C
-	long	UnknownLongs1[5];	// 0x0210
-	vect3	RightVect;			// 0x0224
-	vect3	UpVect;				// 0x0230
-	vect3	LookVect;			// 0x023C
-	vect3	ZeroVect;			// 0x0248
-	vect3	RealLookVect;		// 0x0254
-	vect3	UnknownVect3;		// 0x0260
-	char	Unknown2[140];		// 0x026C
-	ident	PrimaryWeapon;		// 0x02F8
-	ident	SecondaryWeapon;	// 0x02FC
-	ident	ThirdWeapon;		// 0x0300
-	ident	FourthWeapon;		// 0x0304
-	long	UnknownLongs2[5];	// 0x0308
-	char	grenadeIndex;		// 0x031C
-	char	grenadeIndex1;		// 0x031D
-	char	grenade0;			// 0x031E
-	char	grenade1;			// 0x031F
-	char	Zoom;				// 0x0320
-	char	Zoom1;				// 0x0321
-	char	Unknown3[2];		// 0x0322
-	ident	SlaveController;	// 0x0324
-	char	Unknown4[552];		// 0x0328
-	bone	LeftThigh;			// 0x0550
-	bone	RightThigh;			// 0x0584
-	bone	Pelvis;				// 0x05B8
-	bone	LeftCalf;			// 0x05EC
-	bone	RightCalf;			// 0x0620
-	bone	Spine;				// 0x0654
-	bone	LeftClavicle;		// 0x0688
-	bone	LeftFoot;			// 0x06BC
-	bone	Neck;				// 0x06F0
-	bone	RightClavicle;		// 0x0724
-	bone	RightFoot;			// 0x0758
-	bone	Head;				// 0x078C
-	bone	LeftUpperArm;		// 0x07C0
-	bone	RightUpperArm;		// 0x07F4
-	bone	LeftLowerArm;		// 0x0828
-	bone	RightLowerArm;		// 0x085C
-	bone	LeftHand;			// 0x0890
-	bone	RightHand;			// 0x08C4
-	char	Unknown5[1216];		// 0x08F8 //Missing 0x092C?
+	ObjectS sObject;				// 0x0000
+	long	Unknown[4];				// 0x01F4
+	short	IsInvisible;			// 0x0204	normal = 0x41 invis = 0x51 (bitfield?)
+	char	Flashlight;				// 0x0206
+	char	Frozen;					// 0x0207
+	actionFlags	actionBits;			// 0x0208 & 0x0209
+	char	Unknown1[2];			// 0x020A
+	long	UnknownCounter1;		// 0x020C
+	long	UnknownLongs1[5];		// 0x0210
+	vect3	RightVect;				// 0x0224
+	vect3	UpVect;					// 0x0230
+	vect3	LookVect;				// 0x023C
+	vect3	ZeroVect;				// 0x0248
+	vect3	RealLookVect;			// 0x0254
+	vect3	UnknownVect3;			// 0x0260
+	char	Unknown2[134];			// 0x026C
+	WORD	CurWeaponIndex0;		// 0x02F2	(Do not attempt to edit this, will crash Halo)
+	WORD	CurWeaponIndex1;		// 0x02F4	(Read only)
+	WORD	Unknown6;				// 0x02F6
+	ident	PrimaryWeapon;			// 0x02F8
+	ident	SecondaryWeapon;		// 0x02FC
+	ident	ThirdWeapon;			// 0x0300
+	ident	FourthWeapon;			// 0x0304
+	DWORD	PrimaryWeaponLastUse;	// 0x0308
+	DWORD	SecondaryWeaponLastUse;	// 0x030C
+	DWORD	ThirdWeaponLastUse;		// 0x0310
+	DWORD	FourthWeaponLastUse;	// 0x0314
+	long	UnknownLongs2;			// 0x031C
+	char	grenadeIndex;			// 0x031C
+	char	grenadeIndex1;			// 0x031D
+	char	grenade0;				// 0x031E
+	char	grenade1;				// 0x031F
+	char	Zoom;					// 0x0320
+	char	Zoom1;					// 0x0321
+	char	Unknown3[2];			// 0x0322
+	ident	SlaveController;		// 0x0324
+	char	Unknown4[552];			// 0x0328
+	bone	LeftThigh;				// 0x0550
+	bone	RightThigh;				// 0x0584
+	bone	Pelvis;					// 0x05B8
+	bone	LeftCalf;				// 0x05EC
+	bone	RightCalf;				// 0x0620
+	bone	Spine;					// 0x0654
+	bone	LeftClavicle;			// 0x0688
+	bone	LeftFoot;				// 0x06BC
+	bone	Neck;					// 0x06F0
+	bone	RightClavicle;			// 0x0724
+	bone	RightFoot;				// 0x0758
+	bone	Head;					// 0x078C
+	bone	LeftUpperArm;			// 0x07C0
+	bone	RightUpperArm;			// 0x07F4
+	bone	LeftLowerArm;			// 0x0828
+	bone	RightLowerArm;			// 0x085C
+	bone	LeftHand;				// 0x0890
+	bone	RightHand;				// 0x08C4
+	char	Unknown5[1216];			// 0x08F8 //Missing 0x092C?
 }; // Size - 3564(0x0DEC) bytes
 
 //Major WIP Halo Structure Begin
