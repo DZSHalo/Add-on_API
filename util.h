@@ -28,9 +28,9 @@ namespace util {
 	static GAME_MODE_S modeMultiHost = {0,1,1};
 	static GAME_MODE_S modeHost = {0,0,1};
 	#define PI 3.141592653589793f
-	extern "C" dllport void* WINAPIC AllocMem(size_t Size);
-	extern "C" dllport void WINAPIC FreeMem(void* Address);
-	extern "C" class dllport ArgContainer {
+	CNATIVE dllport void* WINAPIC AllocMem(size_t Size);
+	CNATIVE dllport void WINAPIC FreeMem(void* Address);
+	CNATIVE class dllport ArgContainer {
 	private:
 		wchar_t* args[10];
 
@@ -212,8 +212,8 @@ namespace util {
 		}
 		iterator end() {
 			d_stack* src = stack;
-			while(src && src->_next_d_type) {
-				src = stack->next_d_type;
+			while(src && src->next_d_type) {
+				src = src->next_d_type;
 			}
 			return iterator(src);
 		}
@@ -348,9 +348,12 @@ namespace util {
 				}
 				reference operator*() { return *(ptr_->d_type); }
 				pointer operator->() { return ptr_->d_type; }
+#pragma warning( push )
+#pragma warning( disable : 4181)
 				bool operator==(const reference rhs) { return ptr_ == rhs; }
 				bool operator==(const self_type& rhs) { return ptr_ == rhs.ptr_; }
 				bool operator!=(const self_type& rhs) { return ptr_ != rhs.ptr_; }
+#pragma warning( pop )
 				
 				friend iterator dynamicStack::erase(iterator data);
 				friend void dynamicStack::insert(iterator iter, T newData);
@@ -378,33 +381,36 @@ namespace util {
 						this->ptr_ = src->next_d_type;
 					return *this;
 				}
+#pragma warning( push )
+#pragma warning( disable : 4181)
 				const reference operator*() { return *ptr_; }
 				const pointer operator->() { return ptr_; }
 				bool operator==(const self_type& rhs) { return ptr_ == rhs.ptr_; }
 				bool operator!=(const self_type& rhs) { return ptr_ != rhs.ptr_; }
+#pragma warning( pop )
 
 		};
 	};
 	
-	extern "C" dllport void WINAPIC toCharW(const char* charA, int len, wchar_t* charW);
-	extern "C" dllport void WINAPIC toCharA(const wchar_t* charW, int len, char* charA);
-	extern "C" dllport toggle WINAPIC StrToBooleanA(const char str[]);
-	extern "C" dllport toggle WINAPIC StrToBooleanW(const wchar_t str[]);
-	extern "C" dllport toggle WINAPIC StrToTeamA(const char str[]);
-	extern "C" dllport toggle WINAPIC StrToTeamW(const wchar_t str[]);
-	extern "C" dllport void WINAPIC ReplaceA(char* regStr);
-	extern "C" dllport void WINAPIC ReplaceW(wchar_t* regStr);
-	extern "C" dllport void WINAPIC ReplaceUndoA(char* regStr);
-	extern "C" dllport void WINAPIC ReplaceUndoW(wchar_t* regStr);
-	extern "C" dllport bool WINAPIC isnumberA(const char* str);
-	extern "C" dllport bool WINAPIC isnumberW(const wchar_t* str);
-	extern "C" dllport bool WINAPIC hashCheckA(const char* str);
-	extern "C" dllport bool WINAPIC hashCheckW(const wchar_t* str);
-	extern "C" dllport void WINAPIC shiftStrA(char regStr[], int len, int pos, int lenShift, bool leftRight);
-	extern "C" dllport void WINAPIC shiftStrW(wchar_t regStr[], int len, int pos, int lenShift, bool leftRight);
-	extern "C" dllport void WINAPIC regexReplaceW(wchar_t regStr[], bool isDB);
-	extern "C" dllport bool WINAPIC regexMatchW(wchar_t srcStr[], wchar_t regex[]);
-	extern "C" dllport bool WINAPIC regexiMatchW(wchar_t srcStr[], wchar_t regex[]);
+	CNATIVE dllport void WINAPIC toCharW(const char* charA, int len, wchar_t* charW);
+	CNATIVE dllport void WINAPIC toCharA(const wchar_t* charW, int len, char* charA);
+	CNATIVE dllport toggle WINAPIC StrToBooleanA(const char str[]);
+	CNATIVE dllport toggle WINAPIC StrToBooleanW(const wchar_t str[]);
+	CNATIVE dllport toggle WINAPIC StrToTeamA(const char str[]);
+	CNATIVE dllport toggle WINAPIC StrToTeamW(const wchar_t str[]);
+	CNATIVE dllport void WINAPIC ReplaceA(char* regStr);
+	CNATIVE dllport void WINAPIC ReplaceW(wchar_t* regStr);
+	CNATIVE dllport void WINAPIC ReplaceUndoA(char* regStr);
+	CNATIVE dllport void WINAPIC ReplaceUndoW(wchar_t* regStr);
+	CNATIVE dllport bool WINAPIC isnumberA(const char* str);
+	CNATIVE dllport bool WINAPIC isnumberW(const wchar_t* str);
+	CNATIVE dllport bool WINAPIC hashCheckA(const char* str);
+	CNATIVE dllport bool WINAPIC hashCheckW(const wchar_t* str);
+	CNATIVE dllport void WINAPIC shiftStrA(char regStr[], int len, int pos, int lenShift, bool leftRight);
+	CNATIVE dllport void WINAPIC shiftStrW(wchar_t regStr[], int len, int pos, int lenShift, bool leftRight);
+	CNATIVE dllport void WINAPIC regexReplaceW(wchar_t regStr[], bool isDB);
+	CNATIVE dllport bool WINAPIC regexMatchW(wchar_t srcStr[], wchar_t regex[]);
+	CNATIVE dllport bool WINAPIC regexiMatchW(wchar_t srcStr[], wchar_t regex[]);
 
 	#pragma pack(push,1)
 	struct haloConsole	{
@@ -413,10 +419,10 @@ namespace util {
 	};
 	#pragma pack(pop)
 
-	extern "C" dllport bool WINAPIC FormatVarArgsA(const char* _Format, va_list ArgList, char* writeTo);
-	extern "C" dllport bool WINAPIC FormatVarArgsW(const wchar_t* _Format, va_list ArgList, wchar_t* writeTo);
-	extern "C" dllport bool WINAPIC dirExistsW(const wchar_t dirName[]);
-	extern "C" dllport bool WINAPIC findSubStrFirstA(const char* dest, const char* src);
-	extern "C" dllport bool WINAPIC findSubStrFirstW(const wchar_t* dest, const wchar_t* src);
+	CNATIVE dllport bool WINAPIC FormatVarArgsA(const char* _Format, va_list ArgList, char* writeTo);
+	CNATIVE dllport bool WINAPIC FormatVarArgsW(const wchar_t* _Format, va_list ArgList, wchar_t* writeTo);
+	CNATIVE dllport bool WINAPIC dirExistsW(const wchar_t dirName[]);
+	CNATIVE dllport bool WINAPIC findSubStrFirstA(const char* dest, const char* src);
+	CNATIVE dllport bool WINAPIC findSubStrFirstW(const wchar_t* dest, const wchar_t* src);
 }
 #endif

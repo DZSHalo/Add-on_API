@@ -3,7 +3,7 @@
 
 #define INIFILELENMAX 512
 
-extern "C" class ICIniFile {
+CNATIVE class ICIniFile {
 public:
 #pragma pack(push,1)
 	struct Record {
@@ -34,6 +34,8 @@ public:
 	virtual bool WINAPIC Load()=0;
 	virtual void WINAPIC Clear()=0;
 };
-extern "C" dllport ICIniFile* WINAPIC getICIniFile();
+#ifdef EXT_ICINIFILE
+CNATIVE dllport ICIniFile* WINAPIC getICIniFile();
+#endif
 
 #endif

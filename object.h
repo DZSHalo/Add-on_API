@@ -1,7 +1,7 @@
 #ifndef objectH
 #define objectH
 #include "player.h" //Required in order to obtain playerInfo structure.
-extern "C" class IObject {
+CNATIVE class IObject {
 public:
 	// Structure definitions
 	#pragma pack(push, 1)
@@ -68,11 +68,12 @@ public:
 	virtual ObjectS* WINAPIC GetObjectAddress(int mode, ident obj_id)=0;
 	virtual hTagHeader* WINAPIC LookupTag(ident objectTag)=0;
 	virtual hTagHeader* WINAPIC LookupTagTypeName(const char* tagType, const char* tag)=0;
-	virtual void WINAPIC Delete(ident obj_id)=0;
-	virtual void WINAPIC Copy(ident obj_id, IPlayer::PlayerInfo plI)=0;
+	virtual bool WINAPIC Delete(ident obj_id)=0;
+	virtual bool WINAPIC Copy(ident* model_Tag, IPlayer::PlayerInfo plI)=0;
 	virtual bool WINAPIC Eject(ident obj_id)=0;
 	virtual void WINAPIC Update(ident obj_id)=0;
+	virtual void WINAPIC Swap(ident biped_id, IPlayer::PlayerInfo plI)=0;
 };
-extern "C" dllport IObject* pIObject;
+CNATIVE dllport IObject* pIObject;
 
 #endif

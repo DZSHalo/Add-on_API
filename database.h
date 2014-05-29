@@ -1,7 +1,7 @@
 #ifndef databaseH
 #define databaseH
 
-extern "C" namespace DBSQL {
+CNATIVE namespace DBSQL {
 	//--
 	//#pragma comment(lib,"Msvcrt.lib") //Basically bypass the error of vsnprintf... Replace the odbccp32.lib file with vista SDK!!!
 	#pragma comment(lib,"odbc32.lib")
@@ -56,7 +56,9 @@ extern "C" namespace DBSQL {
 		virtual bool WINAPIC GetColumnName( USHORT Column, LPTSTR Name, SHORT NameLen )=0;
 		virtual bool WINAPIC IsColumnNullable( USHORT Column )=0;
 	};
+#ifdef EXT_IDATABASE
 	dllport IDBConnection* WINAPIC getIDBConnection();
 	dllport IDBStmt* WINAPIC getIDBStmt();
+#endif
 };
 #endif

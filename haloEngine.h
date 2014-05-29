@@ -52,7 +52,7 @@ public:
 	CheatHeader* cheatHeader;
 	MapStruct* mapCurrent;
 	ConsoleStruct* console;
-	DWORD* serverUpTimeLive;
+	DWORD* gameUpTimeLive;
 	DWORD* mapUpTimeLive;
 	DWORD* mapTimeLimitLive;
 	DWORD* mapTimeLimitPermament;
@@ -62,6 +62,7 @@ public:
 	DIRECTX9*  DirectX9;
 	DIRECTI8*  DirectInput8;
 	DIRECTS8*  DirectSound8;
+	bool* cheatVEject;
 	//Halo Simulate Functions Begin
 	virtual DWORD WINAPIC BuildPacket(LPBYTE output, DWORD arg1, DWORD packettype, DWORD arg3, LPBYTE dataPtr, DWORD arg4, DWORD arg5, DWORD arg6)=0;
 	virtual void WINAPIC AddPacketToPlayerQueue(DWORD player, LPBYTE packet, DWORD packetCode, DWORD arg1, DWORD arg2, DWORD arg3, DWORD arg4, DWORD arg5)=0;

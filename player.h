@@ -10,7 +10,7 @@
 #define MSG_ERROR		6
 #define MSG_ALERT		7
 
-extern "C" class IPlayer {
+CNATIVE class IPlayer {
 public:
 	#pragma pack(push,1)
 	struct PlayerExtended {
@@ -93,7 +93,10 @@ public:
 	virtual bool WINAPIC isAdmin(machineindex m_ind)=0;
 	virtual PlayerInfo WINAPIC getPlayerByBipedTagCurrent(ident bipedTag)=0;
 	virtual PlayerInfo WINAPIC getPlayerByBipedTagPrevious(ident bipedTag)=0;
+	virtual bool WINAPIC sendCustomMsgBroadcast(char formatMsg, const wchar_t *Msg, ...)=0;
 };
-extern "C" dllport IPlayer* pIPlayer;
+#ifdef EXT_IPLAYER
+CNATIVE dllport IPlayer* pIPlayer;
+#endif
 
 #endif
