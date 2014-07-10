@@ -1,3 +1,22 @@
+/********************************************************************************
+   This is far as we have gathered into one more reliability locations to keep
+   maintaining the structures from Halo Trial through Custom Edition
+   (Windows platform).
+
+
+Credits:
+
+    * Steve(Del / silentk?)
+    * Abyll
+    * flyingmonkey3
+    * RadWolfie
+    * Oxide
+    * Wizard
+
+    Your name isn't credited for finding specific offset purpose? Let us know
+    and we will make sure to credit you! ;)
+
+*********************************************************************************/
 #ifndef structH
 #define structH
 
@@ -32,6 +51,11 @@
 //Color Indexes End
 
 #pragma pack(push,1)
+#define STR_CAT(a,b)            a##b
+#define STR_CAT_DELAYED(a,b)   STR_CAT(a,b)
+#define UNKNOWN(size) char STR_CAT_DELAYED(_unused_,__COUNTER__)[size]
+#define UNKNOWN_BITFIELD(size) char STR_CAT_DELAYED(_unusedbf_, __COUNTER__) : size
+
 struct chatData	{
 		DWORD type;		//range of 0 - 3, sort from Global, Team, Vehicle, and Server (CE only)
 		DWORD player;	//range of 0 - 15
@@ -90,6 +114,9 @@ union ident {
          short index;
          short ID;
       };
+	  ident() {
+		  Tag = -1;
+	  };
 };
 static_assert_check(sizeof(ident) == 0x4, "Incorrect size of ident");
 struct bone {
@@ -107,7 +134,7 @@ struct PlayerAlter {
 	playerindex PlayerIndex;	//0x1F	// Index to their StaticPlayer
 };  //size of 0x20
 static_assert_check(sizeof(PlayerAlter) == 0x20, "Incorrect size of PlayerAlter");
-struct MachineHeader {
+struct MachineS {
 	DWORD	NetworkPointerX2;				//0x0000 // Following this, i found a pointer next to other useless stuff. Then, another pointer, then i found some stuff that looked like it /MIGHT/ very well be strings related to a hash. *shrug*
 	long	Unknown0[2];					//0x0004
 	short	machineIndex;					//0x000C
@@ -159,13 +186,13 @@ struct MachineHeader {
 	//char	CDhash[32];			// a solid block array, so it's not necessarily a c_str i think, but there's still usually just 0's afterwards anyways.
 	//BYTE	UnknownZeros[44];	// zeros..
 }; // Size: 0xEC = Halo CE & Trial, 0x60 = Halo PC
-static_assert_check(sizeof(MachineHeader) == 0x60, "Incorrect size of MachineHeader");
-struct PlayerHeader {//Verified offsets.
+static_assert_check(sizeof(MachineS) == 0x60, "Incorrect size of MachineHeader");
+struct PlayerS {//Verified offsets.
 	short	PlayerID;						//0x000
 	short	IsLocal;						//0x002			// 0=Local(no bits set), -1=Other Client(All bits set)
 	wchar_t Name[12];						//0x004			// Unicode
 	ident	UnknownIdent;					//0x01C
-	long	Team;							//0x020			// 0=Red, 1=Blue
+	long	Team;							//0x020			// 0=Red, 1=Blue; if do client host, you will see hud's team changed instant.
 	ident	SwapObject;						//0x024
 	short	SwapType;						//0x028			// Vehicle=8, Weapon=6
 	short	SwapSeat;						//0x02A			// Warthog-Driver=0, Passenger=1, Gunner=2, Weapon=-1
@@ -173,11 +200,14 @@ struct PlayerHeader {//Verified offsets.
 	long	Unknown;						//0x02F
 	ident	CurrentBiped;					//0x034
 	ident	PreviousBiped;					//0x038
-	short	ClusterIndex;					//0x03C
+	//IMPORTANT: need to verify this.
+    //   ulong LocationID;          // This is very, very interesting. BG is split into 25 location ID's. 1 -19
+	short	LocationID;						//0x03C			//Should be ulong?
+	//short	ClusterIndex;					//0x03C
 	char	Swap : 1;						//0x03E.0
 	char	UnknownBits4 :7;				//0x03E.7
 	char	UnknownByte;					//0x03F
-	ident	UnknownIdent1;					//0x040
+	ident	UnknownIdent1;					//0x040			//BulletCount?
 	long	LastBulletShotTime;				//0x044			// since game start(0)
 	wchar_t Name1[12];						//0x048
 	short	ColorIndex;						//0x060			// See defined color indexes above.
@@ -187,20 +217,21 @@ struct PlayerHeader {//Verified offsets.
 	char	iTeam;							//0x066
 	playerindex	PlayerIndex;				//0x067			// Index to their StaticPlayer
 	long	Unknown1;						//0x068
-	float	VelocityMultiplier;				//0x06C
+	float	VelocityMultiplier;				//0x06C <--- and below are correct!
 	ident	UnknownIdent3[4];				//0x070
 	long	Unknown2;						//0x080
 	long	LastDeathTime;					//0x084		// since game start(0)
-	char	Unknown3[18];					//0x088
-	short	KillsCount;						//0x09A
-	char	Unknown4[6];					//0x09C
-	short	AssistsCount;					//0x0A2
-	char	Unknown5[8];					//0x0A4
+	WORD	killInOrderObjective;			//0x088
+	char	Unknown3[18];					//0x08A
+	short	KillsCount;						//0x09C
+	char	Unknown4[6];					//0x09E
+	short	AssistsCount;					//0x0A4
+	char	Unknown5[6];					//0x0A6
 	short	BetrayedCount;					//0x0AC
 	short	DeathsCount;					//0x0AE
 	short	SuicideCount;					//0x0B0
 	char	Unknown6[18];					//0x0B2
-	short	FlagStealCount;					//0x0C4 <--- and below are correct!
+	short	FlagStealCount;					//0x0C4
 	short	FlagReturnCount;				//0x0C6
 	short	FlagCaptureCount;				//0x0C8
 	char	Unknown7[6];					//0x0CA
@@ -237,9 +268,7 @@ struct PlayerHeader {//Verified offsets.
 	vect3	WorldDelayed;					//0x170	// Oddly enough... it matches the world vect, but seems to lag behind (Possibly what the client reports is _its_ world coord?)
 	char	Unknown15[132];					//0x17C
 };
-//template<int s> struct StructTest;
-//StructTest<offsetof(PlayerHeader, World)> structTest;
-static_assert_check(sizeof(PlayerHeader) == 0x200, "Incorrect size of PlayerHeader");
+static_assert_check(sizeof(PlayerS) == 0x200, "Incorrect size of PlayerS");
 
 /*
 
@@ -262,15 +291,16 @@ get one banshee no matter how many you want. All max
 is 48, 92, 24, 00 hex.
 
 */
-#define CTF 1
-#define SLAYER 2
-#define ODDBALL 3
-#define KOTH 4
-#define RACE 5
-struct GameType {						//UNDONE GameType Struct is not 100% decoded.
+#define GAMETYPE_CTF 1
+#define GAMETYPE_SLAYER 2
+#define GAMETYPE_ODDBALL 3
+#define GAMETYPE_KOTH 4
+#define GAMETYPE_RACE 5
+struct GameTypeS {						//UNDONE GameType Struct is not 100% decoded.
 	wchar_t name[24];					// 0x00
 	DWORD GameStage;					// 0x30 1=CTF, 2=Slayer, 3=Oddball, 4=KOTH, 5=Race
-	DWORD isTeamPlay;					// 0x34
+	bool isTeamPlay;					// 0x34
+	BYTE NULL0[3];						// 0x35
 	bool showEnemyRadar: 1;				// 0x38.0
 	bool friendlyIndicator: 1;			// 0x38.1
 	bool infiniteGrenade: 1;			// 0x38.2
@@ -303,9 +333,78 @@ struct GameType {						//UNDONE GameType Struct is not 100% decoded.
 	char TraitBallWith;					// 0x83 0=None, 1=Invisible, 2=Extra Damage, 3=Damage Resistent
 	DWORD Unknown3;						// 0x84
 	DWORD TraitBallWithout;				// 0x88 0=None, 1=Invisible, 2=Extra Damage, 3=Damage Resistent
-	BYTE Unknown4[15];					// 0x8C - 0x9B unknown
+	BYTE Unknown4[14];					// 0x8C - 0x99 unknown
+	bool Unknown5;						// 0x9A
+	bool Unknown6;						// 0x9B
+	bool noDeathBonus;					// 0x9C
+	bool noKillPenalty;					// 0x9D
+	bool isKillInOrder_flagMustReset;	// 0x9E	isKillInOrder = Slayer, FlagMustReset = CTF	//CTF and Slayer is sharing this... must be union structure?
+	bool isFlagAtHomeToScore;			// 0x9F	CTF usage
+	DWORD SingleFlagTimer;				// 0xA0 CTF usage, 0 = off, 1800 = 1 min, and so on.
 };
-static_assert_check(sizeof(GameType) == 0x9B, "Incorrect size of GameType");
+static_assert_check(sizeof(GameTypeS) == 0xA4, "Incorrect size of GameType");
+
+
+struct GametypeGFlag {
+	vect3 World;			//0x00 Coordinate of where to respawn at.
+	UNKNOWN(8);				//0x08 Nulls...
+	UNKNOWN(4);				//0x10 Don't know...
+	float unknown;			//0x14 Possible float?
+	UNKNOWN(8);				//0x18 Nulls...
+	DWORD unknown2;			//0x20 Always -1
+};
+
+struct GameTypeCTFg {							//size = 0x38
+	GametypeGFlag* flagParams[2];				//0x0000		// 0 = Red flag, 1 = Blue flag
+	ident teamFlagIds[2];						//0x0008
+	DWORD teamScore[2];							//0x0010		//0 = Red team, 1 = Blue team
+	DWORD scoreLimit;							//0x0018		//Not sure what size this is atm.
+	bool flagCaptured[2];						//0x001C		// 0 = Red flag, 1 = Blue flag
+	WORD Unknown1;								//0x001E
+	//Trial version end for CTF
+	DWORD flagNotAtBase[2];						//0x0020		//Timer in ticks; 0 = Red flag, 1 = Blue flag
+	UNKNOWN(0x10);								//0x0028		//Missing some other informations, need to edit more here.
+};
+struct GameTypeKOTHg {							//size = 0x288
+	DWORD hillScoreTicks[16];					//0x0000		//Scoring in ticks base on player id												//0x0038
+	DWORD hillScoreTicksRelativeMapTicks[16];	//0x0040		//Tick difference from how long in map ticks and is in hill base on player id.		//0x0078
+	bool isInHill[16];							//0x0080		//Player is in hill, base on player id												//0x00B8
+	UNKNOWN(0x100);								//0x0090		//Don't know what this is and it's relative to hill being moved around if set.		//0x00C8
+	DWORD Unknown2;								//0x0190		//Goes up when someone entered														//0x01C8
+	DWORD Unknown3;								//0x0194		//Tick goes up when someone is in the hill.											//0x01CC
+	ident player;								//0x0198		//Shows the player id.																//0x01D0
+	UNKNOWN(0xEC);								//0x019C		//Dunno what the rest are.															//0x01D4
+};
+struct GameTypeODDBALLg {						//size = 0x148
+	DWORD scoreLimit;							//0x0000		//Total ticks to win.																//0x02C0
+	DWORD scoreTicks[16];						//0x0004																							//0x02C4
+	DWORD scoreTicks2[16];						//0x0044		//Always the same with above.														//0x0304
+	DWORD Unknown4[16];							//0x0084		//Wizzard commented this is for juggernut...										//0x0344
+	ident holder[16];							//0x00C4		//This is base on oddball #, not player. Also using player id						//0x0384
+	DWORD relocateTicks[16];					//0x0104		//This is base on oddball #, not player. Also using player id						//0x03C4
+	DWORD Unknown5;								//0x0144		//Null																				//0x0404
+};
+struct GameTypeRACEg {							//size = 0x148
+	DWORD checkpointTotal;						//0x0000		//Total navpoints around the map to score per lap.									//0x0408
+	DWORD Unknown6[16];							//0x0004		//Nulls																				//0x040C
+	DWORD checkpointCurrent[16];				//0x0044		//Counting to checkpointTotal														//0x044C
+	DWORD Unknown7;								//0x0084																							//0x048C
+	DWORD raceLaps[16];							//0x0088		//Total laps completed																//0x0490
+	DWORD Unknown8[16];							//0x00C8		//So far just nulls...																//0x04D0
+	DWORD Unknown9[16];							//0x0108		//Don't know what these are and not relative to players.							//0x0510
+};
+struct GameTypeSLAYERg {						//size = 0x80
+	DWORD playerScore[16];						//0x0000																							//0x0550
+	DWORD playerScore2[16];						//0x0040		//Duplicated and appear useless...													//0x0590
+};
+struct GameTypeGlobals {
+	GameTypeCTFg ctfGlobal;
+	GameTypeKOTHg kothGlobal;
+	GameTypeODDBALLg oddballGlobal;
+	GameTypeRACEg raceGlobal;
+	GameTypeSLAYERg slayerGlobal;
+};
+static_assert_check(sizeof(GameTypeGlobals) == 0x5D0, "Incorrect size of GameTypeGlobals");
 
 struct GlobalServer {
 	DWORD* Unknown0;				//0x000 // at least I _think_ it's a pointer since there _is_ something if i follow it.
@@ -343,16 +442,17 @@ struct ObjectS {
 	//char	Flags2[4];				// 0x0010
 	char	unkBits : 2;			// 0x0010
 	bool	ignoreGravity:1;
-	char	unk1:4;
+	char	unk1:3;
+	bool	unk2:1;
 	bool	noCollision:1;
-	char	unkBits1[3];			// 0x0011
+	char	unkBytes1[3];			// 0x0011
 	long	Timer2;					// 0x0014
 	long	Zero2[17];				// 0x0018
 	vect3	World;					// 0x005C
 	vect3	Velocity;				// 0x0068
 	vect3	LowerRot;				// 0x0074
 	vect3	Scale;					// 0x0080
-	vect3	UnknownVect1;			// 0x008C
+	vect3	VelocityPitchYawRoll;	// 0x008C  //current velocity for pitch, yaw, and roll
 	long	LocationID;				// 0x0098
 	long	Unknown1;				// 0x009C
 	vect3	UnknownVect2;			// 0x00A0
@@ -438,14 +538,8 @@ struct BipedS {
 	WORD	CurWeaponIndex0;		// 0x02F2	(Do not attempt to edit this, will crash Halo)
 	WORD	CurWeaponIndex1;		// 0x02F4	(Read only)
 	WORD	Unknown6;				// 0x02F6
-	ident	PrimaryWeapon;			// 0x02F8
-	ident	SecondaryWeapon;		// 0x02FC
-	ident	ThirdWeapon;			// 0x0300
-	ident	FourthWeapon;			// 0x0304
-	DWORD	PrimaryWeaponLastUse;	// 0x0308
-	DWORD	SecondaryWeaponLastUse;	// 0x030C
-	DWORD	ThirdWeaponLastUse;		// 0x0310
-	DWORD	FourthWeaponLastUse;	// 0x0314
+	ident	Equipments[4];			// 0x02F8
+	DWORD	EquipmentsLastUse[4];	// 0x0308
 	long	UnknownLongs2;			// 0x031C
 	char	grenadeIndex;			// 0x031C
 	char	grenadeIndex1;			// 0x031D
@@ -555,9 +649,9 @@ struct VehicleS {
 	short	UnknownO7;		// 0x0122
 	long	UnknownO8;		// 0x0124
 	float	Shield2;		// 0x0128
-	float	Flashlight1;	// 0x012C
+	float	Headlight1;		// 0x012C
 	float	Unknown9;		// 0x0130
-	float	Flashlight2;	// 0x0134
+	float	Headlight2;		// 0x0134
 	long	UnknownO10[5];	// 0x0138
 	ident	UnknownIdent1;	// 0x014C
 	ident	UnknownIdent2;	// 0x0150
@@ -575,7 +669,6 @@ struct VehicleS {
 }; // Size - 3580(0xDFC)
 //Major WIP Halo Structure End
 
-
 struct MapStruct {
 	char head[4];			//0x00
 	DWORD haloVersion;		//0x04
@@ -590,6 +683,20 @@ struct MapStruct {
 	DWORD unknown07;		//0x064
 };
 static_assert_check(sizeof(MapStruct) == 0x68, "Incorrect size of MapStruct");
+
+struct MapStatusS {
+	bool Unknown1;		//0x00
+	bool Unknown2;		//0x01
+	WORD Unknown3;		//0x02 NULLs
+	DWORD Unknown4;		//0x04
+	DWORD Unknown5;		//0x08
+	DWORD upTime;		//0x0C 1 sec = 30 ticks <-- use this as recommended upTime
+	DWORD Unknown6;		//0x10
+	DWORD upTime1;		//0x14 1 sec = 30 ticks
+	float Unknown7;		//0x18
+	DWORD Unknown8;		//0x1C Don't know what this is and it's increasing rapidly...
+};
+static_assert_check(sizeof(MapStatusS) == 0x20, "Incorrect size of MapStatusS");
 
 struct ConsoleStruct {
 	bool gamePause;			//0x00
@@ -610,7 +717,7 @@ struct ConsoleStruct {
 	char inputName[32];		//0x98
 	char input[255];		//0xB8
 };
-static_assert_check(sizeof(ConsoleStruct) == 0x1B7, "Incorrect size of MapStruct");
+static_assert_check(sizeof(ConsoleStruct) == 0x1B7, "Incorrect size of ConsoleStruct");
 
 struct banCheckStruct {
 	wchar_t password[9];				//0x00
