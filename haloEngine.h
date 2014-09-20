@@ -43,57 +43,59 @@
 
 extern "C" class IHaloEngine { // For Add-on API interface support
 public:
-	GlobalServer* globalServer;
-	PlayerAlter* playerAlter;
-	MachineHeader* machineHeader;
-	BYTE machineHeaderSize;
-	DWORD* player_base;
-	GameType* gameTypeLive;
-	CheatHeader* cheatHeader;
-	MapStruct* mapCurrent;
-	ConsoleStruct* console;
-	DWORD* gameUpTimeLive;
-	DWORD* mapUpTimeLive;
-	DWORD* mapTimeLimitLive;
-	DWORD* mapTimeLimitPermament;
-	BYTE haloGameVersion;
-	bool isDedi;
-	ConsoleColorStruct* consoleColor;
-	DIRECTX9*  DirectX9;
-	DIRECTI8*  DirectInput8;
-	DIRECTS8*  DirectSound8;
-	bool* cheatVEject;
-	//Halo Simulate Functions Begin
-	virtual DWORD WINAPIC BuildPacket(LPBYTE output, DWORD arg1, DWORD packettype, DWORD arg3, LPBYTE dataPtr, DWORD arg4, DWORD arg5, DWORD arg6)=0;
-	virtual void WINAPIC AddPacketToPlayerQueue(DWORD player, LPBYTE packet, DWORD packetCode, DWORD arg1, DWORD arg2, DWORD arg3, DWORD arg4, DWORD arg5)=0;
-	virtual void WINAPIC AddPacketToGlobalQueue(LPBYTE packet, DWORD packetCode, DWORD arg1, DWORD arg2, DWORD arg3, DWORD arg4, DWORD arg5)=0;
-	virtual void WINAPIC DispatchRcon(rconData& d, IPlayer::PlayerInfo& plI)=0;
-	virtual void WINAPIC DispatchPlayer(chatData& d, int len, IPlayer::PlayerInfo& plI)=0;
-	virtual void WINAPIC DispatchGlobal(chatData& d, int len)=0;
-	virtual bool WINAPIC sendRejectCode(MachineHeader* mH, DWORD code)=0;
-	virtual void WINAPIC GetCDHash(MachineHeader &mH, char hashKey[33])=0;
-	virtual void WINAPIC SetObjectSpawnPlayerX(playerindex pl_ind)=0;
-	virtual void WINAPIC Kill(IPlayer::PlayerInfo plI)=0;
-	virtual bool WINAPIC SetIdle()=0;
-	virtual bool WINAPIC MapNext()=0;
-	virtual bool WINAPIC Exec(const char* cmd)=0;
-	virtual void WINAPIC GetServerPassword(wchar_t pass[8])=0;
-	virtual void WINAPIC SetServerPassword(wchar_t pass[8])=0;
-	virtual void WINAPIC GetRconPassword(char pass[8])=0;
-	virtual void WINAPIC SetRconPassword(char pass[8])=0;
-	virtual bool WINAPIC BanPlayer(IPlayer::PlayerExtended &plEx, tm &gmtm)=0;
-	virtual bool WINAPIC BanCDkey(wchar_t CDHash[33], tm &gmtm)=0;
-	virtual bool WINAPIC BanIP(wchar_t IP_Addr[16], tm &gmtm)=0;
-	virtual int WINAPIC BanIPGetId(wchar_t IP_Addr[16])=0;
-	virtual int WINAPIC BanCDkeyGetId(wchar_t CDHash[33])=0;
-	virtual bool WINAPIC UnbanID(int ID)=0;
-	//char* WINAPIC GetCDHash(Player::PlayerInfo& plI);
-	virtual void WINAPIC GetIP(MachineHeader& mH, BYTE m_ip[4])=0;
-	virtual void WINAPIC GetPort(MachineHeader& mH, WORD& m_port)=0;
-	//Halo Simulate Functions End
-	virtual bool WINAPIC EXTAddOnGetInfoIndex(size_t index, addon::addonInfo &getInfo)=0;
-	virtual bool WINAPIC EXTAddOnGetInfoByName(wchar_t name[], addon::addonInfo &getInfo)=0;
-	virtual bool WINAPIC EXTAddOnReloadDll(wchar_t name[128])=0;
+    GlobalServer* globalServer;
+    PlayerAlter* playerAlter;
+    MachineS* machineHeader;
+    BYTE machineHeaderSize;
+    DWORD* player_base;
+    GameTypeS* gameTypeLive;
+    CheatHeader* cheatHeader;
+    MapStruct* mapCurrent;
+    ConsoleStruct* console;
+    DWORD* gameUpTimeLive; //1 sec = 60 ticks
+    DWORD* mapUpTimeLive; //1 sec = 30 ticks
+    DWORD* mapTimeLimitLive;
+    DWORD* mapTimeLimitPermament;
+    BYTE haloGameVersion;
+    bool isDedi;
+    ConsoleColorStruct* consoleColor;
+    DIRECTX9*  DirectX9;
+    DIRECTI8*  DirectInput8;
+    DIRECTS8*  DirectSound8;
+    bool* cheatVEject;
+    GameTypeGlobals* gameTypeGlobals;
+    MapStatusS** mapStatus;
+    //Halo Simulate Functions Begin
+    virtual DWORD WINAPIC BuildPacket(LPBYTE output, DWORD arg1, DWORD packettype, DWORD arg3, LPBYTE dataPtr, DWORD arg4, DWORD arg5, DWORD arg6)=0;
+    virtual void WINAPIC AddPacketToPlayerQueue(DWORD player, LPBYTE packet, DWORD packetCode, DWORD arg1, DWORD arg2, DWORD arg3, DWORD arg4, DWORD arg5)=0;
+    virtual void WINAPIC AddPacketToGlobalQueue(LPBYTE packet, DWORD packetCode, DWORD arg1, DWORD arg2, DWORD arg3, DWORD arg4, DWORD arg5)=0;
+    virtual void WINAPIC DispatchRcon(rconData& d, IPlayer::PlayerInfo& plI)=0;
+    virtual void WINAPIC DispatchPlayer(chatData& d, int len, IPlayer::PlayerInfo& plI)=0;
+    virtual void WINAPIC DispatchGlobal(chatData& d, int len)=0;
+    virtual bool WINAPIC sendRejectCode(MachineS* mH, DWORD code)=0;
+    virtual void WINAPIC GetCDHash(MachineS &mH, char hashKey[33])=0;
+    virtual void WINAPIC SetObjectSpawnPlayerX(playerindex pl_ind)=0;
+    virtual void WINAPIC Kill(IPlayer::PlayerInfo plI)=0;
+    virtual bool WINAPIC SetIdle()=0;
+    virtual bool WINAPIC MapNext()=0;
+    virtual bool WINAPIC Exec(const char* cmd)=0;
+    virtual void WINAPIC GetServerPassword(wchar_t pass[8])=0;
+    virtual void WINAPIC SetServerPassword(wchar_t pass[8])=0;
+    virtual void WINAPIC GetRconPassword(char pass[8])=0;
+    virtual void WINAPIC SetRconPassword(char pass[8])=0;
+    virtual bool WINAPIC BanPlayer(IPlayer::PlayerExtended &plEx, tm &gmtm)=0;
+    virtual bool WINAPIC BanCDkey(wchar_t CDHash[33], tm &gmtm)=0;
+    virtual bool WINAPIC BanIP(wchar_t IP_Addr[16], tm &gmtm)=0;
+    virtual int WINAPIC BanIPGetId(wchar_t IP_Addr[16])=0;
+    virtual int WINAPIC BanCDkeyGetId(wchar_t CDHash[33])=0;
+    virtual bool WINAPIC UnbanID(int ID)=0;
+    //char* WINAPIC GetCDHash(Player::PlayerInfo& plI);
+    virtual void WINAPIC GetIP(MachineS& mH, BYTE m_ip[4])=0;
+    virtual void WINAPIC GetPort(MachineS& mH, WORD& m_port)=0;
+    //Halo Simulate Functions End
+    virtual bool WINAPIC EXTAddOnGetInfoIndex(size_t index, addon::addonInfo &getInfo)=0;
+    virtual bool WINAPIC EXTAddOnGetInfoByName(wchar_t name[], addon::addonInfo &getInfo)=0;
+    virtual bool WINAPIC EXTAddOnReloadDll(wchar_t name[128])=0;
 };
 extern "C" dllport IHaloEngine* pIHaloEngine;
 
