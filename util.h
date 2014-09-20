@@ -103,7 +103,7 @@
             while(scan) {
                 d_stack* newStack = (d_stack*)util::AllocMem(sizeof(d_stack));
                 newStack->d_type = (T*)util::AllocMem(sizeof(T));
-                *newStack->d_type = *clone->d_type;
+                *newStack->d_type = *scan->d_type;
                 newStack->next_d_type = NULL;
                 clone->next_d_type = newStack;
                 clone = newStack;
