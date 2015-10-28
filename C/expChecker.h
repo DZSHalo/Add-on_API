@@ -3,38 +3,39 @@
 
 #if _MSC_VER <=1500
 #pragma WARNING("Unable to perform exporting checker for Microsoft Visual Studio 2008 and below...")
-#else
+#elif __cplusplus
 namespace addon {
 #pragma region Interface functions
     typedef bool (WINAPIC* LPReturnBOOL)();
     typedef void (WINAPIC* LPVoidFunction)();
     typedef void (WINAPIC* LPOnEndGame)(int);
     typedef toggle (WINAPIC* LPONoParamsReturn)();
+    typedef toggle (WINAPIC* LPOnUINTReturn)(unsigned int);
     typedef void (WINAPIC* LPOnNewGame)(wchar_t*);
-    typedef void (WINAPIC* LPOnPlayerJoinQuitEvent)(IPlayer::PlayerInfo);
-    typedef void (WINAPIC* LPOnPlayerUpdate)(IPlayer::PlayerInfo);
-    typedef int (WINAPIC* LPOnPlayerJoinDefault)(MachineS* mS, int);
-    typedef bool (WINAPIC* LPOnVehicleUserEntryEject)(IPlayer::PlayerInfo, bool);
-    typedef bool (WINAPIC* LPOnPlayerChangeTeamAttempt)(IPlayer::PlayerInfo, int, bool);
-    typedef bool (WINAPIC* LPOnPlayerSpawnColor)(IPlayer::PlayerInfo, bool);
-    typedef void (WINAPIC* LPOnPlayerDeath)(IPlayer::PlayerInfo, IPlayer::PlayerInfo, int, bool&);
-    typedef void (WINAPIC* LPWeaponAssignmentC)(IPlayer::PlayerInfo, ident, ident, DWORD, ident&);
-    typedef bool (WINAPIC* LPObjectInteraction)(IPlayer::PlayerInfo, ident, ObjectS*, IObject::hTagHeader*);
-    typedef void (WINAPIC* LPWeaponAssignmentD)(IPlayer::PlayerInfo, ident, IObject::objInfo*, DWORD, ident&);
-    typedef bool (WINAPIC* LPOnPlayerScoreCTF)(IPlayer::PlayerInfo, ident, DWORD, bool);
-    typedef bool (WINAPIC* LPOnPlayerAttemptDropObject)(IPlayer::PlayerInfo, ident, BipedS*);
-    typedef void (WINAPIC* LPOnPlayerSpawn)(IPlayer::PlayerInfo, ident, BipedS*);
-    typedef toggle (WINAPIC* LPOnPlayerValidateConnect)(IPlayer::PlayerExtended, MachineS, banCheckStruct, bool, toggle, toggle);
-    typedef bool (WINAPIC* LPOnWeaponReload)(ObjectS*, bool);
-    typedef bool (WINAPIC* LPOnObjectCreation)(ObjectS*, IObject::hTagHeader*);
-    typedef bool (WINAPIC* LPOnKillMultiplier)(IPlayer::PlayerInfo killer, DWORD multiplier);
-    typedef bool (WINAPIC* LPOnVehicleRespawnProcess)(ObjectS* cur_object, IObject::objManaged& managedObj, bool isManaged);
-    typedef bool (WINAPIC* LPOnObjectDeleteManagement)(ObjectS* cur_object, int curTicks, bool isManaged);
-    typedef bool (WINAPIC* LPOnObjectDamageLookupProcess)(IObject::objDamageInfo& damageInfo, ident& obj_recv, bool& allowDamage, bool isManaged);
-    typedef bool (WINAPIC* LPOnObjectDamageApplyProcess)(const IObject::objDamageInfo& damageInfo, ident& obj_recv, IObject::objHitInfo& hitInfo, bool isBacktap, bool& allowDamage, bool isManaged);
+    typedef void (WINAPIC* LPOnPlayerJoinQuitEvent)(PlayerInfo);
+    typedef void (WINAPIC* LPOnPlayerUpdate)(PlayerInfo);
+    typedef int (WINAPIC* LPOnPlayerJoinDefault)(s_machine_slot* mS, int);
+    typedef bool (WINAPIC* LPOnVehicleUserEntryEject)(PlayerInfo, bool);
+    typedef bool (WINAPIC* LPOnPlayerChangeTeamAttempt)(PlayerInfo, int, bool);
+    typedef bool (WINAPIC* LPOnPlayerSpawnColor)(PlayerInfo, bool);
+    typedef void (WINAPIC* LPOnPlayerDeath)(PlayerInfo, PlayerInfo, int, bool&);
+    typedef void (WINAPIC* LPWeaponAssignmentC)(PlayerInfo, ident, ident, unsigned int, ident&);
+    typedef bool (WINAPIC* LPObjectInteraction)(PlayerInfo, ident, s_object*, hTagHeader*);
+    typedef void (WINAPIC* LPWeaponAssignmentD)(PlayerInfo, ident, objInfo*, unsigned int, ident&);
+    typedef bool (WINAPIC* LPOnPlayerScoreCTF)(PlayerInfo, ident, unsigned int, bool);
+    typedef bool (WINAPIC* LPOnPlayerAttemptDropObject)(PlayerInfo, ident, s_biped*);
+    typedef void (WINAPIC* LPOnPlayerSpawn)(PlayerInfo, ident, s_biped*);
+    typedef toggle (WINAPIC* LPOnPlayerValidateConnect)(PlayerExtended, s_machine_slot, s_ban_check, bool, toggle, toggle);
+    typedef bool (WINAPIC* LPOnWeaponReload)(s_object*, bool);
+    typedef bool (WINAPIC* LPOnObjectCreation)(s_object*, hTagHeader*);
+    typedef bool (WINAPIC* LPOnKillMultiplier)(PlayerInfo killer, unsigned int multiplier);
+    typedef bool (WINAPIC* LPOnVehicleRespawnProcess)(s_object* cur_object, objManaged& managedObj, bool isManaged);
+    typedef bool (WINAPIC* LPOnObjectDeleteManagement)(s_object* cur_object, int curTicks, bool isManaged);
+    typedef bool (WINAPIC* LPOnObjectDamageLookupProcess)(objDamageInfo& damageInfo, ident& obj_recv, bool& allowDamage, bool isManaged);
+    typedef bool (WINAPIC* LPOnObjectDamageApplyProcess)(const objDamageInfo& damageInfo, ident& obj_recv, objHitInfo& hitInfo, bool isBacktap, bool& allowDamage, bool isManaged);
     typedef void (WINAPIC* LPOnMapLoad)(ident, const wchar_t[32]);
     typedef toggle (WINAPIC* LPOnVehicleAIEntry)(ident, ident, WORD, toggle);
-    typedef toggle (WINAPIC* LPOnEquipmentDropCurrent)(IPlayer::PlayerInfo, ident, BipedS*, ident, WeaponS*, toggle);
+    typedef toggle (WINAPIC* LPOnEquipmentDropCurrent)(PlayerInfo, ident, s_biped*, ident, s_weapon*, toggle);
     typedef toggle (WINAPIC* LPOnServerStatus)(int, toggle);
     
 #pragma endregion
@@ -51,10 +52,11 @@ namespace addon {
     };
 
         //Standard verification
-    static_assert_check(is_same<decltype(EXTversion), addon::versionEAO>::value, "EXTversion is incorrect, please fix this.");
-    static_assert_check(is_same<decltype(&EXTOnEAOLoad), LPONoParamsReturn>::value, "EXTOnEAOLoad is incorrect, please fix this.");
+    static_assert_check(is_same<decltype(EAOversion), addon_version>::value, "EXTversion is incorrect, please fix this.");
+    #undef EXTversion
+    static_assert_check(is_same<decltype(&EXTOnEAOLoad), LPOnUINTReturn>::value, "EXTOnEAOLoad is incorrect, please fix this.");
     static_assert_check(is_same<decltype(&EXTOnEAOUnload), LPVoidFunction>::value, "EXTOnEAOUnload is incorrect, please fix this.");
-    static_assert_check(is_same<decltype(EXTPluginInfo), addon::addonInfo*>::value, "EXTPluginInfo is incorrect, please fix this.");
+    static_assert_check(is_same<decltype(EXTPluginInfo), addon_info>::value, "EXTPluginInfo is incorrect, please fix this.");
 
 
         //APIs verification
@@ -196,48 +198,52 @@ namespace addon {
 
         //Database APIs verification
     __if_exists(EXTHookDatabase) {
-        typedef toggle (WINAPIC* LPIDReturn)(int);
+        typedef void (WINAPIC* LPReturnVOID)();
+        typedef SQLINTEGER (WINAPIC* LPReturnSQLINTEGER)();
         typedef bool (WINAPIC* LPIDReturnBOOL)(int StmtID);
-        typedef DWORD (WINAPIC* LPIDReturnDWORD)(int StmtID);
-        typedef DBSQL::USHORT (WINAPIC* LPIDReturnUSHORT)(int StmtID);
-        typedef int (WINAPIC* LPIDReturnTypeINT)(int StmtID, LPCWSTR Name);
-        typedef DWORD (WINAPIC* LPIDReturnTypeDWORD)(int StmtID, LPCWSTR Name);
-        typedef bool (WINAPIC* LPDBRowAR)(int StmtID, UINT nRow, bool Absolute);
-        typedef bool (WINAPIC* LPIDReturnTypeBOOLUSHORT)(int StmtID, DBSQL::USHORT Column);
-        typedef int (WINAPIC* LPIDReturnTypeINTUS)(int StmtID, DBSQL::USHORT Column);
-        typedef DBSQL::USHORT (WINAPIC* LPIDReturnTypeUSHORT)(int StmtID, LPCWSTR Name);
-        typedef bool (WINAPIC* LPIDReturnTypeBOOL)(int StmtID, LPCWSTR Name);
-        typedef DWORD (WINAPIC* LPIDReturnTypeDWORDUS)(int StmtID, DBSQL::USHORT Column);
-        typedef bool (WINAPIC* LPDBConnect)(LPCWSTR MDBPath,LPCWSTR User, LPCWSTR Pass,bool Exclusive);
-        typedef bool (WINAPIC* LPDBName)(int StmtID, DBSQL::USHORT Column, LPWSTR Name, SHORT NameLen);
-        typedef bool (WINAPIC* LPDBData)(int StmtID, DBSQL::USHORT Column, LPVOID pBuffer, DBSQL::ULONG pBufLen, LONG * dataLen, int Type);
-        typedef bool (WINAPIC* LPDBBindColumn)(int StmtID, DBSQL::USHORT Column, LPVOID pBuffer, DBSQL::ULONG pBufferSize, LONG * pReturnedBufferSize, DBSQL::USHORT nType);
+        typedef void (WINAPIC* LPIDReturnVOID)(int StmtID);
+        typedef SQLINTEGER (WINAPIC* LPIDReturnSQLINTEGER)(int StmtID);
+        typedef SQLSMALLINT (WINAPIC* LPIDReturnSQLSMALLINT)(int StmtID);
+        typedef SQLINTEGER (WINAPIC* LPIDReturnTypeSQLINTEGER)(int StmtID, SQLWCHAR* Name);
+        typedef bool (WINAPIC* LPSTMTFetchRowAR)(int StmtID, SQLINTEGER nRow, bool Absolute);
+        typedef bool (WINAPIC* LPSTMTFetchRow)(int StmtID, SQLUSMALLINT nRow);
+        typedef bool (WINAPIC* LPIDReturnTypeBOOLSQLUSMALLINT)(int StmtID, SQLUSMALLINT Column);
+        typedef SQLSMALLINT (WINAPIC* LPSTMTColumnTypeScale)(int StmtID, SQLUSMALLINT Column);
+        typedef SQLUSMALLINT (WINAPIC* LPSTMTColumnByName)(int StmtID, SQLWCHAR* Name);
+        typedef SQLUINTEGER (WINAPIC* LPSTMTColumnSize)(int StmtID, SQLUSMALLINT Column);
+        typedef bool (WINAPIC* LPIDSQLWCHARReturnBOOL)(int StmtID, const SQLWCHAR* Name);
+        typedef SQLUINTEGER (WINAPIC* LPIDSQLUSMALLINTReturnTypeSQLUINTEGER)(int StmtID, SQLUSMALLINT Column);
+        typedef bool (WINAPIC* LPDBConnect)(SQLWCHAR* ConnectionStr, SQLINTEGER Option, SQLPOINTER Param, SQLINTEGER Param_len);
+        typedef bool (WINAPIC* LPSTMTColumnName)(int StmtID, SQLUSMALLINT Column, SQLWCHAR* Name, SQLSMALLINT NameLen);
+        typedef bool (WINAPIC* LPSTMTData)(int StmtID, SQLUSMALLINT Column, SQLPOINTER pBuffer, SQLINTEGER pBufLen, SQLINTEGER* dataLen, SQLSMALLINT Type);
+        typedef bool (WINAPIC* LPSTMTBindColumn)(int StmtID, SQLUSMALLINT Column, SQLPOINTER pBuffer, SQLINTEGER pBufferSize, SQLINTEGER* pReturnedBufferSize, SQLUSMALLINT nType);
         static_assert_check(is_same<decltype(&EXTHookDatabase), LPReturnBOOL>::value, "EXTHookDatabase is incorrect, please fix this.");
-        static_assert_check(is_same<decltype(&EXTOnDatabaseNew), LPONoParamsReturn>::value, "EXTOnDatabaseNew is incorrect, please fix this.");
-        static_assert_check(is_same<decltype(&EXTOnDatabaseDestroy), LPONoParamsReturn>::value, "EXTOnDatabaseDestroy is incorrect, please fix this.");
+        //static_assert_check(is_same<decltype(&EXTOnDatabaseNew), LPReturnBOOL>::value, "EXTOnDatabaseNew is incorrect, please fix this.");
+        //static_assert_check(is_same<decltype(&EXTOnDatabaseDestroy), LPReturnVOID>::value, "EXTOnDatabaseDestroy is incorrect, please fix this.");
         static_assert_check(is_same<decltype(&EXTOnDatabaseConnect), LPDBConnect>::value, "EXTOnDatabaseConnect is incorrect, please fix this.");
         static_assert_check(is_same<decltype(&EXTOnDatabaseDisconnect), LPVoidFunction>::value, "EXTOnDatabaseDisconnect is incorrect, please fix this.");
+        static_assert_check(is_same<decltype(&EXTOnDatabaseStatus), LPReturnSQLINTEGER>::value, "EXTOnDatabaseStatus is incorrect, please fix this.");
         static_assert_check(is_same<decltype(&EXTOnDatabaseStatementNew), LPIDReturnBOOL>::value, "EXTOnDatabaseStatementNew is incorrect, please fix this.");
-        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementDestroy), LPIDReturn>::value, "EXTOnDatabaseStatementDestroy is incorrect, please fix this.");
-        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementColumnCount), LPIDReturnUSHORT>::value, "EXTOnDatabaseStatementColumnCount is incorrect, please fix this.");
-        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementChangedRowCount), LPIDReturnDWORD>::value, "EXTOnDatabaseStatementChangedRowCount is incorrect, please fix this.");
-        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementQuery), LPIDReturnTypeBOOL>::value, "EXTOnDatabaseStatementQuery is incorrect, please fix this.");
+        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementDestroy), LPIDReturnVOID>::value, "EXTOnDatabaseStatementDestroy is incorrect, please fix this.");
+        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementColumnCount), LPIDReturnSQLSMALLINT>::value, "EXTOnDatabaseStatementColumnCount is incorrect, please fix this.");
+        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementChangedRowCount), LPIDReturnSQLINTEGER>::value, "EXTOnDatabaseStatementChangedRowCount is incorrect, please fix this.");
+        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementQuery), LPIDSQLWCHARReturnBOOL>::value, "EXTOnDatabaseStatementQuery is incorrect, please fix this.");
         static_assert_check(is_same<decltype(&EXTOnDatabaseStatementFetch), LPIDReturnBOOL>::value, "EXTOnDatabaseStatementFetch is incorrect, please fix this.");
-        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementFetchRow), LPIDReturnBOOL>::value, "EXTOnDatabaseStatementFetchRow is incorrect, please fix this.");
+        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementFetchRow), LPSTMTFetchRow>::value, "EXTOnDatabaseStatementFetchRow is incorrect, please fix this.");
         static_assert_check(is_same<decltype(&EXTOnDatabaseStatementFetchPrevious), LPIDReturnBOOL>::value, "EXTOnDatabaseStatementFetchPrevious is incorrect, please fix this.");
         static_assert_check(is_same<decltype(&EXTOnDatabaseStatementFetchNext), LPIDReturnBOOL>::value, "EXTOnDatabaseStatementFetchNext is incorrect, please fix this.");
-        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementFetchRowAR), LPDBRowAR>::value, "EXTOnDatabaseStatementFetchRowAR is incorrect, please fix this.");
+        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementFetchRowAR), LPSTMTFetchRowAR>::value, "EXTOnDatabaseStatementFetchRowAR is incorrect, please fix this.");
         static_assert_check(is_same<decltype(&EXTOnDatabaseStatementFetchFirst), LPIDReturnBOOL>::value, "EXTOnDatabaseStatementFetchFirst is incorrect, please fix this.");
         static_assert_check(is_same<decltype(&EXTOnDatabaseStatementFetchLast), LPIDReturnBOOL>::value, "EXTOnDatabaseStatementFetchLast is incorrect, please fix this.");
         static_assert_check(is_same<decltype(&EXTOnDatabaseStatementCancel), LPIDReturnBOOL>::value, "EXTOnDatabaseStatementCancel is incorrect, please fix this.");
-        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementBindColumn), LPDBBindColumn>::value, "EXTOnDatabaseStatementBindColumn is incorrect, please fix this.");
-        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementColumnByName), LPIDReturnTypeUSHORT>::value, "EXTOnDatabaseStatementColumnByName is incorrect, please fix this.");
-        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementData), LPDBData>::value, "EXTOnDatabaseStatementData is incorrect, please fix this.");
-        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementColumnType), LPIDReturnTypeINTUS>::value, "EXTOnDatabaseStatementColumnType is incorrect, please fix this.");
-        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementColumnSize), LPIDReturnTypeDWORDUS>::value, "EXTOnDatabaseStatementColumnSize is incorrect, please fix this.");
-        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementColumnScale), LPIDReturnTypeDWORDUS>::value, "EXTOnDatabaseStatementColumnScale is incorrect, please fix this.");
-        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementColumnName), LPDBName>::value, "EXTOnDatabaseStatementColumnName is incorrect, please fix this.");
-        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementIsColumnNullable), LPIDReturnTypeBOOLUSHORT>::value, "EXTOnDatabaseStatementIsColumnNullable is incorrect, please fix this.");
+        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementBindColumn), LPSTMTBindColumn>::value, "EXTOnDatabaseStatementBindColumn is incorrect, please fix this.");
+        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementColumnByName), LPSTMTColumnByName>::value, "EXTOnDatabaseStatementColumnByName is incorrect, please fix this.");
+        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementData), LPSTMTData>::value, "EXTOnDatabaseStatementData is incorrect, please fix this.");
+        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementColumnType), LPSTMTColumnTypeScale>::value, "EXTOnDatabaseStatementColumnType is incorrect, please fix this.");
+        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementColumnSize), LPSTMTColumnSize>::value, "EXTOnDatabaseStatementColumnSize is incorrect, please fix this.");
+        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementColumnScale), LPSTMTColumnTypeScale>::value, "EXTOnDatabaseStatementColumnScale is incorrect, please fix this.");
+        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementColumnName), LPSTMTColumnName>::value, "EXTOnDatabaseStatementColumnName is incorrect, please fix this.");
+        static_assert_check(is_same<decltype(&EXTOnDatabaseStatementIsColumnNullable), LPIDReturnTypeBOOLSQLUSMALLINT>::value, "EXTOnDatabaseStatementIsColumnNullable is incorrect, please fix this.");
         static_assert_check(is_same<decltype(&EXTOnDatabaseStatementIsValid), LPIDReturnBOOL>::value, "EXTOnDatabaseStatementIsValid is incorrect, please fix this.");
     }
 
@@ -248,11 +254,13 @@ namespace addon {
 
         //Timer API verification
     #ifdef EXT_ITIMER
-        typedef void (WINAPIC* LPOnTimerExecute)(DWORD);
-        typedef void (WINAPIC* LPOnTimerCancel)(DWORD);
+        typedef void (WINAPIC* LPOnTimerExecute)(unsigned int);
+        typedef void (WINAPIC* LPOnTimerCancel)(unsigned int);
         static_assert_check(is_same<decltype(&EXTOnTimerExecute), LPOnTimerExecute>::value, "EXTOnTimerExecute is incorrect, please fix this.");
         static_assert_check(is_same<decltype(&EXTOnTimerCancel), LPOnTimerCancel>::value, "EXTOnTimerCancel is incorrect, please fix this.");
     #endif
 }
+#else
+    assert("EXTOnTimerCancel is incorrect, please fix this.");
 #endif
 #endif
