@@ -10,7 +10,7 @@ namespace addon {
     typedef void (WINAPIC* LPVoidFunction)();
     typedef void (WINAPIC* LPOnEndGame)(int);
     typedef toggle (WINAPIC* LPONoParamsReturn)();
-    typedef toggle (WINAPIC* LPOnUINTReturn)(unsigned int);
+    typedef EAO_RETURN (WINAPIC* LPOnEAOLoad)(unsigned int);
     typedef void (WINAPIC* LPOnNewGame)(wchar_t*);
     typedef void (WINAPIC* LPOnPlayerJoinQuitEvent)(PlayerInfo);
     typedef void (WINAPIC* LPOnPlayerUpdate)(PlayerInfo);
@@ -19,24 +19,25 @@ namespace addon {
     typedef bool (WINAPIC* LPOnPlayerChangeTeamAttempt)(PlayerInfo, int, bool);
     typedef bool (WINAPIC* LPOnPlayerSpawnColor)(PlayerInfo, bool);
     typedef void (WINAPIC* LPOnPlayerDeath)(PlayerInfo, PlayerInfo, int, bool&);
-    typedef void (WINAPIC* LPWeaponAssignmentC)(PlayerInfo, ident, ident, unsigned int, ident&);
-    typedef bool (WINAPIC* LPObjectInteraction)(PlayerInfo, ident, s_object*, hTagHeader*);
-    typedef void (WINAPIC* LPWeaponAssignmentD)(PlayerInfo, ident, objInfo*, unsigned int, ident&);
-    typedef bool (WINAPIC* LPOnPlayerScoreCTF)(PlayerInfo, ident, unsigned int, bool);
-    typedef bool (WINAPIC* LPOnPlayerAttemptDropObject)(PlayerInfo, ident, s_biped*);
-    typedef void (WINAPIC* LPOnPlayerSpawn)(PlayerInfo, ident, s_biped*);
+    typedef void (WINAPIC* LPWeaponAssignmentC)(PlayerInfo, s_ident, s_ident, unsigned int, s_ident&);
+    typedef bool (WINAPIC* LPObjectInteraction)(PlayerInfo, s_ident, s_object*, hTagHeader*);
+    typedef void (WINAPIC* LPWeaponAssignmentD)(PlayerInfo, s_ident, s_tag_reference*, unsigned int, s_ident&);
+    typedef bool (WINAPIC* LPOnPlayerScoreCTF)(PlayerInfo, s_ident, unsigned int, bool);
+    typedef bool (WINAPIC* LPOnPlayerAttemptDropObject)(PlayerInfo, s_ident, s_biped*);
+    typedef void (WINAPIC* LPOnPlayerSpawn)(PlayerInfo, s_ident, s_biped*);
     typedef toggle (WINAPIC* LPOnPlayerValidateConnect)(PlayerExtended, s_machine_slot, s_ban_check, bool, toggle, toggle);
     typedef bool (WINAPIC* LPOnWeaponReload)(s_object*, bool);
     typedef bool (WINAPIC* LPOnObjectCreation)(s_object*, hTagHeader*);
     typedef bool (WINAPIC* LPOnKillMultiplier)(PlayerInfo killer, unsigned int multiplier);
     typedef bool (WINAPIC* LPOnVehicleRespawnProcess)(s_object* cur_object, objManaged& managedObj, bool isManaged);
     typedef bool (WINAPIC* LPOnObjectDeleteManagement)(s_object* cur_object, int curTicks, bool isManaged);
-    typedef bool (WINAPIC* LPOnObjectDamageLookupProcess)(objDamageInfo& damageInfo, ident& obj_recv, bool& allowDamage, bool isManaged);
-    typedef bool (WINAPIC* LPOnObjectDamageApplyProcess)(const objDamageInfo& damageInfo, ident& obj_recv, objHitInfo& hitInfo, bool isBacktap, bool& allowDamage, bool isManaged);
-    typedef void (WINAPIC* LPOnMapLoad)(ident, const wchar_t[32]);
-    typedef toggle (WINAPIC* LPOnVehicleAIEntry)(ident, ident, WORD, toggle);
-    typedef toggle (WINAPIC* LPOnEquipmentDropCurrent)(PlayerInfo, ident, s_biped*, ident, s_weapon*, toggle);
+    typedef bool (WINAPIC* LPOnObjectDamageLookupProcess)(objDamageInfo& damageInfo, s_ident& obj_recv, bool& allowDamage, bool isManaged);
+    typedef bool (WINAPIC* LPOnObjectDamageApplyProcess)(const objDamageInfo& damageInfo, s_ident& obj_recv, objHitInfo& hitInfo, bool isBacktap, bool& allowDamage, bool isManaged);
+    typedef void (WINAPIC* LPOnMapLoad)(s_ident, const wchar_t[32]);
+    typedef toggle (WINAPIC* LPOnVehicleAIEntry)(s_ident, s_ident, unsigned short, toggle);
+    typedef toggle (WINAPIC* LPOnEquipmentDropCurrent)(PlayerInfo, s_ident, s_biped*, s_ident, s_weapon*, toggle);
     typedef toggle (WINAPIC* LPOnServerStatus)(int, toggle);
+    typedef bool (WINAPIC* LPOnObjectCreationAttempt)(PlayerInfo plOwner, objCreationInfo object_creation, objCreationInfo* change_object, bool isOverride);
     
 #pragma endregion
     template<typename T, typename U>
@@ -54,7 +55,7 @@ namespace addon {
         //Standard verification
     static_assert_check(is_same<decltype(EAOversion), addon_version>::value, "EXTversion is incorrect, please fix this.");
     #undef EXTversion
-    static_assert_check(is_same<decltype(&EXTOnEAOLoad), LPOnUINTReturn>::value, "EXTOnEAOLoad is incorrect, please fix this.");
+    static_assert_check(is_same<decltype(&EXTOnEAOLoad), LPOnEAOLoad>::value, "EXTOnEAOLoad is incorrect, please fix this.");
     static_assert_check(is_same<decltype(&EXTOnEAOUnload), LPVoidFunction>::value, "EXTOnEAOUnload is incorrect, please fix this.");
     static_assert_check(is_same<decltype(EXTPluginInfo), addon_info>::value, "EXTPluginInfo is incorrect, please fix this.");
 
@@ -194,6 +195,10 @@ namespace addon {
     __if_exists(EXTOnMapReset) {
         static_assert_check(is_same<decltype(&EXTOnMapReset), LPVoidFunction>::value, "EXTOnMapReset is incorrect, please fix this.");
         //#pragma WARNING("EXTOnMapReset listener is NOT available in Halo Trial version!") //Always warn even if it's not within...
+    }
+	//0.5.3.0 listener
+    __if_exists(EXTOnObjectCreationAttempt) {
+        static_assert_check(is_same<decltype(&EXTOnObjectCreationAttempt), LPVoidFunction>::value, "EXTOnObjectCreationAttempt is incorrect, please fix this.");
     }
 
         //Database APIs verification

@@ -52,52 +52,303 @@ CNATIVE {
     dllport void ArgContainerVars_Set(ArgContainerVars& vars, const wchar_t* arg);
     dllport void ArgContainerVars_Set_N(ArgContainerVars& vars, const wchar_t* arg, int numArrayLink);
     dllport void ArgContainerVars_Copy(ArgContainerVars& vars, const ArgContainerVars& copy);
-    dllport wchar_t* ArgContainerVars_At(ArgContainerVars& vars, size_t i);
+    dllport wchar_t* ArgContainerVars_At(ArgContainerVars& vars, unsigned int i);
     typedef struct IUtil {
-        void* (*AllocMem)(size_t Size);
-        void(*FreeMem)(void* Address);
+        /// <summary>
+        /// Allocate memory.
+        /// </summary>
+        /// <param name="Size">The size of allocate memory need to be used.</param>
+        /// <returns>Return allocate memory.</returns>
+        void* (*AllocMem)(unsigned int Size);
+        /// <summary>
+        /// Free memory from allocate memory.
+        /// </summary>
+        /// <param name="Address">Pointer of an allocate memory to be free from.</param>
+        /// <returns>No return.</returns>
+        void (*FreeMem)(void* Address);
+        /// <summary>
+        /// Convert a string to wide string.
+        /// </summary>
+        /// <param name="charA">String</param>
+        /// <param name="len">Total length to convert from string.</param>
+        /// <param name="charW">Buffered wide string</param>
+        /// <returns>No return value.</returns>
         void (*toCharW)(const char* charA, int len, wchar_t* charW);
+        /// <summary>
+        /// Convert a wide string to string.
+        /// </summary>
+        /// <param name="charW">Wide string</param>
+        /// <param name="len">Total length to convert from wide string.</param>
+        /// <param name="charA">Buffered string</param>
+        /// <returns>No return value.</returns>
         void (*toCharA)(const wchar_t* charW, int len, char* charA);
+        /// <summary>
+        /// Translate a string into boolean.
+        /// </summary>
+        /// <param name="str">String to translate from.</param>
+        /// <returns>Return -1 if string doesn't have a translation to boolean.</returns>
         toggle (*StrToBooleanA)(const char str[]);
+        /// <summary>
+        /// Translate a wide string into boolean.
+        /// </summary>
+        /// <param name="str">Wide string to translate from.</param>
+        /// <returns>Return -1 if string doesn't have a translation to boolean.</returns>
         toggle (*StrToBooleanW)(const wchar_t str[]);
+        /// <summary>
+        /// Translate a string into team index.
+        /// </summary>
+        /// <param name="str">String to translate from.</param>
+        /// <returns>Return -1 if string doesn't have a translation to team index.</returns>
         e_color_team_index (*StrToTeamA)(const char str[]);
+        /// <summary>
+        /// Translate a wide string into team index.
+        /// </summary>
+        /// <param name="str">Wide string to translate from.</param>
+        /// <returns>Return -1 if string doesn't have a translation to team index.</returns>
         e_color_team_index (*StrToTeamW)(const wchar_t str[]);
+        /// <summary>
+        /// Format a current string to support escape characters if any.
+        /// </summary>
+        /// <param name="regStr">String to format escape characters if any.</param>
+        /// <returns>No return value.</returns>
         void (*ReplaceA)(char* regStr);
+        /// <summary>
+        /// Format a current string to support escape characters if any.
+        /// </summary>
+        /// <param name="regStr">String to format escape characters if any.</param>
+        /// <returns>No return value.</returns>
         void (*ReplaceW)(wchar_t* regStr);
+        /// <summary>
+        /// Undo format a current string to support escape characters if any.
+        /// </summary>
+        /// <param name="regStr">String to undo format escape characters if any.</param>
+        /// <returns>No return value.</returns>
         void (*ReplaceUndoA)(char* regStr);
+        /// <summary>
+        /// Undo format a current string to support escape characters if any.
+        /// </summary>
+        /// <param name="regStr">String to undo format escape characters if any.</param>
+        /// <returns>No return value.</returns>
         void (*ReplaceUndoW)(wchar_t* regStr);
+        /// <summary>
+        /// Verify if whole string contain digits.
+        /// </summary>
+        /// <param name="str">String to check.</param>
+        /// <returns>Return true if valid.</returns>
         bool (*isnumberA)(const char* str);
+        /// <summary>
+        /// Verify if whole wide string contain digits.
+        /// </summary>
+        /// <param name="str">Wide string to check.</param>
+        /// <returns>Return true if valid.</returns>
         bool (*isnumberW)(const wchar_t* str);
+        /// <summary>
+        /// Verify if whole string contain characters & digits.
+        /// </summary>
+        /// <param name="str">String to check.</param>
+        /// <returns>Return true if valid.</returns>
         bool (*ishashA)(const char* str);
+        /// <summary>
+        /// Verify if whole wide string contain characters & digits.
+        /// </summary>
+        /// <param name="str">Wide string to check.</param>
+        /// <returns>Return true if valid.</returns>
         bool (*ishashW)(const wchar_t* str);
+        /// <summary>
+        /// Move partial of whole string to left or right.
+        /// </summary>
+        /// <param name="regStr">String to be shift.</param>
+        /// <param name="len">Total length of a wide string.</param>
+        /// <param name="pos">Position of the string to be shift.</param>
+        /// <param name="lenShift">Amount of length to shift left or right.</param>
+        /// <param name="leftRight">True for shift to right and false for shift to left.</param>
+        /// <returns>No return value.</returns>
         void (*shiftStrA)(char regStr[], int len, int pos, int lenShift, bool leftRight);
+        /// <summary>
+        /// Move partial of whole wide string to left or right.
+        /// </summary>
+        /// <param name="regStr">Wide string to be shift.</param>
+        /// <param name="len">Total length of a wide string.</param>
+        /// <param name="pos">Position of the wide string to be shift.</param>
+        /// <param name="lenShift">Amount of length to shift left or right.</param>
+        /// <param name="leftRight">True for shift to right and false for shift to left.</param>
+        /// <returns>No return value.</returns>
         void (*shiftStrW)(wchar_t regStr[], int len, int pos, int lenShift, bool leftRight);
-        void (*regexReplaceW)(wchar_t regStr[], bool isDB);
-        bool (*regexMatchW)(wchar_t srcStr[], wchar_t regex[]);
-        bool (*regexiMatchW)(wchar_t srcStr[], wchar_t regex[]);
+        /// <summary>
+        /// Format a current string to support escape characters if any.
+        /// </summary>
+        /// <param name="regStr">String to format escape characters if any.</param>
+        /// <param name="isDB">True if goig to use escape characters in database query.</param>
+        /// <returns>No return value.</returns>
+        void (*regexReplaceW)(wchar_t* regStr, bool isDB);
+        /// <summary>
+        /// Find a regular expression string against source string to be a match.
+        /// </summary>
+        /// <param name="srcStr">Source string</param>
+        /// <param name="regex">Regular expression string</param>
+        /// <returns>Return true if is a match.</returns>
+        bool (*regexMatchW)(wchar_t* srcStr, wchar_t* regex);
+        /// <summary>
+        /// Find a regular expression string against source string to be a match.
+        /// </summary>
+        /// <param name="srcStr">Source string</param>
+        /// <param name="regex">Regular expression string</param>
+        /// <returns>Return true if is a match.</returns>
+        bool (*regexiMatchW)(wchar_t* srcStr, wchar_t* regex);
 
-
-        bool (*FormatVarArgsA)(const char* _Format, char * ArgList, char* writeTo);
-        bool (*FormatVarArgsW)(const wchar_t* _Format, char * ArgList, wchar_t* writeTo);
+        /// <summary>
+        /// Format variable arguments list into given prefix string.
+        /// </summary>
+        /// <param name="writeTo">Output string</param>
+        /// <param name="_Format">Format message string</param>
+        /// <param name="ArgList">Variable arguments list</param>
+        /// <returns>Return true or false for format completion.</returns>
+        bool (*FormatVarArgsListA)(char* writeTo, const char* _Format, char* ArgList);
+        /// <summary>
+        /// Format variable arguments list into given prefix string.
+        /// </summary>
+        /// <param name="writeTo">Output string</param>
+        /// <param name="_Format">Format message string</param>
+        /// <param name="ArgList">Variable arguments list</param>
+        /// <returns>Return true or false for format completion.</returns>
+        bool (*FormatVarArgsListW)(wchar_t* writeTo, const wchar_t* _Format, char* ArgList);
+        /// <summary>
+        /// Compare beginning of case-senitive string against another string.
+        /// </summary>
+        /// <param name="str1">Beginning of string #1 to compare against.</param>
+        /// <param name="str2">String #2 to compare against.</param>
+        /// <returns>Only return true if is a match.</returns>
         bool (*findSubStrFirstA)(const char* dest, const char* src);
+        /// <summary>
+        /// Compare beginning of case-senitive string against another string.
+        /// </summary>
+        /// <param name="str1">Beginning of string #1 to compare against.</param>
+        /// <param name="str2">String #2 to compare against.</param>
+        /// <returns>Only return true if is a match.</returns>
         bool (*findSubStrFirstW)(const wchar_t* dest, const wchar_t* src);
 
+        /// <summary>
+        /// Test if string contains a letters or not.
+        /// </summary>
+        /// <param name="str">String to test if is a letters.</param>
+        /// <returns>Return true if is letters.</returns>
         bool (*islettersA)(const char* str);
+        /// <summary>
+        /// Test if string contains a letters or not.
+        /// </summary>
+        /// <param name="str">String to test if is a letters.</param>
+        /// <returns>Return true if is letters.</returns>
         bool (*islettersW)(const wchar_t* str);
 
+        /// <summary>
+        /// Test if string contains a float or not.
+        /// </summary>
+        /// <param name="str">String to test if is a float.</param>
+        /// <returns>Return true if is a float.</returns>
         bool (*isfloatA)(const char* str);
+        /// <summary>
+        /// Test if string contains a float or not.
+        /// </summary>
+        /// <param name="str">String to test if is a float.</param>
+        /// <returns>Return true if is a float.</returns>
         bool (*isfloatW)(const wchar_t* str);
+        /// <summary>
+        /// Test if string contains a double or not.
+        /// </summary>
+        /// <param name="str">String to test if is a double.</param>
+        /// <returns>Return true if is a double.</returns>
         bool (*isdoubleA)(const char* str);
+        /// <summary>
+        /// Test if string contains a double or not.
+        /// </summary>
+        /// <param name="str">String to test if is a double.</param>
+        /// <returns>Return true if is a double.</returns>
         bool (*isdoubleW)(const wchar_t* str);
+        /// <summary>
+        /// Append an existing string with new string.
+        /// </summary>
+        /// <param name="dest">Destination to write an existing string.</param>
+        /// <param name="len">Maximum size of an dest string.</param>
+        /// <param name="src">New string to copy from.</param>
+        /// <returns>Return 1 every time.</returns>
         int (*strcatW)(wchar_t* dest, size_t len, const wchar_t* src);
+        /// <summary>
+        /// Append an existing string with new string.
+        /// </summary>
+        /// <param name="dest">Destination to write an existing string.</param>
+        /// <param name="len">Maximum size of an dest string.</param>
+        /// <param name="src">New string to copy from.</param>
+        /// <returns>Return 1 every time.</returns>
         int (*strcatA)(char *dest, size_t len, const char* src);
+        /// <summary>
+        /// Convert a string to wide string.
+        /// </summary>
+        /// <param name="str">String</param>
+        /// <param name="wstr">Buffered wide string./param>
+        /// <returns>No return value.</returns>
         void (*str_to_wstr)(char* str, wchar_t* wstr);
+        /// <summary>
+        /// Case-senitive string to compare against another string..
+        /// </summary>
+        /// <param name="str1">String #1 to compare against.</param>
+        /// <param name="str2">String #2 to compare against.</param>
+        /// <returns>Only return true if is a match.</returns>
         bool (*strcmpW)(const wchar_t* str1, const wchar_t* str2);
+        /// <summary>
+        /// Case-senitive string to compare against another string..
+        /// </summary>
+        /// <param name="str1">String #1 to compare against.</param>
+        /// <param name="str2">String #2 to compare against.</param>
+        /// <returns>Only return true if is a match.</returns>
         bool (*strcmpA)(const char* str1, const char* str2);
+        /// <summary>
+        /// Case-insenitive string to compare against another string.
+        /// </summary>
+        /// <param name="str1">String #1 to compare against.</param>
+        /// <param name="str2">String #2 to compare against.</param>
+        /// <returns>Only return true if is a match.</returns>
         bool (*stricmpW)(const wchar_t* str1, const wchar_t* str2);
+        /// <summary>
+        /// Case-insenitive string to compare against another string.
+        /// </summary>
+        /// <param name="str1">String #1 to compare against.</param>
+        /// <param name="str2">String #2 to compare against.</param>
+        /// <returns>Only return true if is a match.</returns>
         bool (*stricmpA)(const char* str1, const char* str2);
+        /// <summary>
+        /// Check if a directory exist.
+        /// </summary>
+        /// <param name="pathStr">Must have directory name.</param>
+        /// <param name="errorCode">Given error code if failed.</param>
+        /// <returns>Return true if directory exist, false with given errorCode.</returns>
+        bool (*isDirExist)(const wchar_t* str, unsigned int* errorCode);
+        /// <summary>
+        /// Check if a file exist.
+        /// </summary>
+        /// <param name="pathStr">Must have directory (optional) and file name.</param>
+        /// <param name="errorCode">Given error code if failed.</param>
+        /// <returns>Return true if file exist, false with given errorCode.</returns>
+        bool (*isFileExist)(const wchar_t* pathStr, unsigned int* errorCode);
+        /// <summary>
+        /// Format variable arguments into given prefix string.
+        /// </summary>
+        /// <param name="writeTo">Output string</param>
+        /// <param name="_Format">Format message string</param>
+        /// <param name="...">Variable arguments</param>
+        /// <returns>Return true or false for format completion.</returns>
+        bool (*FormatVarArgsA)(char* writeTo, const char* _Format, ...);
+        /// <summary>
+        /// Format variable arguments into given prefix string.
+        /// </summary>
+        /// <param name="writeTo">Output string</param>
+        /// <param name="_Format">Format message string</param>
+        /// <param name="...">Variable arguments</param>
+        /// <returns>Return true or false for format completion.</returns>
+        bool (*FormatVarArgsW)(wchar_t* writeTo, const wchar_t* _Format, ...);
     } IUtil;
     dllport IUtil* getIUtil(unsigned int hash);
+    //This variable is needed for IObject usage and prevent link breakage.
+    extern IUtil* pIUtil;
 #ifdef __cplusplus
 }
 class ArgContainer {
@@ -459,5 +710,13 @@ public:
 #endif
 
 #endif
+
+//Optimization section begin
+
+//Source: http://stackoverflow.com/a/17005764
+#define idiv_ceil(x, y) (x / y + (((x < 0) ^ (y > 0)) && (x%y)))
+
+
+//Optimization section end
 
 #endif

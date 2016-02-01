@@ -62,6 +62,29 @@ static if(__traits(compiles, EXT_IOBJECT)) {
         vect3 rotation = vect3( -1, -1, -1 );
         vect3 scale = vect3( -1, -1, -1 );
     };
+    struct objCreationInfo {
+        s_ident map_id = s_ident( -1 );
+        s_ident parent_id = s_ident( -1 );
+        vect3   pos = vect3( -1, -1, -1 );
+    };
+    struct objTagGroupList {
+        uint count;
+        hTagHeader** tag_list;
+        void init() {
+            count = 0;
+            tag_list = null;
+        }
+        void clear() {
+            count = 0;
+            if (tag_list)
+                pIUtil.FreeMem(tag_list);
+            tag_list = null;
+        }
+        ~this() {
+            if (tag_list)
+                pIUtil.FreeMem(tag_list);
+        }
+    };
 // #pragma pack(pop)
     extern (C) struct IObject {
         /*
@@ -171,6 +194,7 @@ static if(__traits(compiles, EXT_IOBJECT)) {
          * Returns: Does not return any value.
          */
         void function(playerindex pl_ind) m_set_object_spawn_player_x;
+        bool function(const e_tag_group group_tag, objTagGroupList* tag_list) get_lookup_group_tag_list;
     };
     export extern(C) IObject* getIObject(uint hash);
 }

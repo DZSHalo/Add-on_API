@@ -83,10 +83,10 @@ CNATIVE {
     };
     static_assert_check(sizeof(PlayerInfo) == 16, "Incorrect size of PlayerInfo");
     struct PlayerInfoList {
-        PlayerInfo* plList[32];
+        PlayerInfo plList[32];
     };
     #pragma pack(pop)
-typedef struct {
+typedef struct IPlayer {
     /// <summary>
     /// Get PlayerInfo from machine index if in used.
     /// </summary>
@@ -226,7 +226,7 @@ typedef struct {
     /// <param name="new_team">New team to assign.</param>
     /// <param name="forcekill">Force kill player if needed.</param>
     /// <returns>Does not return any value.</returns>
-    void (*m_change_team)(PlayerInfo& playerInfo, const unsigned char new_team, bool forcekill);
+    void (*m_change_team)(PlayerInfo& playerInfo, const e_color_team_index new_team, bool forcekill);
     /// <summary>
     /// To apply camouflage duration on specific player.
     /// </summary>
@@ -302,7 +302,7 @@ typedef struct {
     /// <param name="plMatch">List of matched players from search.</param>
     /// <param name="plOwner">Optional, owner of player execution usually.</param>
     /// <returns>Return total count of matched player(s).</returns>
-    short (*StrToPlayerList)(const wchar_t* regexSearch, PlayerInfoList &plMatch, PlayerInfo* plOwner);
+    short (*m_get_str_to_player_list)(const wchar_t* regexSearch, PlayerInfoList &plMatch, PlayerInfo* plOwner);
 } IPlayer;
 
 #ifdef __cplusplus

@@ -9,7 +9,7 @@ enum LOGIN_VALIDATION : signed int {
 #ifdef __cplusplus
 CNATIVE {
 #endif
-    struct IAdmin {
+    typedef struct IAdmin {
         /// <summary>
         /// To verify if <paramref name="player">player</paramref> is authorized to use <paramref name="command">command</paramref>.
         /// </summary>
@@ -53,7 +53,7 @@ CNATIVE {
         /// <param name="password">No limitation on password for now.</param>
         /// <returns>Only return LOGIN_INVALID, LOGIN_FAIL, and LOGIN_OK.</returns>
         LOGIN_VALIDATION (*m_login)(PlayerInfo& player, MSG_PROTOCOL protocolMsg, wchar_t* username, wchar_t* password);
-    };
+    } IAdmin;
     dllport IAdmin* getIAdmin(unsigned int hash);
 #ifdef __cplusplus
 }

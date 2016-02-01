@@ -86,3 +86,7 @@ union s_ident {
         Tag = _Tag;
     };
 };
+
+struct s_ident_ret {
+    s_ident ret;
+};

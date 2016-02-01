@@ -56,6 +56,16 @@ static if(__traits(compiles, EXT_ICOMMAND)) {
          * Returns: Only return true or false.
          */
         bool function(const wchar* cmd, const wchar* _alias) m_alias_delete;
+        /*
+         * To load a custom command(s) from <paramref name="fileName"/> and return true or false.
+         * Params:
+         * hash = Valid owner Add-on hash and existing config_folder defined.
+         * fileName = Custom file name to load and execute from.
+         * plI = Bind user of this execution process.
+         * protocolMsg = For output the message to binded user.
+         * <returns>Only return true or false.
+         */
+        bool(*m_load_from_file)(uint hash, const wchar* fileName, PlayerInfo plI, MSG_PROTOCOL protocolMsg);
     };
     export extern(C) ICommand* getICommand(uint hash);
 

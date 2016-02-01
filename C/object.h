@@ -62,8 +62,25 @@ CNATIVE{
         vect3 rotation;
         vect3 scale;
     };
+    struct objCreationInfo {
+        s_ident map_id;
+        s_ident parent_id;
+        vect3   pos;
+    };
+    typedef struct objTagGroupList {
+        unsigned int count;
+        hTagHeader** tag_list;
+        objTagGroupList() {
+            count = 0;
+            tag_list = 0;
+        }
+        ~objTagGroupList() {
+            if (tag_list)
+                pIUtil->FreeMem(tag_list);
+        }
+    } objTagGroupList;
 #pragma pack(pop)
-    struct IObject {
+    typedef struct IObject {
         /// <summary>
         /// Get pointer of object's active structure.
         /// </summary>
@@ -157,7 +174,8 @@ CNATIVE{
         /// <param name="pl_ind">Player index</param>
         /// <returns>Does not return any value.</returns>
         void (*m_set_object_spawn_player_x)(playerindex pl_ind);
-    };
+        bool (*get_lookup_group_tag_list)(const e_tag_group group_tag, objTagGroupList* tag_list);
+    } IObject;
 
 #ifdef EXT_IOBJECT
 CNATIVE dllport IObject* getIObject(unsigned int hash);

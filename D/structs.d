@@ -125,7 +125,7 @@ struct s_player_reserved_slot {
     short Unknown1;             //0x1A        // FFFF
     machineindex MachineIndex;  //0x1C        // Index to the Machine List (which has their CURRENT cdhash and IP. (it also has the LAST player's name))
     char Unknown2;              //0x1D        //something. But, if these 4 chars are FF's, then the player isn't on.
-    char Team;                  //0x1E
+    e_color_team_index Team;                  //0x1E
     playerindex PlayerIndex;    //0x1F    // Index to their StaticPlayer
 };
 static assert(s_player_reserved_slot.sizeof == 0x20, "Incorrect size of s_player_reserved_slot");
@@ -644,54 +644,54 @@ struct s_biped {
 
 
 //Major WIP Halo Structure Begin
-align (1) struct s_weapon {                                    //WARNING! Offset is NOT 100% accurate!  BulletCount____ is 100% accurate!
-    s_object            sObject;
-    char[12]            Unknown;                        //0x01F4
-    s_ident            UnknownIdent;                      //0x0200  //Relative to assigne biped being dropped from.
-    uint    NetworkTime;                       //0x0204
-    char[36]            Unknown1;                       //0x0208
+align (1) struct s_weapon {
+    s_object        sObject;
+    char[12]        Unknown;                        //0x01F4
+    s_ident         UnknownIdent;                   //0x0200  //Relative to assigne biped being dropped from.
+    uint            NetworkTime;                    //0x0204
+    char[36]        Unknown1;                       //0x0208
     ubyte bitFieldFlag0;
-    /*bool Unknown16:4;                                   //0x022C.0-3
-    bool Unknown17:1;                                   //0x022C.4
-    bool isPickedup:1;                                  //0x022C.4-5
-    bool isNotReturned:1;                               //0x022C.6
-    bool Unknown18:1;                                   //0x022C.7*/
-    char[3] Unknown19;                                  //0x022D
+    /*bool Unknown16:4;                             //0x022C.0-3
+    bool Unknown17:1;                               //0x022C.4
+    bool isPickedup:1;                              //0x022C.4-5
+    bool isNotReturned:1;                           //0x022C.6
+    bool Unknown18:1;                               //0x022C.7*/
+    char[3] Unknown19;                              //0x022D
     ubyte bitFieldFlag1;
-    /*bool Unknown20:1;                                   //0x0230.0
-    bool Melee:1;                                       //0x0230.1
-    bool Unknown21:2;                                   //0x0230.2-3
-    bool Unknown22:4;                                   //0x0230.4-7*/
-    char[3] Unknown23;                                  //0x0231
+    /*bool Unknown20:1;                             //0x0230.0
+    bool Melee:1;                                   //0x0230.1
+    bool Unknown21:2;                               //0x0230.2-3
+    bool Unknown22:4;                               //0x0230.4-7*/
+    char[3] Unknown23;                              //0x0231
 
-    uint            Unknown24;                         //0x0234
+    uint            Unknown24;                      //0x0234
 
-    bool            IsFiring;                           //0x0238
-    char            Unknown3;                           //0x0239
-    ushort    WeaponReadyWaitTime;              //0x023A
-    char[36]            Unknown4;                       //0x023C
-    uint    SomeCounter;                       //0x0260
-    uint    IsNotFiring;                       //0x0264 //this is correct one
-    uint[2]    Unknown5;                       //0x0274
-    float            Unknown6;                          //0x027C
-    uint    Unknown7;                          //0x0280
-    float[2]            Unknown8;                       //0x0284
-    s_ident            UnknownIdent1;                     //0x028C
-    uint    AutoReloadCounter;                 //0x0290
-    ubyte[28]    Unknown9;                      //0x0294
-    ushort    ReloadFlags;                      //0x02B0 // 0=NotReloading,1=Reloading, 2=???, 3=???  //is correct
-    ushort    ReloadCountdown;                  //0x02B2    //can set to 0 to finish reload countdown
-    ushort    Unknown10;                        //0x02B4
-    ushort    BulletCountInRemainingClips;      //0x02B6
-    ushort    BulletCountInCurrentClip;         //0x02B8
-    char[18]            Unknown11;                      //0x02BA
-    s_ident            UnknownIdent2;                     //0x02CC
-    uint    LastBulletFiredTime;               //0x02DO
-    char[16]            Unknown12;                      //0x02D4
-    vect3[2]            Unknown13;                      //0x02E4
-    char[12]            Unknown14;
-    uint    BulletCountInRemainingClips1;
-    char[52]            Unknown15;
+    bool            IsFiring;                       //0x0238
+    char            Unknown3;                       //0x0239
+    ushort          WeaponReadyWaitTime;            //0x023A
+    char[36]        Unknown4;                       //0x023C
+    uint            SomeCounter;                    //0x0260
+    uint            IsNotFiring;                    //0x0264
+    uint[5]         Unknown5;                       //0x0268
+    float           Unknown6;                       //0x027C
+    uint            Unknown7;                       //0x0280
+    float[2]        Unknown8;                       //0x0284
+    s_ident         UnknownIdent1;                  //0x028C
+    uint            AutoReloadCounter;              //0x0290
+    ubyte[28]       Unknown9;                       //0x0294
+    ushort          ReloadFlags;                    //0x02B0 // 0=NotReloading,1=Reloading, 2=???, 3=???  //is correct
+    ushort          ReloadCountdown;                //0x02B2    //can set to 0 to finish reload countdown
+    ushort          Unknown10;                      //0x02B4
+    ushort          BulletCountInRemainingClips;    //0x02B6
+    ushort          BulletCountInCurrentClip;       //0x02B8
+    char[18]        Unknown11;                      //0x02BA
+    s_ident         UnknownIdent2;                  //0x02CC
+    uint            LastBulletFiredTime;            //0x02DO
+    char[16]        Unknown12;                      //0x02D4
+    vect3[2]        Unknown13;                      //0x02E4
+    char[12]        Unknown14;
+    uint            BulletCountInRemainingClips1;
+    char[52]        Unknown15;
 }; // Size - 1644(0x066C)
 
 align (1) struct s_vehicle {

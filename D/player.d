@@ -221,7 +221,7 @@ extern(C) struct IPlayer {
      * forcekill = Force kill player if needed.
      * Returns: Does not return any value.
      */
-    void function(ref PlayerInfo  plI, const(ubyte) new_team, bool forcekill) m_change_team;
+    void function(ref PlayerInfo  plI, const(e_color_team_index) new_team, bool forcekill) m_change_team;
     /*
      * To apply camouflage duration on specific player.
      * Params:
@@ -309,7 +309,7 @@ extern(C) struct IPlayer {
      * plOwner = Optional, owner of player execution usually.
      * Returns: Return total count of matched player(s).
      */
-    short function(const wchar* src, ref PlayerInfoList plMatch, PlayerInfo* plOwner) StrToPlayerList;
+    short function(const wchar* src, ref PlayerInfoList plMatch, PlayerInfo* plOwner) m_get_str_to_player_list;
 }
 
 static if(__traits(compiles, EXT_IPLAYER)) {

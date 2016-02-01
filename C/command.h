@@ -10,7 +10,7 @@ CNATIVE {
         wchar_t info[4][255];
     };
 #pragma pack(pop)
-    typedef struct {
+    typedef struct ICommand {
         /// <summary>
         /// To add nonexisting <paramref name="command"/> bind to <paramref name="func"/> into command system and return true or false.
         /// </summary>
@@ -51,6 +51,15 @@ CNATIVE {
         /// <param name="alias">An alias command name currently bind to a command.</param>
         /// <returns>Only return true or false.</returns>
         bool (*m_alias_delete)(const wchar_t* command, const wchar_t* alias);
+        /// <summary>
+        /// To load a custom command(s) from <paramref name="fileName"/> and return true or false.
+        /// </summary>
+        /// <param name="hash">Valid owner Add-on hash and existing config_folder defined.</param>
+        /// <param name="fileName">Custom file name to load and execute from.</param>
+        /// <param name="plI">Bind user of this execution process.</param>
+        /// <param name="protocolMsg">For output the message to binded user.</param>
+        /// <returns>Only return true or false.</returns>
+        bool(*m_load_from_file)(unsigned int hash, const wchar_t* fileName, PlayerInfo plI, MSG_PROTOCOL protocolMsg);
     } ICommand;
     CNATIVE dllport ICommand* getICommand(unsigned int hash);
 #ifdef __cplusplus

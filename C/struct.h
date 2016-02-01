@@ -24,11 +24,14 @@ Credits:
 #define machineindex char
 
 //Team Color Begin
+#pragma warning(push)
+#pragma warning(disable:4341)
 enum e_color_team_index:signed char {
-    COLOR_TEAM_NONE = -1,
+    COLOR_TEAM_NONE = -1, //Reserved for H-Ext usage ONLY!
     COLOR_TEAM_RED = 0,
     COLOR_TEAM_BLUE = 1
 };
+#pragma warning(pop)
 //Team Color End
 
 //Color Indexes Start
@@ -615,11 +618,11 @@ struct s_biped {
 }; // Size - 3564(0x0DEC) bytes
 
 //Major WIP Halo Structure Begin
-struct s_weapon {                                    //WARNING! Offset is NOT 100% accurate!  BulletCount____ is 100% accurate!
-    s_object            sObject;
+struct s_weapon {
+    s_object        sObject;
     char            Unknown[12];                        //0x01F4
-    s_ident            UnknownIdent;                      //0x0200  //Relative to assigne biped being dropped from.
-    unsigned int    NetworkTime;                       //0x0204
+    s_ident         UnknownIdent;                       //0x0200  //Relative to assigne biped being dropped from.
+    unsigned int    NetworkTime;                        //0x0204
     char            Unknown1[36];                       //0x0208
 
     bool Unknown16:4;                                   //0x022C.0-3
@@ -634,31 +637,31 @@ struct s_weapon {                                    //WARNING! Offset is NOT 10
     bool Unknown22:4;                                   //0x0230.4-7
     char Unknown23[3];                                  //0x0231
 
-    unsigned int            Unknown24;                         //0x0234
+    unsigned int    Unknown24;                          //0x0234
 
     bool            IsFiring;                           //0x0238
     char            Unknown3;                           //0x0239
-    unsigned short    WeaponReadyWaitTime;              //0x023A
+    unsigned short  WeaponReadyWaitTime;                //0x023A
     char            Unknown4[36];                       //0x023C
-    unsigned int    SomeCounter;                       //0x0260
-    unsigned int    IsNotFiring;                       //0x0264 //this is correct one
-    unsigned int    Unknown5[2];                       //0x0274
-    float            Unknown6;                          //0x027C
-    unsigned int    Unknown7;                          //0x0280
-    float            Unknown8[2];                       //0x0284
-    s_ident            UnknownIdent1;                     //0x028C
-    unsigned int    AutoReloadCounter;                 //0x0290
-    unsigned char    Unknown9[28];                      //0x0294
-    unsigned short    ReloadFlags;                      //0x02B0 // 0=NotReloading,1=Reloading, 2=???, 3=???  //is correct
-    unsigned short    ReloadCountdown;                  //0x02B2    //can set to 0 to finish reload countdown
-    unsigned short    Unknown10;                        //0x02B4
-    unsigned short    BulletCountInRemainingClips;      //0x02B6
-    unsigned short    BulletCountInCurrentClip;         //0x02B8
+    unsigned int    SomeCounter;                        //0x0260
+    unsigned int    IsNotFiring;                        //0x0264
+    unsigned int    Unknown5[5];                        //0x0268
+    float           Unknown6;                           //0x027C
+    unsigned int    Unknown7;                           //0x0280
+    float           Unknown8[2];                        //0x0284
+    s_ident         UnknownIdent1;                      //0x028C
+    unsigned int    AutoReloadCounter;                  //0x0290
+    unsigned char   Unknown9[28];                       //0x0294
+    unsigned short  ReloadFlags;                        //0x02B0 // 0=NotReloading,1=Reloading, 2=???, 3=???  //is correct
+    unsigned short  ReloadCountdown;                    //0x02B2    //can set to 0 to finish reload countdown
+    unsigned short  Unknown10;                          //0x02B4
+    unsigned short  BulletCountInRemainingClips;        //0x02B6
+    unsigned short  BulletCountInCurrentClip;           //0x02B8
     char            Unknown11[18];                      //0x02BA
-    s_ident            UnknownIdent2;                     //0x02CC
-    unsigned int    LastBulletFiredTime;               //0x02DO
+    s_ident         UnknownIdent2;                      //0x02CC
+    unsigned int    LastBulletFiredTime;                //0x02DO
     char            Unknown12[16];                      //0x02D4
-    vect3            Unknown13[2];                      //0x02E4
+    vect3           Unknown13[2];                       //0x02E4
     char            Unknown14[12];
     unsigned int    BulletCountInRemainingClips1;
     char            Unknown15[52];
@@ -717,7 +720,7 @@ struct s_vehicle {
 //Major WIP Halo Structure End
 
 //TODO: Variable of offset seems to have some sort of data usage base from SDMHaloMapLoader.c/h Need to do some research.
-struct s_map_header {
+typedef struct s_map_header {
     char head[4];                   //0x00
     unsigned int haloVersion;      //0x04
     unsigned int length;           //0x08
@@ -729,10 +732,10 @@ struct s_map_header {
     char build[32];                 //0x40
     unsigned int type;             //0x060 // 0 = Campaign, 1 = Multi-player, 2 = Menu
     unsigned int unknown07;        //0x064
-};
+} s_map_header;
 static_assert_check(sizeof(s_map_header) == 0x68, "Incorrect size of s_map_header");
 
-struct s_map_status {
+typedef struct s_map_status {
     bool Unknown1;      //0x00
     bool Unknown2;      //0x01
     unsigned short Unknown3;      //0x02 NULLs
@@ -743,7 +746,7 @@ struct s_map_status {
     unsigned int upTime1;      //0x14 1 sec = 30 ticks
     float Unknown7;     //0x18
     unsigned int Unknown8;     //0x1C Don't know what this is and it's increasing rapidly...
-};
+} s_map_status;
 static_assert_check(sizeof(s_map_status) == 0x20, "Incorrect size of s_map_status");
 
 struct s_console_header {
@@ -767,18 +770,18 @@ struct s_console_header {
 };
 static_assert_check(sizeof(s_console_header) == 0x1B7, "Incorrect size of s_console_header");
 
-struct s_ban_check {
+typedef struct s_ban_check {
     wchar_t password[9];                //0x00
     char cdKeyHash[32];                 //0x12
     char unknown0[40];                  //0x32
     char unknown1[4];                   //0x5A
     wchar_t requestPlayerName[12];      //0x5E
-}; // Size - 100 (0x64) bytes
+} s_ban_check; // Size - 100 (0x64) bytes
 static_assert_check(sizeof(s_ban_check) == 0x76, "Incorrect size of s_ban_check");
 
 //Extras for Add-on API usage.
 
-struct s_cheat_header {
+typedef struct s_cheat_header {
     bool deathlessPlayer;       //0x00
     bool jetPack;               //0x01
     bool infiniteAmmo;          //0x02
@@ -789,7 +792,7 @@ struct s_cheat_header {
     bool omnipotent;            //0x07
     bool controller;            //0x08
     bool bottomlessClip;        //0x09
-};
+} s_cheat_header;
 static_assert_check(sizeof(s_cheat_header) == 0xA, "Incorrect size of s_cheat_header");
 
 struct D3DCOLOR_COLORVALUE_ARGB {
@@ -804,7 +807,7 @@ struct D3DCOLOR_COLORVALUE_ARGB {
         b=1.0f;
     }
 };
-struct s_console_color_list {
+typedef struct {
     D3DCOLOR_COLORVALUE_ARGB* x0_Black;         //0x00
     D3DCOLOR_COLORVALUE_ARGB* x1_DodgerBlue;    //0x04
     D3DCOLOR_COLORVALUE_ARGB* x2_Cyan;          //0x08
@@ -820,7 +823,7 @@ struct s_console_color_list {
     D3DCOLOR_COLORVALUE_ARGB* x12_Orange;       //0x30
     D3DCOLOR_COLORVALUE_ARGB* x13_Gray;         //0x34
 
-};
+} s_console_color_list;
 static_assert_check(sizeof(s_console_color_list) == 0x38, "Incorrect size of s_console_color_list");
 
 struct GlobalVars {

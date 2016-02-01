@@ -47,7 +47,7 @@ enum HALO_VERSION:unsigned char {
 #ifdef __cplusplus
 CNATIVE {
 #endif
-    struct IHaloEngine { // For Add-on API interface support
+    typedef struct IHaloEngine { // For Add-on API interface support
         s_server_header* serverHeader;
         s_player_reserved_slot* playerReserved;
         s_machine_slot* machineHeader;
@@ -200,7 +200,7 @@ CNATIVE {
         /// <param name="name">Input name of an Add-on. (Maximum permitted is 128 characters long.)</param>
         /// <returns>Return true or false if unable to reload Add-on.</returns>
         bool (*m_ext_add_on_reload)(wchar_t* name);
-    };
+    } IHaloEngine;
     //static_assert_check(sizeof(IHaloEngine) == 0x20, sizeof(IHaloEngine));// "Incorrect size of IHaloEngine!");
     dllport IHaloEngine* WINAPIC getIHaloEngine(unsigned int hash);
 
