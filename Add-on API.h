@@ -25,7 +25,9 @@
 
 #define STRINGIZE_HELPER(x) #x
 #define STRINGIZE(x) STRINGIZE_HELPER(x)
-#define WARNING(desc) message(__FILE__ "(" STRINGIZE(__LINE__) ") : Warning: " #desc)
+#define STRINGIZE_WIDE_HELPER(x) L##x
+#define STRINGIZE_WIDE(x) STRINGIZE_WIDE_HELPER(x)
+#define WARNING(desc) message(__FILE__ "(" STRINGIZE(__LINE__) ") : warning: " #desc)
 
 #define STR_CAT(a,b)            a##b
 #define STR_CAT_DELAYED(a,b)   STR_CAT(a,b)
@@ -88,30 +90,27 @@ typedef CMD_RETURN (WINAPIC *CmdFunc)(PlayerInfo plI, ArgContainer& arg, MSG_PRO
 #include "C\command.h"
 #endif
 
-//CNATIVE dllport void __cdecl haloOutput(int r, const char *text,...);
-
-
 #ifdef __cplusplus
 CNATIVE {
 #endif
     
     #pragma pack(push,1)
-    typedef struct {
+    typedef struct addon_section_names {
         wchar_t sect_name1[24];
         wchar_t sect_name2[24];
         wchar_t sect_name3[24];
         wchar_t sect_name4[24];
         wchar_t sect_name5[24];
     } addon_section_names;
-    typedef struct {
+    typedef struct addon_info {
         wchar_t    name[128];
         wchar_t    version[15];
         wchar_t    author[128];
         wchar_t    description[255];
         wchar_t    config_folder[24];
-        addon_section_names  sectors;
+        addon_section_names sectors;
     } addon_info;
-    struct addon_version {
+    typedef struct addon_version {
         unsigned short size;            //Used by sizeof(versionEAO);
         unsigned short requiredAPI;     //API requirement revision (Including command functions)
         unsigned short general;         //General revision specifically for events in Halo.
@@ -128,11 +127,11 @@ CNATIVE {
         unsigned short reserved3;       //reserved
         unsigned short reserved4;       //reserved
         unsigned short reserved5;       //reserved
-    };
+    } addon_version;
     #pragma pack(pop)
 
 #ifdef EXT_ITIMER
-    typedef struct {
+    typedef struct ITimer {
         /// <summary>
         /// Register a timer event delay.
         /// </summary>

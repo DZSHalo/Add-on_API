@@ -69,7 +69,7 @@ public import Add_on_API.D.object;
 
 public import Add_on_API.D.player;
 static if (__traits(compiles, EXT_IUTIL)) {
-alias CmdFunc = extern (C) CMD_RETURN function(PlayerInfo plI, ref ArgContainer arg,char chatRconRemote, uint idTimer, bool* showChat);
+alias CmdFunc = extern (C) CMD_RETURN function(PlayerInfo plI, ref ArgContainer arg,MSG_PROTOCOL chatRconRemote, uint idTimer, bool* showChat);
 }
 //alias CmdFunc = extern (C) toggle function();
 
