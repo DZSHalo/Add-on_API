@@ -1,30 +1,29 @@
 
 
-
-enum e_attachment_out : unsigned short {
-    ATTACHMENT_NONE_OUT = 0,
-    ATTACHMENT_A_OUT = 1,
-    ATTACHMENT_B_OUT = 2,
-    ATTACHMENT_C_OUT = 3,
-    ATTACHMENT_D_OUT = 4
+enum e_source_out : unsigned short {
+    SOURCE_NONE_OUT = 0,
+    SOURCE_A_OUT = 1,
+    SOURCE_B_OUT = 2,
+    SOURCE_C_OUT = 3,
+    SOURCE_D_OUT = 4
 };
-enum e_attachment_in : unsigned short {
-    ATTACHMENT_NONE_IN = 0,
-    ATTACHMENT_A_IN = 1,
-    ATTACHMENT_B_IN = 2,
-    ATTACHMENT_C_IN = 3,
-    ATTACHMENT_D_IN = 4
+enum e_source_in : unsigned short {
+    SOURCE_NONE_IN = 0,
+    SOURCE_A_IN = 1,
+    SOURCE_B_IN = 2,
+    SOURCE_C_IN = 3,
+    SOURCE_D_IN = 4
 };
-enum e_attachment_in_out : unsigned short {
-    ATTACHMENT_NONE = 0,
-    ATTACHMENT_A_IN_ = 1,
-    ATTACHMENT_B_IN_ = 2,
-    ATTACHMENT_C_IN_ = 3,
-    ATTACHMENT_D_IN_ = 4,
-    ATTACHMENT_A_OUT_ = 5,
-    ATTACHMENT_B_OUT_ = 6,
-    ATTACHMENT_C_OUT_ = 7,
-    ATTACHMENT_D_OUT_ = 8
+enum e_source_in_out : unsigned short {
+    SOURCE_NONE = 0,
+    SOURCE_A_IN_ = 1,
+    SOURCE_B_IN_ = 2,
+    SOURCE_C_IN_ = 3,
+    SOURCE_D_IN_ = 4,
+    SOURCE_A_OUT_ = 5,
+    SOURCE_B_OUT_ = 6,
+    SOURCE_C_OUT_ = 7,
+    SOURCE_D_OUT_ = 8
 };
 
 enum e_function :unsigned short {
@@ -40,6 +39,29 @@ enum e_function :unsigned short {
     WOBBLE_FUNCTION_JITTER,
     WOBBLE_FUNCTION_WANDER,
     WOBBLE_FUNCTION_SPARK
+};
+
+enum e_side_effect : unsigned short {
+    SIDE_EFFECT_NONE = 0,
+    SIDE_EFFECT_HARMLESS,
+    SIDE_EFFECT_LETHAL_TO_THE_UNSUSPECTING,
+    SIDE_EFFECT_EMP
+};
+
+enum e_category : unsigned short {
+    CATEGORY_NONE = 0,
+    CATEGORY_FALLING,
+    CATEGORY_BULLET,
+    CATEGORY_GRENADE,
+    CATEGORY_HIGH_EXPLOSIVE,
+    CATEGORY_SNIPER,
+    CATEGORY_MELEE,
+    CATEGORY_FLAME,
+    CATEGORY_MOUNTED_WEAPON,
+    CATEGORY_VEHICLE,
+    CATEGORY_PLASMA,
+    CATEGORY_NEEDLE,
+    CATEGORY_SHOTGUN
 };
 
 //http://stackoverflow.com/questions/24193389/how-to-use-anonymous-unions-with-enums

@@ -1,5 +1,5 @@
 //APPROVED
-typedef struct {
+typedef struct s_actor_variant_flags {
     bool    can_shoot_while_flying : 1;
     bool    interpolate_color_in_HSV : 1;
     bool    has_unlimited_grenades : 1;
@@ -14,7 +14,7 @@ typedef struct {
 } s_actor_variant_flags;
 static_assert_check(sizeof(s_actor_variant_flags) == 0x04, "Incorrect size of s_actor_variant_flags");
 
-typedef struct {
+typedef struct s_change_color_block {
     real_color  color_lower_bound;
     real_color  color_upper_bound;
     PADDING(0x08);
@@ -56,7 +56,7 @@ enum e_grenade_stimulus : unsigned short {
     GRENADE_STIMULUS_SEEK_COVER
 };
 
-typedef struct {
+typedef struct s_actor_variant_meta {
     s_actor_variant_flags flags;
     s_tag_reference actor_definition;   //actr
     s_tag_reference unit;               //biped, unit, or vehicle

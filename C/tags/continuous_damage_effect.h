@@ -1,28 +1,6 @@
 //APPROVED
-enum e_side_effect : unsigned short {
-    SIDE_EFFECT_NONE = 0,
-    SIDE_EFFECT_HARMLESS,
-    SIDE_EFFECT_LETHAL_TO_THE_UNSUSPECTING,
-    SIDE_EFFECT_EMP
-};
 
-enum e_category : unsigned short {
-    CATEGORY_NONE = 0,
-    CATEGORY_FALLING,
-    CATEGORY_BULLET,
-    CATEGORY_GRENADE,
-    CATEGORY_HIGH_EXPLOSIVE,
-    CATEGORY_SNIPER,
-    CATEGORY_MELEE,
-    CATEGORY_FLAME,
-    CATEGORY_MOUNTED_WEAPON,
-    CATEGORY_VEHICLE,
-    CATEGORY_PLASMA,
-    CATEGORY_NEEDLE,
-    CATEGORY_SHOTGUN
-};
-
-typedef struct {
+typedef struct s_damage_flags {
     bool does_not_hurt_owner : 1;
     bool can_cause_headshots : 1;
     bool pings_resistant_units : 1;
@@ -39,43 +17,10 @@ typedef struct {
     bool unused0 : 3;
     bool unused1 : 8;
     bool unused2 : 8;
-} s_damage_effect_flags;
-static_assert_check(sizeof(s_damage_effect_flags) == 0x4, "Incorrect size of s_damage_effect_flags");
+} s_damage_flags;
+static_assert_check(sizeof(s_damage_flags) == 0x4, "Incorrect size of s_damage_flags");
 
-typedef struct {
-    real_range              radius_world_units;
-    real                    cutoff_scale;
-    PADDING(0x18);
-    //viberate parameters
-    real                    low_frequency;
-    real                    high_frequency;
-    PADDING(0x18);
-    //camera shaking
-    real                    random_translation_in_world_unit;
-    int                     unknown_value;
-    PADDING(0x0C);
-    e_function       wobble_function;
-    PADDING(0x02);
-    real                    wobble_function_period_in_second;
-    real                    wobble_weight;
-    PADDING(0xC0);
-    //damage
-    e_side_effect           side_effect;
-    e_category              category;
-    //flags;
-    s_damage_effect_flags   flags;
-    PADDING(0x04);
-    real                    damage_lower_bound;
-    real_range              damage_upper_bound;
-    real                    vehicle_passthrough_penalty;
-    PADDING(0x04);
-    real                    stun;
-    real                    maximum_stun;
-    real                    stun_time;
-    PADDING(0x04);
-    real                    instantaneous_acceleration;
-    PADDING(0x08);
-    //damage modifiers
+typedef struct s_damage_modifiers_section {
     real                    dirt;
     real                    sand;
     real                    stone;
@@ -109,5 +54,43 @@ typedef struct {
     real                    elite_energy_shield;
     real                    ice;
     real                    hunter_shield;
+} s_damage_modifiers_section;
+static_assert_check(sizeof(s_damage_modifiers_section) == 0x84, "Incorrect size of s_damage_modifiers_section");
+
+typedef struct s_continuous_damage_effect_meta {
+    real_range              radius_world_units;
+    real                    cutoff_scale;
+    PADDING(0x18);
+    //viberate parameters
+    real                    low_frequency;
+    real                    high_frequency;
+    PADDING(0x18);
+    //camera shaking
+    real                    random_translation_in_world_unit;
+    int                     unknown_value;
+    PADDING(0x0C);
+    e_function       wobble_function;
+    PADDING(0x02);
+    real                    wobble_function_period_in_second;
+    real                    wobble_weight;
+    PADDING(0xC0);
+    //damage
+    e_side_effect           side_effect;
+    e_category              category;
+    //flags;
+    s_damage_flags          flags;
+    PADDING(0x04);
+    real                    damage_lower_bound;
+    real_range              damage_upper_bound;
+    real                    vehicle_passthrough_penalty;
+    PADDING(0x04);
+    real                    stun;
+    real                    maximum_stun;
+    real                    stun_time;
+    PADDING(0x04);
+    real                    instantaneous_acceleration;
+    PADDING(0x08);
+    //damage modifiers
+    s_damage_modifiers_section  damage_modifiers;
 } s_continuous_damage_effect_meta;
 static_assert_check(sizeof(s_continuous_damage_effect_meta) == 0x1E4, "Incorrect size of s_continuous_damage_effect_meta");

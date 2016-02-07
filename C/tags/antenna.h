@@ -1,5 +1,5 @@
 //APPROVED
-typedef struct {
+typedef struct s_antenna_vertices_block {
     real                spring_strength_coefficent;
     PADDING(0x18);
     real_rotation2d     angles;
@@ -12,7 +12,7 @@ typedef struct {
 } s_antenna_vertices_block;
 static_assert_check(sizeof(s_antenna_vertices_block) == 0x80, "Incorrect size of s_antenna_vertices_block");
 
-typedef struct {
+typedef struct s_antenna_meta {
     char            attachment_marker_name[0x20];
     s_tag_reference bitmaps;    //bitm
     s_tag_reference physics;    //pphy

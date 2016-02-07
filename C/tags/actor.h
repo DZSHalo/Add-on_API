@@ -1,5 +1,5 @@
 //APPROVED
-typedef struct {
+typedef struct s_actor_flags {
     bool    can_see_in_darkness : 1;
     bool    sneak_uncovering_target : 1;
     bool    sneak_uncovering_pursuit_position : 1;
@@ -35,7 +35,7 @@ typedef struct {
 } s_actor_flags;
 static_assert_check(sizeof(s_actor_flags) == 0x04, "Incorrect size of s_actor_flags");
 
-typedef struct {
+typedef struct s_actor_more_flags {
     bool    avoid_all_enemy_attack_vectors : 1;
     bool    must_stand_to_fire : 1;
     bool    must_stop_to_fire : 1;
@@ -90,7 +90,7 @@ enum e_crouch_type : unsigned short {
     CROUCH_FLOOD_SHAMBLE
 };
 
-typedef struct {
+typedef struct s_actor_meta {
     s_actor_flags       flags;
     s_actor_more_flags  more_flags;
     PADDING(0x0C);

@@ -10,20 +10,16 @@
 #include "actor_variant.h"
 #include "antenna.h"
 #include "biped.h"
-/*
 #include "bitmap.h"
-*/
 #include "camera_track.h"
-/*
 #include "color_table.h"
-*/
 #include "continuous_damage_effect.h"
-/*
 #include "contrail.h"
 #include "damage_effect.h"
 #include "decal.h"
 #include "detail_object_collection.h"
-#include "device.h"
+/*
+#include "device.h" //Causing Guerilla to crash every time attempt create one.
 #include "device_control.h"
 #include "device_light_fixture.h"
 #include "device_machine.h"
@@ -32,11 +28,11 @@
 /*
 #include "effect.h"
 #include "equipment.h"
-#include "flag.h"
 */
+#include "flag.h"
 #include "fog.h"
-/*
 #include "font.h"
+/*
 #include "garbage.h"
 #include "gbxmodel.h"
 #include "globals.h"
@@ -58,8 +54,8 @@
 #include "lighting.h"
 */
 #include "material_effects.h"
-/*
 #include "meter.h"
+/*
 #include "model.h"
 #include "model_animations.h"
 #include "model_collision_geometry.h"
@@ -93,12 +89,14 @@
 #include "sound_looping.h"
 #include "sound_scenery.h"
 #include "spheroid.h"
+*/
 #include "string_list.h"
+/*
 #include "tag_collection.h"
 #include "ui_widget_collection.h"
 #include "ui_widget_definition.h"
 #include "unicode_string_list.h"
-#include "unit.h"
+#include "unit.h"  //Causing Guerilla to crash every time attempt create one.
 #include "unit_hud_interface.h"
 #include "vehicle.h"
 #include "virtual_keyboard.h"

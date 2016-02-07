@@ -1,5 +1,5 @@
-//APPROVED EXCEPT FOR e_unknown_enum
-typedef struct {
+//APPROVED EXCEPT FOR e_unknown_enum and s_biped__flags
+typedef struct s_biped_flags {
     bool    does_not_cast_shadow : 1;
     bool    transparent_self_occlusion : 1;
     bool    brighter_than_it_should_be : 1;
@@ -34,24 +34,24 @@ enum e_export_in : unsigned short {
     EXPORT_IN_COMPASS
 };
 
-typedef struct {
+typedef struct s_attachments_block {
     s_tag_reference     type;   //contrail, effect, light, light_volume, particle_system, sound_looping
     char                marker[0x20];
-    e_attachment_out    primary_scale;
-    e_attachment_out    secondary_scale;
-    e_attachment_out    change_color;
+    e_source_out        primary_scale;
+    e_source_out        secondary_scale;
+    e_source_out        change_color;
     PADDING(0x02);
     PADDING(0x10);
 } s_attachments_block;
 static_assert_check(sizeof(s_attachments_block) == 0x48, "Incorrect size of s_attachments_block");
 
-typedef struct {
+typedef struct s_widgets_block {
     s_tag_reference reference;
     PADDING(0x10);
 } s_widgets_block;
 static_assert_check(sizeof(s_widgets_block) == 0x20, "Incorrect size of s_widgets_block");
 
-typedef struct {
+typedef struct s_function_flags {
     bool    invert : 1;
     bool    additive : 1;
     bool    always_active : 1;
@@ -77,12 +77,12 @@ enum e_bound_mode : unsigned short {
     BOUND_MODE_SCALE_TO_FIT,
 };
 
-typedef struct {
+typedef struct s_function_block {
     s_function_flags    flags;
     real                period_seconds;
-    e_attachment_in_out scale_period_by;
+    e_source_in_out     scale_period_by;
     e_function          function;
-    e_attachment_in_out scale_function_by;
+    e_source_in_out     scale_function_by;
     e_function          wobble_function;
     real                wobble_period;
     real                wobble_magnitude;
@@ -90,8 +90,8 @@ typedef struct {
     short               step_count;
     e_map_to            map_to;
     short               sawtooth_count;
-    e_attachment_in_out add;
-    e_attachment_in_out scale_result_by;
+    e_source_in_out     add;
+    e_source_in_out     scale_result_by;
     e_bound_mode        bounds_mode;
     real_range          bounds;
     PADDING(0x04);
@@ -104,7 +104,7 @@ typedef struct {
 } s_function_block;
 static_assert_check(sizeof(s_function_block) == 0x168, "Incorrect size of s_function_block");
 
-typedef struct {
+typedef struct s_scale_flags {
     bool blend_in_hsv : 1;
     bool more_colors : 1;
     bool unused0 : 6;
@@ -114,9 +114,9 @@ typedef struct {
 } s_scale_flags;
 static_assert_check(sizeof(s_scale_flags) == 0x04, "Incorrect size of s_scale_flags");
 
-typedef struct {
-    e_attachment_in_out darken_by;
-    e_attachment_in_out scale_by;
+typedef struct s_biped_change_color_block {
+    e_source_in_out darken_by;
+    e_source_in_out scale_by;
     s_scale_flags       scale_flags;
     real_color          color_lower_bound;
     real_color          color_upper_bound;
@@ -124,7 +124,7 @@ typedef struct {
 } s_biped_change_color_block;
 static_assert_check(sizeof(s_biped_change_color_block) == 0x2C, "Incorrect size of s_biped_change_color_block");
 
-typedef struct {
+typedef struct s_color_permutation_block {
     real        weight;
     real_color  color_lower_bound;
     real_color  color_upper_bound;
@@ -136,14 +136,14 @@ enum e_predicted_resource_type :unsigned short {
     PREDICTED_RESOURCE_TYPE_SOUND
 };
 
-typedef struct {
+typedef struct s_predicted_resource_block {
     e_predicted_resource_type   type;
     short                       resource_index;
     int                         tag_index;
 } s_predicted_resource_block;
 static_assert_check(sizeof(s_predicted_resource_block) == 0x08, "Incorrect size of s_predicted_resource_block");
 
-typedef struct {
+typedef struct s_unit_flags {
     bool circular_aiming : 1;
     bool destroyed_after_dying : 1;
     bool half_speed_interpolation : 1;
@@ -173,19 +173,19 @@ typedef struct {
 } s_unit_flags;
 static_assert_check(sizeof(s_unit_flags) == 0x4, "Incorrect size of s_unit_flags");
 
-typedef struct {
+typedef struct s_camera_track_block {
     s_tag_reference track;
     PADDING(0x0C);
 } s_camera_track_block;
 static_assert_check(sizeof(s_camera_track_block) == 0x1C, "Incorrect size of s_camera_track_block");
 
-typedef struct {
+typedef struct s_hud_interface_block {
     s_tag_reference unit_hud_interface;
     PADDING(0x20);
 } s_hud_interface_block;
 static_assert_check(sizeof(s_hud_interface_block) == 0x30, "Incorrect size of s_hud_interface_block");
 
-typedef struct {
+typedef struct s_dialog_variant_block {
     unsigned short variant_block;
     PADDING(0x02);
     PADDING(0x04);
@@ -193,7 +193,7 @@ typedef struct {
 } s_dialog_variant_block;
 static_assert_check(sizeof(s_dialog_variant_block) == 0x18, "Incorrect size of s_dialog_variant_block");
 
-typedef struct {
+typedef struct s_powered_seat_block {
     PADDING(0x04);
     real    driver_powerup_time_seconds;
     real    driver_powerdown_time_seconds;
@@ -201,7 +201,7 @@ typedef struct {
 } s_powered_seat_block;
 static_assert_check(sizeof(s_powered_seat_block) == 0x44, "Incorrect size of s_powered_seat_block");
 
-typedef struct {
+typedef struct s_seat_flags {
     bool invisible : 1;
     bool locked : 1;
     bool driver : 1;
@@ -219,13 +219,13 @@ typedef struct {
 } s_seat_flags;
 static_assert_check(sizeof(s_seat_flags) == 0x04, "Incorrect size of s_seat_flags");
 
-typedef struct {
+typedef struct s_weapon_block {
     s_tag_reference weapon;
     PADDING(0x14);
 } s_weapon_block;
 static_assert_check(sizeof(s_weapon_block) == 0x24, "Incorrect size of s_weapon_block");
 
-typedef struct {
+typedef struct s_seat_block {
     s_seat_flags    flags;
     char            label[0x20];
     char            marker_name[0x20];
@@ -251,13 +251,13 @@ typedef struct {
 } s_seat_block;
 static_assert_check(sizeof(s_seat_block) == 0x11C, "Incorrect size of s_seat_block");
 
-typedef struct {
+typedef struct s_contact_point_block {
     PADDING(0x20);
     char    marker_name[0x20];
 } s_contact_point_block;
 static_assert_check(sizeof(s_contact_point_block) == 0x40, "Incorrect size of s_contact_point_block");
 
-typedef struct {
+typedef struct s_biped__flags {
     bool turns_without_animating : 1;
     bool uses_player_physics : 1;
     bool flying : 1;
@@ -320,7 +320,7 @@ enum e_unknown_enum : unsigned short {
     UNKNOWN_ENUM_FLYING_VELOCITY
 };
 
-typedef struct {
+typedef struct s_biped_meta {
     s_biped_flags   flags;
     real            bounding_radius_world_units;
     real_offset3d   bounding_offset;

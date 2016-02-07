@@ -40,7 +40,7 @@ typedef struct {
     real_range              density_gradient;
     real                    start_distance_from_fog_plane;
     PADDING(0x04);
-    byte_color              screen_layers_color;
+    byte_color_alpha        screen_layers_color;
     real                    rotation_multiplier;
     real                    strafing_multiplier;
     real                    zoom_multiplier;
