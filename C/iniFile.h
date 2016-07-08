@@ -51,7 +51,7 @@ CNATIVE {
         /// <param name="content">Raw content within a file.</param>
         /// <param name="len">Length of the content.</param>
         /// <returns>Return true or false.</returns>
-        bool (*m_content)(ICIniFile* self, const wchar_t*& content, unsigned int &len);
+        bool (*m_content)(ICIniFile* self, const wchar_t** content, unsigned int* len);
         /// <summary>
         /// To add a section in a file.
         /// </summary>

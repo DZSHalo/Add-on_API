@@ -49,12 +49,12 @@ CNATIVE {
         wchar_t* args[10];
         size_t argc;
     } ArgContainerVars;
-    dllport void ArgContainerVars_Constructor(ArgContainerVars& vars);
-    dllport void ArgContainerVars_Deconstructor(ArgContainerVars& vars);
-    dllport void ArgContainerVars_Set(ArgContainerVars& vars, const wchar_t* arg);
-    dllport void ArgContainerVars_Set_N(ArgContainerVars& vars, const wchar_t* arg, int numArrayLink);
-    dllport void ArgContainerVars_Copy(ArgContainerVars& vars, const ArgContainerVars& copy);
-    dllport wchar_t* ArgContainerVars_At(ArgContainerVars& vars, unsigned int i);
+    dllport void ArgContainerVars_Constructor(ArgContainerVars* vars);
+    dllport void ArgContainerVars_Deconstructor(ArgContainerVars* vars);
+    dllport void ArgContainerVars_Set(ArgContainerVars* vars, const wchar_t* arg);
+    dllport void ArgContainerVars_Set_N(ArgContainerVars* vars, const wchar_t* arg, int numArrayLink);
+    dllport void ArgContainerVars_Copy(ArgContainerVars* vars, const ArgContainerVars* copy);
+    dllport wchar_t* ArgContainerVars_At(ArgContainerVars* vars, unsigned int i);
     typedef struct IUtil {
         /// <summary>
         /// Allocate memory.
@@ -357,23 +357,23 @@ class ArgContainer {
 public:
     ArgContainerVars vars;
     ArgContainer() {
-        ArgContainerVars_Constructor(vars);
+        ArgContainerVars_Constructor(&vars);
     }
     ArgContainer(const wchar_t* arg) {
-        ArgContainerVars_Set(vars, arg);
+        ArgContainerVars_Set(&vars, arg);
     }
     ArgContainer(const wchar_t* arg, int numArrayLink) {
-        ArgContainerVars_Set_N(vars, arg, numArrayLink);
+        ArgContainerVars_Set_N(&vars, arg, numArrayLink);
     }
     wchar_t* operator[](unsigned int i) {
-        return ArgContainerVars_At(vars, i);
+        return ArgContainerVars_At(&vars, i);
     }
     ArgContainer& operator=(ArgContainer &copy) {
-        ArgContainerVars_Copy(vars, (ArgContainerVars&)copy);
+        ArgContainerVars_Copy(&vars, (ArgContainerVars*)&copy);
         return *this;
     }
     ~ArgContainer() {
-        ArgContainerVars_Deconstructor(vars);
+        ArgContainerVars_Deconstructor(&vars);
     }
 };
 template<class T>

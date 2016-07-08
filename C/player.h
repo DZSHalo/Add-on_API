@@ -94,42 +94,42 @@ typedef struct IPlayer {
     /// <param name="m_ind">Machine index</param>
     /// <param name="playerInfo">PlayerInfo</param>
     /// <returns>Return true or false if not found.</returns>
-    bool (*m_get_m_index)(machineindex m_ind, PlayerInfo& playerInfo);
+    bool (*m_get_m_index)(machineindex m_ind, PlayerInfo* playerInfo);
     /// <summary>
     /// Get PlayerInfo from player index if in used.
     /// </summary>
     /// <param name="playerId">Player index</param>
     /// <param name="playerInfo">PlayerInfo</param>
     /// <returns>Return true or false if not found.</returns>
-    bool (*m_get_id)(unsigned int playerId, PlayerInfo& playerInfo);
+    bool (*m_get_id)(unsigned int playerId, PlayerInfo* playerInfo);
     /// <summary>
     /// Get PlayerInfo from unique player s_ident.
     /// </summary>
     /// <param name="pl_Tag">Unique player s_ident.</param>
     /// <param name="playerInfo">PlayerInfo</param>
     /// <returns>Return true or false if not found.</returns>
-    bool (*m_get_ident)(s_ident pl_Tag, PlayerInfo& playerInfo);
+    bool (*m_get_ident)(s_ident pl_Tag, PlayerInfo* playerInfo);
     /// <summary>
     /// Get PlayerInfo from existing nickname.
     /// </summary>
     /// <param name="nickname">Nickname</param>
     /// <param name="playerInfo">PlayerInfo</param>
     /// <returns>Return true or false if not found.</returns>
-    bool (*m_get_by_nickname)(const wchar_t* nickname, PlayerInfo& playerInfo);
+    bool (*m_get_by_nickname)(const wchar_t* nickname, PlayerInfo* playerInfo);
     /// <summary>
     /// Get PlayerInfo from existing username.
     /// </summary>
     /// <param name="username">Username</param>
     /// <param name="playerInfo">PlayerInfo</param>
     /// <returns>Return true or false if not found.</returns>
-    bool (*m_get_by_username)(const wchar_t* username, PlayerInfo& playerInfo);
+    bool (*m_get_by_username)(const wchar_t* username, PlayerInfo* playerInfo);
     /// <summary>
     /// Get PlayerInfo from uniqueID from s_machine_slot.
     /// </summary>
     /// <param name="uniqueID">Can be obtain from existing s_machine_slot.</param>
     /// <param name="playerInfo">PlayerInfo</param>
     /// <returns>Return true or false if not found.</returns>
-    bool (*m_get_by_unique_id)(unsigned int uniqueID, PlayerInfo& playerInfo);
+    bool (*m_get_by_unique_id)(unsigned int uniqueID, PlayerInfo* playerInfo);
     /// <summary>
     /// Get ID from joined player's name.
     /// </summary>
@@ -174,14 +174,14 @@ typedef struct IPlayer {
     /// </summary>
     /// <param name="plI">PlayerInfo</param>
     /// <returns>Return true or false if unable to update.</returns>
-    bool (*m_update)(PlayerInfo& plI);
+    bool (*m_update)(PlayerInfo* plI);
     /// <summary>
     /// Set Player's nickname.
     /// </summary>
     /// <param name="playerInfo">PlayerInfo</param>
     /// <param name="nickname">Nickname</param>
     /// <returns>Return true or false if unable to set nickname.</returns>
-    bool (*m_set_nickname)(PlayerInfo& plI, wchar_t* nickname);
+    bool (*m_set_nickname)(PlayerInfo* plI, wchar_t* nickname);
     /// <summary>
     /// To send a message through chat, rcon, or remote protocol to a specific player.
     /// </summary>
@@ -191,7 +191,7 @@ typedef struct IPlayer {
     /// <param name="Msg">A message or predefined message.</param>
     /// <param name="...">To fill in the blank in a pre-defined message.</param>
     /// <returns>Return true or false if unable to send a message.</returns>
-    bool (*m_send_custom_message)(MSG_FORMAT formatMsg, MSG_PROTOCOL protocolMsg, PlayerInfo& plI, const wchar_t *Msg, ...);
+    bool (*m_send_custom_message)(MSG_FORMAT formatMsg, MSG_PROTOCOL protocolMsg, PlayerInfo* plI, const wchar_t *Msg, ...);
     /// <summary>
     /// To verify if a player is an admin.
     /// </summary>
@@ -204,14 +204,14 @@ typedef struct IPlayer {
     /// <param name="bipedTag">Unique biped s_ident</param>
     /// <param name="playerInfo">PlayerInfo</param>
     /// <returns>Return true or false if unable to find player using given current biped.</returns>
-    bool (*m_get_by_biped_tag_current)(s_ident bipedTag, PlayerInfo& playerInfo);
+    bool (*m_get_by_biped_tag_current)(s_ident bipedTag, PlayerInfo* playerInfo);
     /// <summary>
     /// Find player from previous unique biped s_ident.
     /// </summary>
     /// <param name="bipedTag">Unique biped s_ident</param>
     /// <param name="playerInfo">PlayerInfo</param>
     /// <returns>Return true or false if unable to find player using given previous biped.</returns>
-    bool (*m_get_by_biped_tag_previous)(s_ident bipedTag, PlayerInfo& playerInfo);
+    bool (*m_get_by_biped_tag_previous)(s_ident bipedTag, PlayerInfo* playerInfo);
     /// <summary>
     /// To send a message through chat procotol to all players.
     /// </summary>
@@ -227,14 +227,14 @@ typedef struct IPlayer {
     /// <param name="new_team">New team to assign.</param>
     /// <param name="forcekill">Force kill player if needed.</param>
     /// <returns>Does not return any value.</returns>
-    void (*m_change_team)(PlayerInfo& playerInfo, const e_color_team_index new_team, bool forcekill);
+    void (*m_change_team)(PlayerInfo* playerInfo, const e_color_team_index new_team, bool forcekill);
     /// <summary>
     /// To apply camouflage duration on specific player.
     /// </summary>
     /// <param name="playerInfo">PlayerInfo</param>
     /// <param name="duration">In seconds format.</param>
     /// <returns>Does not return any value. (This may will be change in future.)</returns>
-    void (*m_apply_camo)(PlayerInfo& playerInfo, unsigned int duration);
+    void (*m_apply_camo)(PlayerInfo* playerInfo, unsigned int duration);
 
     /// <summary>
     /// Ban player from host server.
@@ -242,21 +242,21 @@ typedef struct IPlayer {
     /// <param name="plEx">Player to ban.</param>
     /// <param name="gmtm">Time/date to expire ban.</param>
     /// <returns>Return true or false unable to ban player.</returns>
-    bool (*m_ban_player)(PlayerExtended &plEx, tm &gmtm);
+    bool (*m_ban_player)(PlayerExtended* plEx, tm* gmtm);
     /// <summary>
     /// Ban CD hash key from host server.
     /// </summary>
     /// <param name="CDHash">CD hash key to ban. (Must have 33 characters allocate to copy, 33th is to null termate.)</param>
     /// <param name="gmtm">Time/date to expire ban.</param>
     /// <returns>Return true or false unable to ban CD hash key.</returns>
-    ext_boolean (*m_ban_CD_key)(wchar_t* CDHash, tm &gmtm);
+    ext_boolean (*m_ban_CD_key)(wchar_t* CDHash, tm* gmtm);
     /// <summary>
     /// Ban IP Address from host server.
     /// </summary>
     /// <param name="IP_Address">IP Address to ban.. (Must have 16 characters allocate to copy.)</param>
     /// <param name="gmtm">Time/date to expire ban.</param>
     /// <returns>Return true or false unable to ban IP Address.</returns>
-    ext_boolean (*m_ban_ip)(wchar_t* IP_Address, tm &gmtm);
+    ext_boolean (*m_ban_ip)(wchar_t* IP_Address, tm* gmtm);
     /// <summary>
     /// Get ID from banned IP Address.
     /// </summary>
@@ -281,21 +281,21 @@ typedef struct IPlayer {
     /// <param name="mS">machine slot</param>
     /// <param name="m_ip">IP address, excluded port number</param>
     /// <returns>Return true or false if unable get IP address.</returns>
-    bool (*m_get_ip)(s_machine_slot& mS, in_addr& m_ip);
+    bool (*m_get_ip)(s_machine_slot* mS, in_addr* m_ip);
     /// <summary>
     /// Get port number, excluded IP address, from machine slot.
     /// </summary>
     /// <param name="mS">machine slot</param>
     /// <param name=m_port"">Port number, excluded IP address</param>
     /// <returns>Return true or false if unable get port.</returns>
-    bool (*m_get_port)(s_machine_slot& mS, unsigned short& m_port);
+    bool (*m_get_port)(s_machine_slot* mS, unsigned short* m_port);
     /// <summary>
     /// Get CD hash from machine slot.
     /// </summary>
     /// <param name="mS">machine slot</param>
     /// <param name="CDHash">CD hash key. (Must have 33 characters allocate to copy, 33th is to null termate.)</param>
     /// <returns>Does not return any value.</returns>
-    void (*m_get_CD_hash)(s_machine_slot &mS, char* CDHash);
+    void (*m_get_CD_hash)(s_machine_slot* mS, char* CDHash);
     /// <summary>
     /// Find a match of player(s) from regex expression search.
     /// </summary>
@@ -303,7 +303,7 @@ typedef struct IPlayer {
     /// <param name="plMatch">List of matched players from search.</param>
     /// <param name="plOwner">Optional, owner of player execution usually.</param>
     /// <returns>Return total count of matched player(s).</returns>
-    short (*m_get_str_to_player_list)(const wchar_t* regexSearch, PlayerInfoList &plMatch, PlayerInfo* plOwner);
+    short (*m_get_str_to_player_list)(const wchar_t* regexSearch, PlayerInfoList* plMatch, PlayerInfo* plOwner);
 } IPlayer;
 #endif
 
