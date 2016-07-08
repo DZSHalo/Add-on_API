@@ -1,20 +1,20 @@
 
 
-enum e_source_out : unsigned short {
+typedef enum e_source_out : unsigned short {
     SOURCE_NONE_OUT = 0,
     SOURCE_A_OUT = 1,
     SOURCE_B_OUT = 2,
     SOURCE_C_OUT = 3,
     SOURCE_D_OUT = 4
-};
-enum e_source_in : unsigned short {
+} e_source_out;
+typedef enum e_source_in : unsigned short {
     SOURCE_NONE_IN = 0,
     SOURCE_A_IN = 1,
     SOURCE_B_IN = 2,
     SOURCE_C_IN = 3,
     SOURCE_D_IN = 4
-};
-enum e_source_in_out : unsigned short {
+} e_source_in;
+typedef enum e_source_in_out : unsigned short {
     SOURCE_NONE = 0,
     SOURCE_A_IN_ = 1,
     SOURCE_B_IN_ = 2,
@@ -24,9 +24,9 @@ enum e_source_in_out : unsigned short {
     SOURCE_B_OUT_ = 6,
     SOURCE_C_OUT_ = 7,
     SOURCE_D_OUT_ = 8
-};
+} e_source_in_out;
 
-enum e_function :unsigned short {
+typedef enum e_function : unsigned short {
     WOBBLE_FUNCTION_ONE = 0,
     WOBBLE_FUNCTION_ZERO,
     WOBBLE_FUNCTION_COSINE,
@@ -39,16 +39,16 @@ enum e_function :unsigned short {
     WOBBLE_FUNCTION_JITTER,
     WOBBLE_FUNCTION_WANDER,
     WOBBLE_FUNCTION_SPARK
-};
+} e_function;
 
-enum e_side_effect : unsigned short {
+typedef enum e_side_effect : unsigned short {
     SIDE_EFFECT_NONE = 0,
     SIDE_EFFECT_HARMLESS,
     SIDE_EFFECT_LETHAL_TO_THE_UNSUSPECTING,
     SIDE_EFFECT_EMP
-};
+} e_side_effect;
 
-enum e_category : unsigned short {
+typedef enum e_category : unsigned short {
     CATEGORY_NONE = 0,
     CATEGORY_FALLING,
     CATEGORY_BULLET,
@@ -62,13 +62,13 @@ enum e_category : unsigned short {
     CATEGORY_PLASMA,
     CATEGORY_NEEDLE,
     CATEGORY_SHOTGUN
-};
+} e_category;
 
 //http://stackoverflow.com/questions/24193389/how-to-use-anonymous-unions-with-enums
-enum e_tag_group : unsigned int {
+typedef enum e_tag_group : unsigned int {
     TAG_ACTR = MAKE_ID('actr'), //actor
     TAG_ACTV = MAKE_ID('actv'), //actor_variant
-    TAG_ANT_ = MAKE_ID('ant!'),  //antenna
+    TAG_ANT_ = MAKE_ID('ant!'), //antenna
     TAG_ANTR = MAKE_ID('antr'), //model_animations
     TAG_BIPD = MAKE_ID('bipd'), //biped
     TAG_BTIM = MAKE_ID('bitm'), //bitmap
@@ -149,4 +149,4 @@ enum e_tag_group : unsigned int {
     TAG_WEAP = MAKE_ID('weap'), //weapon
     TAG_WIND = MAKE_ID('wind'), //wind
     TAG_WPHI = MAKE_ID('wphi')  //weapon_hud_interface
-};
+} e_tag_group;

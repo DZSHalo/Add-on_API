@@ -3,6 +3,7 @@
 
 #define WINAPIC     __cdecl
 
+#ifndef _INC_TIME
 struct tm {
     int tm_sec;     /* seconds after the minute - [0,59] */
     int tm_min;     /* minutes after the hour - [0,59] */
@@ -15,6 +16,7 @@ struct tm {
     int tm_isdst;   /* daylight savings time flag */
 };
 #define _TM_DEFINED
+#endif
 #pragma pack(push,1)
     struct haloConsole {
         int r;
@@ -64,7 +66,7 @@ CNATIVE {
         /// Free memory from allocate memory.
         /// </summary>
         /// <param name="Address">Pointer of an allocate memory to be free from.</param>
-        /// <returns>No return.</returns>
+        /// <returns>No return value.</returns>
         void (*FreeMem)(void* Address);
         /// <summary>
         /// Convert a string to wide string.
@@ -87,25 +89,25 @@ CNATIVE {
         /// </summary>
         /// <param name="str">String to translate from.</param>
         /// <returns>Return -1 if string doesn't have a translation to boolean.</returns>
-        toggle (*StrToBooleanA)(const char str[]);
+        e_boolean (*StrToBooleanA)(const char* str);
         /// <summary>
         /// Translate a wide string into boolean.
         /// </summary>
         /// <param name="str">Wide string to translate from.</param>
         /// <returns>Return -1 if string doesn't have a translation to boolean.</returns>
-        toggle (*StrToBooleanW)(const wchar_t str[]);
+        e_boolean (*StrToBooleanW)(const wchar_t* str);
         /// <summary>
         /// Translate a string into team index.
         /// </summary>
         /// <param name="str">String to translate from.</param>
         /// <returns>Return -1 if string doesn't have a translation to team index.</returns>
-        e_color_team_index (*StrToTeamA)(const char str[]);
+        e_color_team_index (*StrToTeamA)(const char* str);
         /// <summary>
         /// Translate a wide string into team index.
         /// </summary>
         /// <param name="str">Wide string to translate from.</param>
         /// <returns>Return -1 if string doesn't have a translation to team index.</returns>
-        e_color_team_index (*StrToTeamW)(const wchar_t str[]);
+        e_color_team_index (*StrToTeamW)(const wchar_t* str);
         /// <summary>
         /// Format a current string to support escape characters if any.
         /// </summary>
@@ -155,25 +157,25 @@ CNATIVE {
         /// <returns>Return true if valid.</returns>
         bool (*ishashW)(const wchar_t* str);
         /// <summary>
-        /// Move partial of whole string to left or right.
+        /// Move partial of string to left or right.
         /// </summary>
         /// <param name="regStr">String to be shift.</param>
-        /// <param name="len">Total length of a wide string.</param>
+        /// <param name="len">Length of string to be move.</param>
         /// <param name="pos">Position of the string to be shift.</param>
         /// <param name="lenShift">Amount of length to shift left or right.</param>
         /// <param name="leftRight">True for shift to right and false for shift to left.</param>
-        /// <returns>No return value.</returns>
-        void (*shiftStrA)(char regStr[], int len, int pos, int lenShift, bool leftRight);
+        /// <returns>Return true for success, failed if one or more argument is invalid.</returns>
+        e_boolean (*shiftStrA)(char* regStr, int len, int pos, int lenShift, bool leftRight);
         /// <summary>
-        /// Move partial of whole wide string to left or right.
+        /// Move partial of wide string to left or right.
         /// </summary>
         /// <param name="regStr">Wide string to be shift.</param>
-        /// <param name="len">Total length of a wide string.</param>
+        /// <param name="len">Length of wide string to be move.</param>
         /// <param name="pos">Position of the wide string to be shift.</param>
         /// <param name="lenShift">Amount of length to shift left or right.</param>
         /// <param name="leftRight">True for shift to right and false for shift to left.</param>
-        /// <returns>No return value.</returns>
-        void (*shiftStrW)(wchar_t regStr[], int len, int pos, int lenShift, bool leftRight);
+        /// <returns>Return true for success, failed if one or more argument is invalid.</returns>
+        e_boolean (*shiftStrW)(wchar_t* regStr, int len, int pos, int lenShift, bool leftRight);
         /// <summary>
         /// Format a current string to support escape characters if any.
         /// </summary>

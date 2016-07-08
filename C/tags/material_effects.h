@@ -34,7 +34,7 @@
  * ice,
  * hunter_energy_shield
  */
-typedef struct {
+typedef struct s_matrials_block {
     s_tag_reference effect; //effe
     s_tag_reference sound;  //snd!
     PADDING(0x10);
@@ -56,7 +56,7 @@ static_assert_check(sizeof(s_matrials_block) == 0x30, "Incorrect size of s_matri
  * vehicle_unused1,
  * vehicle_unused2
  */
-typedef struct {
+typedef struct s_effects_block {
     //Materials block
     s_tag_block materials; //Max is 33
     PADDING(0x10);
@@ -64,7 +64,7 @@ typedef struct {
 static_assert_check(sizeof(s_effects_block) == 0x1C, "Incorrect size of s_effects_block");
 
 
-typedef struct {
+typedef struct s_material_effects_meta {
     //Effects block
     s_tag_block effects; //Max is 13
     PADDING(0x80);

@@ -65,7 +65,7 @@ static if(__traits(compiles, EXT_ICOMMAND)) {
          * protocolMsg = For output the message to binded user.
          * <returns>Only return true or false.
          */
-        bool(*m_load_from_file)(uint hash, const wchar* fileName, PlayerInfo plI, MSG_PROTOCOL protocolMsg);
+        bool function(uint hash, const wchar* fileName, PlayerInfo plI, MSG_PROTOCOL protocolMsg) m_load_from_file;
     };
     export extern(C) ICommand* getICommand(uint hash);
 

@@ -6,19 +6,10 @@
 #ifdef __cplusplus
 CNATIVE {
 #endif
-#pragma pack(push,1)
-    struct Record {
-        wchar_t comments[256];
-        wchar_t commented;
-        wchar_t section[128];
-        wchar_t key[128];
-        wchar_t value[256];
-    };
-#pragma pack(pop)
-    enum commentChar {
+    typedef enum commentChar {
         pound = L'#',
         semiColon = L';'
-    };
+    } commentChar;
     typedef struct ICIniFile {
         /// <summary>
         /// To release ICIniFile, cannot be re-used after release.

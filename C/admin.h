@@ -1,11 +1,11 @@
 #ifndef adminH
 #define adminH
 
-enum LOGIN_VALIDATION : signed int {
+typedef enum LOGIN_VALIDATION : signed int {
     LOGIN_INVALID = -1,
     LOGIN_FAIL = 0,
     LOGIN_OK = 1
-};
+} LOGIN_VALIDATION;
 #ifdef __cplusplus
 CNATIVE {
 #endif
@@ -47,12 +47,12 @@ CNATIVE {
         /// <summary>
         /// To login a <paramref name="player"/> as administrator from database verfication and return LOGIN_INVALID, LOGIN_FAIL, and LOGIN_OK.
         /// </summary>
-        /// <param name="player">Take unicode username to verify.</param>
+        /// <param name="player">Take ingame or remote admin to verify.</param>
         /// <param name="chatRconRemote">To return a message back to player.</param>
         /// <param name="username">Maximum permitted is 24 characters.</param>
         /// <param name="password">No limitation on password for now.</param>
         /// <returns>Only return LOGIN_INVALID, LOGIN_FAIL, and LOGIN_OK.</returns>
-        LOGIN_VALIDATION (*m_login)(PlayerInfo& player, MSG_PROTOCOL protocolMsg, wchar_t* username, wchar_t* password);
+        LOGIN_VALIDATION (*m_login)(PlayerInfo* player, MSG_PROTOCOL protocolMsg, wchar_t* username, wchar_t* password);
     } IAdmin;
     dllport IAdmin* getIAdmin(unsigned int hash);
 #ifdef __cplusplus

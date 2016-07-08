@@ -6,9 +6,9 @@ CNATIVE {
 #endif
 
 #pragma pack(push,1)
-    struct helpInfo {
+    typedef struct helpInfo {
         wchar_t info[4][255];
-    };
+    } helpInfo;
 #pragma pack(pop)
     typedef struct ICommand {
         /// <summary>
@@ -30,7 +30,7 @@ CNATIVE {
         /// <param name="func">A function currently binded to a command.</param>
         /// <param name="command">A command currently binded to a function.</param>
         /// <returns>Only return true or false.</returns>
-        bool (*m_delete)(CmdFunc func, const wchar_t* command);
+        bool (*m_delete)(unsigned int hash, CmdFunc func, const wchar_t* command);
         /// <summary>
         /// To load or reload authorized add-on's commands level from commands.ini file.
         /// </summary>

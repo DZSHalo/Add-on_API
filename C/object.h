@@ -9,7 +9,7 @@ CNATIVE{
     // Structure definitions
 #pragma pack(push, 1)
     // Structure of tag index table
-    struct hTagIndexTableHeader {
+    typedef struct hTagIndexTableHeader {
         unsigned int next_ptr;
         unsigned int starting_index; // ??
         unsigned int unk;
@@ -19,28 +19,28 @@ CNATIVE{
         unsigned char unk2[8];
         unsigned int readSize;
         unsigned int unk3;
-    };
+    } hTagIndexTableHeader;
     //http://stackoverflow.com/questions/24193389/how-to-use-anonymous-unions-with-enums
     // Structure of the tag header
-    struct hTagHeader {
+    typedef struct hTagHeader {
         e_tag_group group_tag;      //0x00 // ie weap
         e_tag_group parent_tags[2]; //0x04 // ie weap
         s_ident ident;              //0x0C // unique ident for map
         char* tag_name;             //0x10 // name of tag
         void* group_meta_tag;       //0x14 // data for this group_tag
         void* parent_meta_tag[2];   //0x18 // data for this parent_tags[i]
-    };
+    } hTagHeader;
     static_assert_check(sizeof(hTagHeader) == 0x20, "Incorrect size of hTagHeader");
-    struct objDamageFlags {
+    typedef struct objDamageFlags {
         bool isExplode : 1;  //0x00.0 grenade, banshee's secondary weapon, flamethrower applies here. Need better name.
         bool Unknown0 : 2;   //0x00.1-2
         bool isWeapon : 1;   //0x00.3 Confirmed player's weapon, vehicle's weapon show up here every time.
 
         bool Unknown2 : 4;   //0x01.0-4
         unsigned char Unknown6[3];   //0x02-4
-    };
+    } objDamageFlags;
     static_assert_check(sizeof(objDamageFlags) == 0x4, "Incorrect size of objDamageFlags");
-    struct objDamageInfo {
+    typedef struct objDamageInfo {
         s_ident tag_id;
         objDamageFlags flags;
         s_ident player_causer;
@@ -49,24 +49,26 @@ CNATIVE{
         float modifier;         // 1.0 = max dmg, < 0 decreases dmg.
         float modifier1;        // 1.0 default > 1.0 increases dmg.
         char Unknown1[8];
-    };
+    } objDamageInfo;
     static_assert_check(sizeof(objDamageInfo) == 0x50, "Incorrect size of objDamageInfo");
-    struct objHitInfo {
+    typedef struct objHitInfo {
         char desc[0x20];
         char Unknown0[0x28];    // doesn't seem to be that useful, mostly 0s with a few 1.0 floats.    
-    };
+    } objHitInfo;
     static_assert_check(sizeof(objHitInfo) == 0x48, "Incorrect size of objHitInfo");
-    struct objManaged {
-        vect3 world;
-        vect3 velocity;
-        vect3 rotation;
-        vect3 scale;
-    };
-    struct objCreationInfo {
+    typedef struct objManaged {
+        real_vector3d world;
+        real_vector3d velocity;
+        real_vector3d rotation;
+        real_vector3d scale;
+    } objManaged;
+    typedef struct objCreationInfo {
         s_ident map_id;
         s_ident parent_id;
-        vect3   pos;
-    };
+        real_vector3d   pos;
+    } objCreationInfo;
+#pragma pack(pop)
+#ifdef EXT_IOBJECT
     typedef struct objTagGroupList {
         unsigned int count;
         hTagHeader** tag_list;
@@ -79,7 +81,6 @@ CNATIVE{
                 pIUtil->FreeMem(tag_list);
         }
     } objTagGroupList;
-#pragma pack(pop)
     typedef struct IObject {
         /// <summary>
         /// Get pointer of object's active structure.
@@ -140,7 +141,7 @@ CNATIVE{
         /// <param name="out_objId">Unique s_ident of an object creation.</param>
         /// <param name="location">Location to spawn at.</param>
         /// <returns>Return true or false if unable to create an object.</returns>
-        bool (*m_create)(s_ident model_Tag, s_ident parentId, int idlingTime, s_ident& out_objId, vect3* location);
+        bool (*m_create)(s_ident model_Tag, s_ident parentId, int idlingTime, s_ident* out_objId, real_vector3d* location);
         /// <summary>
         /// Assign equipment to biped.
         /// </summary>
@@ -167,17 +168,16 @@ CNATIVE{
         /// <param name="obj_id">Unique s_ident of an object created.</param>
         /// <param name="location">Location to move at.</param>
         /// <returns>Does not return any value.</returns>
-        void (*m_move_and_reset)(s_ident obj_id, vect3* location);
+        void (*m_move_and_reset)(s_ident obj_id, real_vector3d* location);
         /// <summary>
         /// Set object, usually cheats, to specific player. NOTE: Make sure you set it back to zero after you're done using it!
         /// </summary>
         /// <param name="pl_ind">Player index</param>
         /// <returns>Does not return any value.</returns>
         void (*m_set_object_spawn_player_x)(playerindex pl_ind);
-        bool (*get_lookup_group_tag_list)(const e_tag_group group_tag, objTagGroupList* tag_list);
+        bool (*m_get_lookup_group_tag_list)(const e_tag_group group_tag, objTagGroupList* tag_list);
     } IObject;
 
-#ifdef EXT_IOBJECT
 CNATIVE dllport IObject* getIObject(unsigned int hash);
 #endif
 

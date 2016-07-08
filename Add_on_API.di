@@ -43,6 +43,11 @@ enum CMD_RETURN: int {
     SUCCESS = 1,
     SUCCESS_DELAY = 2
 }
+enum e_boolean : byte {
+    FAIL = -1,
+    FALSE = 0,
+    TRUE = 1
+};
 
 //#define CALL_MEMBER_FN(self, FUNC, ...) self->FUNC(self, ## __VA_ARGS__)
 
@@ -165,7 +170,7 @@ static if (__traits(compiles, EXT_ITIMER)) {
          * Params:
          * hash = Add-on unique ID.
          * plI = Bind to specific player or use null for general.
-         * execTime = Amount of milliseconds later to execute a timer event.
+         * execTime = Amount of ticks later to execute a timer event. (1 tick = 1/30 second)
          * Returns: Return ID of timer event.
          */
         uint function(uint hash, PlayerInfo* plI, uint execTime) m_add;

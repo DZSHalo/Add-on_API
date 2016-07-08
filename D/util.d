@@ -66,7 +66,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * Free memory from allocate memory.
          * Params:
          * Address = Pointer of an allocate memory to be free from.
-         * Returns: No return.
+         * Returns: No return value.
          */
         void function(void* Address) FreeMem;
         /*
@@ -93,14 +93,14 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * str = String to translate from.
          * Returns: Return -1 if string doesn't have a translation to boolean.
          */
-        toggle function(const char* str) StrToBooleanA;
+        e_boolean function(const char* str) StrToBooleanA;
         /*
          * Translate a wide string into boolean.
          * Params:
          * str = Wide string to translate from.
          * Returns: Return -1 if string doesn't have a translation to boolean.
          */
-        toggle function(const wchar* str) StrToBooleanW;
+        e_boolean function(const wchar* str) StrToBooleanW;
         /*
          * Translate a string into team index.
          * Params:
@@ -172,27 +172,27 @@ static if(__traits(compiles, EXT_IUTIL)) {
          */
         bool function(const wchar* str) ishashW;
         /*
-         * Move partial of whole string to left or right.
+         * Move partial of string to left or right.
          * Params:
          * regStr = String to be shift.
-         * len = Total length of a wide string.
+         * len = Length of string to be move.
          * pos = Position of the string to be shift.
          * lenShift = Amount of length to shift left or right.
          * leftRight = True for shift to right and false for shift to left.
-         * Returns: No return value.
+         * Returns: Return true for success, failed if one or more argument is invalid.
          */
-        void function(char* regStr, int len, int pos, int lenShift, bool leftRight) shiftStrA;
+        e_boolean function(char* regStr, int len, int pos, int lenShift, bool leftRight) shiftStrA;
         /*
-         * Move partial of whole wide string to left or right.
+         * Move partial of wide string to left or right.
          * Params:
          * regStr = Wide string to be shift.
-         * len = Total length of a wide string.
+         * len = Length of wide string to be move.
          * pos = Position of the wide string to be shift.
          * lenShift = Amount of length to shift left or right.
          * leftRight = True for shift to right and false for shift to left.
-         * Returns: No return value.
+         * Returns: Return true for success, failed if one or more argument is invalid.
          */
-        void function(wchar* regStr, int len, int pos, int lenShift, bool leftRight) shiftStrW;
+        e_boolean function(wchar* regStr, int len, int pos, int lenShift, bool leftRight) shiftStrW;
         /*
          * Format a current string to support escape characters if any.
          * Params:

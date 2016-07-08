@@ -1,7 +1,7 @@
 #ifndef haloEngineH
 #define haloEngineH
 
-enum REJECT_CODE:unsigned char {
+typedef enum REJECT_CODE : unsigned char {
     REJECT_CANT_JOIN_SERVER = 0,       //0
     REJECT_INVALID_CONNECTION_REQUEST, //1
     REJECT_PASSWORD_REJECTED,          //2
@@ -15,18 +15,18 @@ enum REJECT_CODE:unsigned char {
     REJECT_ADDRESS_INVALID,            //10
     REJECT_PROFILE_REQUIRED,           //11
     REJECT_INCOMPATIBLE_NETWORK,       //12
-    REJECT_OLDER_player_VERSION,       //13
-    REJECT_NEWER_player_VERSION,       //14
+    REJECT_OLDER_PLAYER_VERSION,       //13
+    REJECT_NEWER_PLAYER_VERSION,       //14
     REJECT_ADMIN_REQUIRED_PATCH,       //15
     REJECT_REQUEST_DELETE_SAVED,       //16
-};
+} REJECT_CODE;
 
-enum HALO_VERSION:unsigned char {
+typedef enum HALO_VERSION : unsigned char {
     HV_UNKNOWN = 0,
     HV_TRIAL,   //1,
     HV_PC,      //2,
     HV_CE,      //3
-};
+} HALO_VERSION;
 
 #ifndef DIRECT3D_VERSION
 #define DIRECTX9 unsigned int
@@ -65,9 +65,9 @@ CNATIVE {
         unsigned int* mapTimeLimitLive;
         unsigned int* mapTimeLimitPermament;
         s_console_color_list* consoleColor;
-        DIRECTX9*  DirectX9;
-        DIRECTI8*  DirectInput8;
-        DIRECTS8*  DirectSound8;
+        __declspec(deprecated("Do not use DirectX9 function, will be remove any time soon.")) DIRECTX9*  DirectX9;
+        __declspec(deprecated("Do not use DirectInput8 function, will be remove any time soon.")) DIRECTI8*  DirectInput8;
+        __declspec(deprecated("Do not use DirectSound8 function, will be remove any time soon.")) DIRECTS8*  DirectSound8;
         bool* cheatVEject;
         GameTypeGlobals* gameTypeGlobals;
         s_map_status** mapStatus;
@@ -116,7 +116,7 @@ CNATIVE {
         /// <param name="data">A message you would like to send.</param>
         /// <param name="plI">Specific player to receive this rcon message.</param>
         /// <returns>Does not return a value. (May will be changed later on.)</returns>
-        void (*m_dispatch_rcon)(rconData& data, PlayerInfo& plI);
+        void (*m_dispatch_rcon)(rconData* data, PlayerInfo* plI);
         /// <summary>
         /// Dispatch a chat message to specific player.
         /// </summary>
@@ -124,14 +124,14 @@ CNATIVE {
         /// <param name="len">Length of characters from data, maximum is 80 (0x50).</param>
         /// <param name="plI">Specific player to receive this chat message.</param>
         /// <returns>Does not return a value. (May will be changed later on.)</returns>
-        void (*m_dispatch_player)(chatData& data, int len, PlayerInfo& plI);
+        void (*m_dispatch_player)(chatData* data, int len, PlayerInfo* plI);
         /// <summary>
         /// Dispatch a chat message to all players.
         /// </summary>
         /// <param name="data">A message you would like to send.</param>
         /// <param name="len">Length of characters from data, maximum is 80 (0x50).</param>
         /// <returns>Does not return a value. (May will be changed later on.)</returns>
-        void (*m_dispatch_global)(chatData& data, int len);
+        void (*m_dispatch_global)(chatData* data, int len);
         /// <summary>
         /// To send a rejection code reason to player and disconnect player from host.
         /// </summary>
@@ -186,14 +186,14 @@ CNATIVE {
         /// <param name="index">Input an Add-on index slot number.</param>
         /// <param name="getInfo">Output a matched Add-on or not.</param>
         /// <returns>Return true or false if unable find a match.</returns>
-        bool(*m_ext_add_on_get_info_index)(unsigned int index, addon_info& getInfo);
+        bool(*m_ext_add_on_get_info_index)(unsigned int index, addon_info* getInfo);
         /// <summary>
         /// Obtain an Add-on information if able to find a match.
         /// </summary>
         /// <param name="name">Input name of an Add-on. (Maximum permitted is 128 characters long.)</param>
         /// <param name="getInfo">Output a matched Add-on or not.</param>
         /// <returns>Return true or false if unable find a match.</returns>
-        bool(*m_ext_add_on_get_info_by_name)(wchar_t* name, addon_info& getInfo);
+        bool(*m_ext_add_on_get_info_by_name)(wchar_t* name, addon_info* getInfo);
         /// <summary>
         /// Reload an Add-on while still running Halo.
         /// </summary>

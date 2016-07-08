@@ -5,7 +5,7 @@
 CNATIVE {
 #endif
 
-    enum MSG_FORMAT : unsigned int {
+    typedef enum MSG_FORMAT : unsigned int {
         MF_BLANK = 0,
         MF_SERVER = 1,
         MF_HEXT = 2,
@@ -14,15 +14,15 @@ CNATIVE {
         MF_WARNING = 5,
         MF_ERROR = 6,
         MF_ALERT = 7
-    };
-    enum MSG_PROTOCOL : unsigned int {
+    } MSG_FORMAT;
+    typedef enum MSG_PROTOCOL : unsigned int {
         MP_CHAT = 0,
         MP_RCON = 1,
         MP_REMOTE = 2
-    };
+    } MSG_PROTOCOL;
 
     #pragma pack(push,1)
-    struct PlayerExtended {
+    typedef struct PlayerExtended {
         bool isInServer;
         bool isRemote;
         short adminLvl;
@@ -61,9 +61,9 @@ CNATIVE {
             handicap_health = 1;
             handicap_speed = 1;
         }
-    };
+    } PlayerExtended;
     static_assert_check(sizeof(PlayerExtended) == 343, "Incorrect size of PlayerExtended");
-    struct PlayerInfo {
+    typedef struct PlayerInfo {
         PlayerExtended* plEx;
         s_machine_slot* mS;
         s_player_reserved_slot* plR;
@@ -80,12 +80,13 @@ CNATIVE {
             this->plR = plI.plR;
             this->plS = plI.plS;
         }
-    };
+    } PlayerInfo;
     static_assert_check(sizeof(PlayerInfo) == 16, "Incorrect size of PlayerInfo");
-    struct PlayerInfoList {
+    typedef struct PlayerInfoList {
         PlayerInfo plList[32];
-    };
+    } PlayerInfoList;
     #pragma pack(pop)
+#ifdef EXT_IPLAYER
 typedef struct IPlayer {
     /// <summary>
     /// Get PlayerInfo from machine index if in used.
@@ -128,25 +129,25 @@ typedef struct IPlayer {
     /// <param name="uniqueID">Can be obtain from existing s_machine_slot.</param>
     /// <param name="playerInfo">PlayerInfo</param>
     /// <returns>Return true or false if not found.</returns>
-    bool (*m_get_by_unique_id)(long uniqueID, PlayerInfo& playerInfo);
+    bool (*m_get_by_unique_id)(unsigned int uniqueID, PlayerInfo& playerInfo);
     /// <summary>
     /// Get ID from joined player's name.
     /// </summary>
     /// <param name="fullName">Player's full name.</param>
     /// <returns>Return ID of full name from database.</returns>
-    int (*m_get_id_full_name)(wchar_t* fullName);
+    unsigned int(*m_get_id_full_name)(wchar_t* fullName);
     /// <summary>
     /// Get ID from IP Address, excluded port number.
     /// </summary>
     /// <param name="ipAddress">Player's IP Address, excluded port number.</param>
     /// <returns>Return ID  from database.</returns>
-    int (*m_get_id_ip_address)(wchar_t* ipAddress);
+    unsigned int(*m_get_id_ip_address)(wchar_t* ipAddress);
     /// <summary>
     /// Get ID from port, excluded IP Address.
     /// </summary>
     /// <param name="port">Port number, excluded IP Address.</param>
     /// <returns>Return ID of port from database.</returns>
-    int (*m_get_id_port)(wchar_t* port);
+    unsigned int (*m_get_id_port)(wchar_t* port);
     /// <summary>
     /// Get full name from ID.
     /// </summary>
@@ -261,19 +262,19 @@ typedef struct IPlayer {
     /// </summary>
     /// <param name="IP_Address">Banned IP Address. (Maximum is 16 characters long.)</param>
     /// <returns>Return ID of banned IP Address.</returns>
-    int (*m_ban_ip_get_id)(wchar_t* IP_Address);
+    unsigned int(*m_ban_ip_get_id)(wchar_t* IP_Address);
     /// <summary>
     /// Get ID from banned CD hash key.
     /// </summary>
     /// <param name="CDHash">Banned CD hash key. (Must have 33 characters, 33th is to null termate.)</param>
     /// <returns>Return ID of banned IP Address.</returns>
-    int (*m_ban_CD_key_get_id)(wchar_t* CDHash);
+    unsigned int(*m_ban_CD_key_get_id)(wchar_t* CDHash);
     /// <summary>
     /// To expire a ban from banned list.
     /// </summary>
     /// <param name="ID">Obtained ID from either banned IP Address or CD hash key.</param>
     /// <returns>Return true or false if unable to unban ID.</returns>
-    bool (*m_unban_id)(int ID);
+    bool (*m_unban_id)(unsigned int ID);
     /// <summary>
     /// Get IP address, excluded port number, from machine slot.
     /// </summary>
@@ -304,6 +305,7 @@ typedef struct IPlayer {
     /// <returns>Return total count of matched player(s).</returns>
     short (*m_get_str_to_player_list)(const wchar_t* regexSearch, PlayerInfoList &plMatch, PlayerInfo* plOwner);
 } IPlayer;
+#endif
 
 #ifdef __cplusplus
 }

@@ -1,5 +1,5 @@
 //APPROVED
-typedef struct {
+typedef struct s_dialogue_meta {
     PADDING(0x10);
     //idle
     s_tag_reference idle_noncombat;                 //snd!

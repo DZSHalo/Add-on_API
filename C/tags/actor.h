@@ -50,7 +50,7 @@ typedef struct s_actor_more_flags {
 } s_actor_more_flags;
 static_assert_check(sizeof(s_actor_more_flags) == 0x04, "Incorrect size of s_actor_more_flags");
 
-enum e_actor_type : unsigned short {
+typedef enum e_actor_type : unsigned short {
     ACTOR_ELITE = 0,
     ACTOR_JACKAL,
     ACTOR_GRUNT,
@@ -67,9 +67,9 @@ enum e_actor_type : unsigned short {
     ACTOR_SENTINEL,
     ACTOR_NONE,
     ACTOR_MOUNTED_WEAPON
-};
+} e_actor_type;
 
-enum e_danger_trigger : unsigned short {
+typedef enum e_danger_trigger : unsigned short {
     TRIGGER_NEVER = 0,
     TRIGGER_SHOOTING,
     TRIGGER_SHOOTING_NEAR_US,
@@ -79,16 +79,16 @@ enum e_danger_trigger : unsigned short {
     TRIGGER_UNUSED2,
     TRIGGER_UNUSED3,
     TRIGGER_UNUSED4
-};
+} e_danger_trigger;
 
-enum e_crouch_type : unsigned short {
+typedef enum e_crouch_type : unsigned short {
     CROUCH_NEVER=0,
     CROUCH_DANGER,
     CROUCH_LOW_SHIELDS,
     CROUCH_HIGH_BEHIND_SHIELD,
     CROUCH_ANY_TARGET,
     CROUCH_FLOOD_SHAMBLE
-};
+} e_crouch_type;
 
 typedef struct s_actor_meta {
     s_actor_flags       flags;

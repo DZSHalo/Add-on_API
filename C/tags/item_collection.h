@@ -1,5 +1,5 @@
 //APPROVED
-typedef struct {
+typedef struct s_item_permutation_block {
     PADDING(0x20);
     real weight;
     s_tag_reference item;   //Supported type: equipment, garbage, item, or weapon
@@ -7,7 +7,7 @@ typedef struct {
 } s_item_permutation_block;
 static_assert_check(sizeof(s_item_permutation_block) == 0x54, "Incorrect size of s_item_permutation_block");
 
-typedef struct {
+typedef struct s_item_collection_meta {
     //Item permutations block
     s_tag_block item_permutations;  //Max is 32
     short spawn_time;

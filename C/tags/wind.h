@@ -1,5 +1,5 @@
 //APPROVED
-typedef struct {
+typedef struct s_wind_meta {
     real_range      velocity_world_unit;
     real_rotation2d variation_area;
     real            local_variation_weight;

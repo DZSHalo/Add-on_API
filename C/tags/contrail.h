@@ -25,14 +25,14 @@ typedef struct s_contrail_scale_flags {
     bool    unused : 2;
 } s_contrail_scale_flags;
 
-enum e_render_type :unsigned short {
+typedef enum e_render_type : unsigned short {
     RENDER_TYPE_VERTICAL_ORIENTATION = 0,
     RENDER_TYPE_HORIZONTAL_ORIENTATION,
     RENDER_TYPE_MEDIA_MAPPED,
     RENDER_TYPE_GROUND_MAPPED,
     RENDER_TYPE_VIEWER_FACING,
     RENDER_TYPE_DOUBLE_MARKER_LINKED
-};
+} e_render_type;
 
 typedef struct s_shader_flags {
     bool    sort_bias : 1;
@@ -43,7 +43,7 @@ typedef struct s_shader_flags {
     bool    unused2 : 8;
 } s_shader_flags;
 
-enum e_blend_function :unsigned short {
+typedef enum e_blend_function : unsigned short {
     BLEND_FUNC_ALPHA_BLEND=0,
     BLEND_FUNC_MULTIPLY,
     BLEND_FUNC_DOUBLE_MULTIPLY,
@@ -52,13 +52,13 @@ enum e_blend_function :unsigned short {
     BLEND_FUNC_COMPONENT_MIN,
     BLEND_FUNC_COMPONENT_MAX,
     BLEND_FUNC_ALPHA_MULTIPLY_ADD
-};
+} e_blend_function;
 
-enum e_fade_mode :unsigned short {
+typedef enum e_fade_mode : unsigned short {
     FADE_NONE=0,
     FADE_WHEN_PERPENDICULAR,
     FADE_WHEN_PARALLEL
-};
+} e_fade_mode;
 
 typedef struct s_map_flags {
     bool    unfiltered : 1;
@@ -67,11 +67,11 @@ typedef struct s_map_flags {
     bool    unused2 : 8;
 } s_map_flags;
 
-enum e_secondary_map_anchor :unsigned short {
+typedef enum e_secondary_map_anchor : unsigned short {
     ANCHOR_WITH_PRIMARY=0,
     ANCHOR_WITH_SCREEN_SPACE,
     ANCHOR_ZSPRITE
-};
+} e_secondary_map_anchor;
 
 typedef struct s_point_scale_flags {
     bool    duration : 1;

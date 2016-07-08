@@ -3,7 +3,7 @@
 
 
 #ifdef __cplusplus
-CNATIVE{
+CNATIVE {
 #endif
 
     static const char colon = ':';
@@ -14,17 +14,17 @@ CNATIVE{
     static const wchar_t backslash = L'\\';
     static const wchar_t dotW = L'.';
 
-    enum GAME_MODE : unsigned short {
+    typedef enum GAME_MODE : unsigned short {
         GAME_SINGLE,
         GAME_MULTI,
         GAME_HOSTING
-    };
-    struct GAME_MODE_S {
+    } GAME_MODE;
+    typedef struct GAME_MODE_S {
         bool SINGLE;
         bool MULTI;
         bool HOSTING;
         bool RESERVE0;
-    };
+    } GAME_MODE_S;
 
     static GAME_MODE_S modeAll = { 1, 1, 1 };
     static GAME_MODE_S modeSingle = { 1, 0, 0 };

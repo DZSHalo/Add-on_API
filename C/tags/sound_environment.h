@@ -1,5 +1,5 @@
 //APPROVED
-typedef struct {
+typedef struct s_sound_environment_meta {
     short   priority;
     PADDING(0x02);
     real    room_intensity;

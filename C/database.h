@@ -4,10 +4,10 @@
 #ifdef __cplusplus
 CNATIVE {
 #endif
+#if defined(EXT_IDATABASE) || defined(EXT_IDATABASESTATEMENT)
     //--
     //#pragma comment(lib,"Msvcrt.lib") //Basically bypass the error of vsnprintf... Replace the odbccp32.lib file with vista SDK!!!
     #pragma comment(lib,"odbc32.lib")
-    //#pragma comment(lib,"odbcbcp.lib")
     #pragma comment(lib,"odbccp32.lib")
     //--
     #include <sql.h>
@@ -17,7 +17,9 @@ CNATIVE {
     #define IS_SQL_ERR !IS_SQL_OK
     #define IS_SQL_OK(res) (res==SQL_SUCCESS_WITH_INFO || res==SQL_SUCCESS)
     #define SAFE_STR(str) ((str==NULL) ? L"" : str)
+#endif
     //--
+#ifdef EXT_IDATABASE
     typedef struct IDatabase {
         /// <summary>
         /// To connect a supported database.
@@ -53,6 +55,9 @@ CNATIVE {
         /// <returns>Does not return any value.</returns>
         void (*m_check)();
     } IDatabase;
+    dllport IDatabase* getIDatabase(unsigned int hash);
+#endif
+#ifdef EXT_IDATABASESTATEMENT
     typedef struct IDBStmt {
         /// <summary>
         /// To release a statement, cannot be re-used.
@@ -207,8 +212,6 @@ CNATIVE {
         /// <returns>Return true if is nullable or false.</returns>
         bool (*m_is_column_nullable)(IDBStmt* self, SQLUSMALLINT Column);
     } IDBStmt;
-#ifdef EXT_IDATABASE
-    dllport IDatabase* getIDatabase(unsigned int hash);
     dllport IDBStmt* getIDBStmt(unsigned int hash);
 #endif
 #ifdef __cplusplus

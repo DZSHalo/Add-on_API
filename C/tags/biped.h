@@ -11,7 +11,7 @@ typedef struct s_biped_flags {
 } s_biped_flags;
 static_assert_check(sizeof(s_biped_flags) == 0x04, "Incorrect size of s_biped_flags");
 
-enum e_export_in : unsigned short {
+typedef enum e_export_in : unsigned short {
     EXPORT_IN_NONE=0,
     EXPORT_IN_BODY_VITALITY,
     EXPORT_IN_SHIELD_VITALITY,
@@ -32,7 +32,7 @@ enum e_export_in : unsigned short {
     EXPORT_IN_REGION_07_DAMAGE,
     EXPORT_IN_ALIVE,
     EXPORT_IN_COMPASS
-};
+} e_export_in;
 
 typedef struct s_attachments_block {
     s_tag_reference     type;   //contrail, effect, light, light_volume, particle_system, sound_looping
@@ -62,20 +62,20 @@ typedef struct s_function_flags {
 } s_function_flags;
 static_assert_check(sizeof(s_function_flags) == 0x04, "Incorrect size of s_function_flags");
 
-enum e_map_to :unsigned short {
+typedef enum e_map_to :unsigned short {
     MAP_TO_LINEAR=0,
     MAP_TO_EARLY,
     MAP_TO_VERY_EARLY,
     MAP_TO_LATE,
     MAP_TO_VERY_LATE,
     MAP_TO_CONSINE
-};
+} e_map_to;
 
-enum e_bound_mode : unsigned short {
+typedef enum e_bound_mode : unsigned short {
     BOUND_MODE_CLIP=0,
     BOUND_MODE_CLIP_AND_NORMALIZE,
     BOUND_MODE_SCALE_TO_FIT,
-};
+} e_bound_mode;
 
 typedef struct s_function_block {
     s_function_flags    flags;
@@ -131,10 +131,10 @@ typedef struct s_color_permutation_block {
 } s_color_permutation_block;
 static_assert_check(sizeof(s_color_permutation_block) == 0x1C, "Incorrect size of s_color_permutation_block");
 
-enum e_predicted_resource_type :unsigned short {
+typedef enum e_predicted_resource_type :unsigned short {
     PREDICTED_RESOURCE_TYPE_BITMAP=0,
     PREDICTED_RESOURCE_TYPE_SOUND
-};
+} e_predicted_resource_type;
 
 typedef struct s_predicted_resource_block {
     e_predicted_resource_type   type;
@@ -277,7 +277,7 @@ typedef struct s_biped__flags {
 } s_biped__flags;
 static_assert_check(sizeof(s_biped__flags) == 0x04, "Incorrect size of s_biped__flags");
 
-enum e_default_team : unsigned short {
+typedef enum e_default_team : unsigned short {
     DEFAULT_TEAM_NONE=0,
     DEFAULT_TEAM_PLAYER,
     DEFAULT_TEAM_HUMAN,
@@ -288,17 +288,17 @@ enum e_default_team : unsigned short {
     DEFAULT_TEAM_UNUSED7,
     DEFAULT_TEAM_UNUSED8,
     DEFAULT_TEAM_UNUSED9
-};
+} e_default_team;
 
-enum e_sound_volume : unsigned short {
+typedef enum e_sound_volume : unsigned short {
     SOUND_VOLUME_SILENT=0,
     SOUND_VOLUME_MEDIUM,
     SOUND_VOLUME_LOUD,
     SOUND_VOLUME_SHOUT,
     SOUND_VOLUME_QUIET
-};
+} e_sound_volume;
 
-enum e_unit_action : unsigned short {
+typedef enum e_unit_action : unsigned short {
     UNIT_ACTION_NONE=0,
     UNIT_ACTION_DRIVER_SEAT_POWER,
     UNIT_ACTION_GUNNER_SEAT_POWER,
@@ -307,18 +307,18 @@ enum e_unit_action : unsigned short {
     UNIT_ACTION_INTEGRATED_LIGHT_POWER,
     UNIT_ACTION_CAN_BLINK,
     UNIT_ACTION_SHIELD_SAPPING
-};
+} e_unit_action;
 
-enum e_motion_sensor_blip_size : unsigned short {
+typedef enum e_motion_sensor_blip_size : unsigned short {
     BLIP_SIZE_MEDIUM=0,
     BLIP_SIZE_SMALL,
     BLIP_SIZE_LARGE,
-};
+} e_motion_sensor_blip_size;
 
-enum e_unknown_enum : unsigned short {
+typedef enum e_unknown_enum : unsigned short {
     UNKNOWN_ENUM_NONE=0,
     UNKNOWN_ENUM_FLYING_VELOCITY
-};
+} e_unknown_enum;
 
 typedef struct s_biped_meta {
     s_biped_flags   flags;

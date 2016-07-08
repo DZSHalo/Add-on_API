@@ -194,7 +194,7 @@ static if(__traits(compiles, EXT_IOBJECT)) {
          * Returns: Does not return any value.
          */
         void function(playerindex pl_ind) m_set_object_spawn_player_x;
-        bool function(const e_tag_group group_tag, objTagGroupList* tag_list) get_lookup_group_tag_list;
+        bool function(const e_tag_group group_tag, objTagGroupList* tag_list) m_get_lookup_group_tag_list;
     };
     export extern(C) IObject* getIObject(uint hash);
 }

@@ -52,7 +52,7 @@ static if (__traits(compiles, EXT_IADMIN)) {
         /**
          * To login a player as administrator from database verfication and return true, false, or -1 for database is offline.
          * Params:
-         * player = Take unicode username to verify.
+         * player = Take ingame or remote admin to verify.
          * chatRconRemote = To return a message back to player.
          * username = Maximum permitted is 24 characters.
          * password = No limitation on password for now.
