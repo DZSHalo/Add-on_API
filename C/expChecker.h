@@ -203,6 +203,9 @@ namespace addon {
 
         //Database APIs verification
     __if_exists(EXTHookDatabase) {
+        #ifndef EXT_HKDATABASE
+        #pragma COMPILER_ERROR("EXTHookDatabase existed, please include EXT_HKDATABASE in order to function correctly.");
+        #else
         typedef void (WINAPIC* LPReturnVOID)();
         typedef SQLINTEGER (WINAPIC* LPReturnSQLINTEGER)();
         typedef bool (WINAPIC* LPIDReturnBOOL)(int StmtID);
@@ -250,6 +253,7 @@ namespace addon {
         static_assert_check(is_same<decltype(&EXTOnDatabaseStatementColumnName), LPSTMTColumnName>::value, "EXTOnDatabaseStatementColumnName is incorrect, please fix this.");
         static_assert_check(is_same<decltype(&EXTOnDatabaseStatementIsColumnNullable), LPIDReturnTypeBOOLSQLUSMALLINT>::value, "EXTOnDatabaseStatementIsColumnNullable is incorrect, please fix this.");
         static_assert_check(is_same<decltype(&EXTOnDatabaseStatementIsValid), LPIDReturnBOOL>::value, "EXTOnDatabaseStatementIsValid is incorrect, please fix this.");
+        #endif
     }
 
         //Console API verification

@@ -58,8 +58,8 @@ typedef enum CMD_RETURN : signed int {
     CMD_SUCCESS_DELAY = 2
 } CMD_RETURN;
 
-typedef enum e_boolean : signed char {
-    BOOL_FAIL = -1,
+typedef enum e_boolean : unsigned char {
+    BOOL_FAIL = (unsigned char)-1,
     BOOL_FALSE = 0,
     BOOL_TRUE = 1
 } e_boolean;
