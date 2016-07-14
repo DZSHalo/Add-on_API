@@ -18,10 +18,10 @@ namespace addon {
     typedef bool (WINAPIC* LPOnVehicleUserEntryEject)(PlayerInfo, bool);
     typedef bool (WINAPIC* LPOnPlayerChangeTeamAttempt)(PlayerInfo, int, bool);
     typedef bool (WINAPIC* LPOnPlayerSpawnColor)(PlayerInfo, bool);
-    typedef void (WINAPIC* LPOnPlayerDeath)(PlayerInfo, PlayerInfo, int, bool&);
-    typedef void (WINAPIC* LPWeaponAssignmentC)(PlayerInfo, s_ident, s_ident, unsigned int, s_ident&);
+    typedef void (WINAPIC* LPOnPlayerDeath)(PlayerInfo, PlayerInfo, int, bool*);
+    typedef void (WINAPIC* LPWeaponAssignmentC)(PlayerInfo, s_ident, s_ident, unsigned int, s_ident*);
     typedef bool (WINAPIC* LPObjectInteraction)(PlayerInfo, s_ident, s_object*, hTagHeader*);
-    typedef void (WINAPIC* LPWeaponAssignmentD)(PlayerInfo, s_ident, s_tag_reference*, unsigned int, s_ident&);
+    typedef void (WINAPIC* LPWeaponAssignmentD)(PlayerInfo, s_ident, s_tag_reference*, unsigned int, s_ident*);
     typedef bool (WINAPIC* LPOnPlayerScoreCTF)(PlayerInfo, s_ident, unsigned int, bool);
     typedef bool (WINAPIC* LPOnPlayerAttemptDropObject)(PlayerInfo, s_ident, s_biped*);
     typedef void (WINAPIC* LPOnPlayerSpawn)(PlayerInfo, s_ident, s_biped*);
@@ -29,10 +29,10 @@ namespace addon {
     typedef bool (WINAPIC* LPOnWeaponReload)(s_object*, bool);
     typedef bool (WINAPIC* LPOnObjectCreation)(s_object*, hTagHeader*);
     typedef bool (WINAPIC* LPOnKillMultiplier)(PlayerInfo killer, unsigned int multiplier);
-    typedef bool (WINAPIC* LPOnVehicleRespawnProcess)(s_object* cur_object, objManaged& managedObj, bool isManaged);
+    typedef bool (WINAPIC* LPOnVehicleRespawnProcess)(s_object* cur_object, objManaged* managedObj, bool isManaged);
     typedef bool (WINAPIC* LPOnObjectDeleteManagement)(s_object* cur_object, int curTicks, bool isManaged);
-    typedef bool (WINAPIC* LPOnObjectDamageLookupProcess)(objDamageInfo& damageInfo, s_ident& obj_recv, bool& allowDamage, bool isManaged);
-    typedef bool (WINAPIC* LPOnObjectDamageApplyProcess)(const objDamageInfo& damageInfo, s_ident& obj_recv, objHitInfo& hitInfo, bool isBacktap, bool& allowDamage, bool isManaged);
+    typedef bool (WINAPIC* LPOnObjectDamageLookupProcess)(objDamageInfo* damageInfo, s_ident* obj_recv, bool* allowDamage, bool isManaged);
+    typedef bool (WINAPIC* LPOnObjectDamageApplyProcess)(const objDamageInfo* damageInfo, s_ident* obj_recv, objHitInfo* hitInfo, bool isBacktap, bool* allowDamage, bool isManaged);
     typedef void (WINAPIC* LPOnMapLoad)(s_ident, const wchar_t[32]);
     typedef toggle (WINAPIC* LPOnVehicleAIEntry)(s_ident, s_ident, unsigned short, toggle);
     typedef toggle (WINAPIC* LPOnEquipmentDropCurrent)(PlayerInfo, s_ident, s_biped*, s_ident, s_weapon*, toggle);
@@ -204,8 +204,8 @@ namespace addon {
         //Database APIs verification
     __if_exists(EXTHookDatabase) {
         #ifndef EXT_HKDATABASE
-        #pragma COMPILER_ERROR("EXTHookDatabase existed, please include EXT_HKDATABASE in order to function correctly.");
-        #else
+		#pragma COMPILER_ERROR("EXTHookDatabase existed, please include EXT_HKDATABASE in order to function correctly.")
+		#else
         typedef void (WINAPIC* LPReturnVOID)();
         typedef SQLINTEGER (WINAPIC* LPReturnSQLINTEGER)();
         typedef bool (WINAPIC* LPIDReturnBOOL)(int StmtID);
