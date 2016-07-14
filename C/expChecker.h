@@ -204,7 +204,7 @@ namespace addon {
         //Database APIs verification
     __if_exists(EXTHookDatabase) {
         #ifndef EXT_HKDATABASE
-		#pragma COMPILER_ERROR("EXTHookDatabase existed, please include EXT_HKDATABASE in order to function correctly.")
+        static_assert_check(0, "EXTHookDatabase existed, please include EXT_HKDATABASE in order to function correctly.");
 		#else
         typedef void (WINAPIC* LPReturnVOID)();
         typedef SQLINTEGER (WINAPIC* LPReturnSQLINTEGER)();
