@@ -21,6 +21,22 @@ CNATIVE {
         MP_REMOTE = 2
     } MSG_PROTOCOL;
 
+    struct rconData {
+        char* msg_ptr;
+        unsigned int unk; // always 0
+        char msg[0x50];
+        rconData(const char* text) {
+            msg[0] = 0;
+#ifdef EXT_IUTIL
+            pIUtil->strcatA(msg, 0x50, text);
+#else
+            throw "Error: Please include EXT_IUTIL as requirement.";
+#endif
+            unk = 0;
+            msg_ptr = msg;
+        }
+    };
+    static_assert_check(sizeof(rconData) == 0x58, "Incorrect size of rconData");
     #pragma pack(push,1)
     typedef struct PlayerExtended {
         bool isInServer;

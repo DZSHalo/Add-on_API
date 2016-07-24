@@ -77,19 +77,6 @@ struct chatData {
     unsigned int player;    //range of 0 - 15
     wchar_t* msg;           //range of 0 - TBA
 };
-struct rconData {
-    char* msg_ptr;
-    unsigned int unk; // always 0
-    char msg[0x50];
-    rconData(const char text[]) {
-        msg[0] = 0;
-        //strcatA(msg, 0x50, text);
-        //strcat(msg, text);
-        unk = 0;
-        msg_ptr = msg;
-    }
-};
-static_assert_check(sizeof(rconData) == 0x58, "Incorrect size of rconData");
 struct rconDecode {
     char pass[9];
     char cmd[65];
