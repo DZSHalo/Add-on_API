@@ -1,5 +1,6 @@
 #ifndef utilH
 #define utilH
+#include <OAIdl.h>
 
 #define WINAPIC     __cdecl
 
@@ -17,6 +18,64 @@ struct tm {
 };
 #define _TM_DEFINED
 #endif
+
+//Complete replacement to fix the nasty ellpsis' method.
+typedef struct VARIANTconvert {
+    tagVARIANT variant;
+    VARIANTconvert(char* val) {
+        variant.vt = VT_LPSTR;
+        variant.pcVal = val;
+    }
+    VARIANTconvert(wchar_t* val) {
+        variant.vt = VT_LPWSTR;
+        variant.bstrVal = val;
+    }
+    VARIANTconvert(const char* val) {
+        variant.vt = VT_LPSTR;
+        variant.pcVal = (char*)val;
+    }
+    VARIANTconvert(const wchar_t* val) {
+        variant.vt = VT_LPWSTR;
+        variant.bstrVal = (wchar_t*)val;
+    }
+    VARIANTconvert(bool val) {
+        variant.vt = VT_BOOL;
+        variant.boolVal = val;
+    }
+    VARIANTconvert(short val) {
+        variant.vt = VT_I2;
+        variant.iVal = val;
+    }
+    VARIANTconvert(unsigned short val) {
+        variant.vt = VT_UI2;
+        variant.uiVal = val;
+    }
+    VARIANTconvert(int val) {
+        variant.vt = VT_I4;
+        variant.intVal = val;
+    }
+    VARIANTconvert(unsigned int val) {
+        variant.vt = VT_UI4;
+        variant.uintVal = val;
+    }
+    VARIANTconvert(long val) {
+        variant.vt = VT_I8;
+        variant.lVal = val;
+    }
+    VARIANTconvert(unsigned long val) {
+        variant.vt = VT_UI8;
+        variant.ulVal = val;
+    }
+    VARIANTconvert(float val) {
+        variant.vt = VT_R4;
+        variant.fltVal = val;
+    }
+    VARIANTconvert(double val) {
+        variant.vt = VT_R8;
+        variant.dblVal = val;
+    }
+} VARIANTconvert;
+
 #pragma pack(push,1)
     struct haloConsole {
         int r;
@@ -61,13 +120,13 @@ CNATIVE {
         /// </summary>
         /// <param name="Size">The size of allocate memory need to be used.</param>
         /// <returns>Return allocate memory.</returns>
-        void* (*AllocMem)(unsigned int Size);
+        void* (*m_allocMem)(unsigned int Size);
         /// <summary>
         /// Free memory from allocate memory.
         /// </summary>
         /// <param name="Address">Pointer of an allocate memory to be free from.</param>
         /// <returns>No return value.</returns>
-        void (*FreeMem)(void* Address);
+        void (*m_freeMem)(void* Address);
         /// <summary>
         /// Convert a string to wide string.
         /// </summary>
@@ -75,7 +134,7 @@ CNATIVE {
         /// <param name="len">Total length to convert from string.</param>
         /// <param name="charW">Buffered wide string</param>
         /// <returns>No return value.</returns>
-        void (*toCharW)(const char* charA, int len, wchar_t* charW);
+        void (*m_toCharW)(const char* charA, int len, wchar_t* charW);
         /// <summary>
         /// Convert a wide string to string.
         /// </summary>
@@ -83,79 +142,79 @@ CNATIVE {
         /// <param name="len">Total length to convert from wide string.</param>
         /// <param name="charA">Buffered string</param>
         /// <returns>No return value.</returns>
-        void (*toCharA)(const wchar_t* charW, int len, char* charA);
+        void (*m_toCharA)(const wchar_t* charW, int len, char* charA);
         /// <summary>
         /// Translate a string into boolean.
         /// </summary>
         /// <param name="str">String to translate from.</param>
         /// <returns>Return -1 if string doesn't have a translation to boolean.</returns>
-        e_boolean (*StrToBooleanA)(const char* str);
+        e_boolean (*m_strToBooleanA)(const char* str);
         /// <summary>
         /// Translate a wide string into boolean.
         /// </summary>
         /// <param name="str">Wide string to translate from.</param>
         /// <returns>Return -1 if string doesn't have a translation to boolean.</returns>
-        e_boolean (*StrToBooleanW)(const wchar_t* str);
+        e_boolean (*m_strToBooleanW)(const wchar_t* str);
         /// <summary>
         /// Translate a string into team index.
         /// </summary>
         /// <param name="str">String to translate from.</param>
         /// <returns>Return -1 if string doesn't have a translation to team index.</returns>
-        e_color_team_index (*StrToTeamA)(const char* str);
+        e_color_team_index (*m_strToTeamA)(const char* str);
         /// <summary>
         /// Translate a wide string into team index.
         /// </summary>
         /// <param name="str">Wide string to translate from.</param>
         /// <returns>Return -1 if string doesn't have a translation to team index.</returns>
-        e_color_team_index (*StrToTeamW)(const wchar_t* str);
+        e_color_team_index (*m_strToTeamW)(const wchar_t* str);
         /// <summary>
         /// Format a current string to support escape characters if any.
         /// </summary>
         /// <param name="regStr">String to format escape characters if any.</param>
         /// <returns>No return value.</returns>
-        void (*ReplaceA)(char* regStr);
+        void (*m_replaceA)(char* regStr);
         /// <summary>
         /// Format a current string to support escape characters if any.
         /// </summary>
         /// <param name="regStr">String to format escape characters if any.</param>
         /// <returns>No return value.</returns>
-        void (*ReplaceW)(wchar_t* regStr);
+        void (*m_replaceW)(wchar_t* regStr);
         /// <summary>
         /// Undo format a current string to support escape characters if any.
         /// </summary>
         /// <param name="regStr">String to undo format escape characters if any.</param>
         /// <returns>No return value.</returns>
-        void (*ReplaceUndoA)(char* regStr);
+        void (*m_replaceUndoA)(char* regStr);
         /// <summary>
         /// Undo format a current string to support escape characters if any.
         /// </summary>
         /// <param name="regStr">String to undo format escape characters if any.</param>
         /// <returns>No return value.</returns>
-        void (*ReplaceUndoW)(wchar_t* regStr);
+        void (*m_replaceUndoW)(wchar_t* regStr);
         /// <summary>
         /// Verify if whole string contain digits.
         /// </summary>
         /// <param name="str">String to check.</param>
         /// <returns>Return true if valid.</returns>
-        bool (*isnumberA)(const char* str);
+        bool (*m_isNumberA)(const char* str);
         /// <summary>
         /// Verify if whole wide string contain digits.
         /// </summary>
         /// <param name="str">Wide string to check.</param>
         /// <returns>Return true if valid.</returns>
-        bool (*isnumberW)(const wchar_t* str);
+        bool (*m_isNumberW)(const wchar_t* str);
         /// <summary>
         /// Verify if whole string contain characters & digits.
         /// </summary>
         /// <param name="str">String to check.</param>
         /// <returns>Return true if valid.</returns>
-        bool (*ishashA)(const char* str);
+        bool (*m_isHashA)(const char* str);
         /// <summary>
         /// Verify if whole wide string contain characters & digits.
         /// </summary>
         /// <param name="str">Wide string to check.</param>
         /// <returns>Return true if valid.</returns>
-        bool (*ishashW)(const wchar_t* str);
+        bool (*m_isHashW)(const wchar_t* str);
         /// <summary>
         /// Move partial of string to left or right.
         /// </summary>
@@ -165,7 +224,7 @@ CNATIVE {
         /// <param name="lenShift">Amount of length to shift left or right.</param>
         /// <param name="leftRight">True for shift to right and false for shift to left.</param>
         /// <returns>Return true for success, failed if one or more argument is invalid.</returns>
-        e_boolean (*shiftStrA)(char* regStr, int len, int pos, int lenShift, bool leftRight);
+        e_boolean (*m_shiftStrA)(char* regStr, int len, int pos, int lenShift, bool leftRight);
         /// <summary>
         /// Move partial of wide string to left or right.
         /// </summary>
@@ -175,28 +234,28 @@ CNATIVE {
         /// <param name="lenShift">Amount of length to shift left or right.</param>
         /// <param name="leftRight">True for shift to right and false for shift to left.</param>
         /// <returns>Return true for success, failed if one or more argument is invalid.</returns>
-        e_boolean (*shiftStrW)(wchar_t* regStr, int len, int pos, int lenShift, bool leftRight);
+        e_boolean (*m_shiftStrW)(wchar_t* regStr, int len, int pos, int lenShift, bool leftRight);
         /// <summary>
         /// Format a current string to support escape characters if any.
         /// </summary>
         /// <param name="regStr">String to format escape characters if any.</param>
         /// <param name="isDB">True if goig to use escape characters in database query.</param>
         /// <returns>No return value.</returns>
-        void (*regexReplaceW)(wchar_t* regStr, bool isDB);
+        void (*m_regexReplaceW)(wchar_t* regStr, bool isDB);
         /// <summary>
         /// Find a regular expression string against source string to be a match.
         /// </summary>
         /// <param name="srcStr">Source string</param>
         /// <param name="regex">Regular expression string</param>
         /// <returns>Return true if is a match.</returns>
-        bool (*regexMatchW)(wchar_t* srcStr, wchar_t* regex);
+        bool (*m_regexMatchW)(wchar_t* srcStr, wchar_t* regex);
         /// <summary>
         /// Find a regular expression string against source string to be a match.
         /// </summary>
         /// <param name="srcStr">Source string</param>
         /// <param name="regex">Regular expression string</param>
         /// <returns>Return true if is a match.</returns>
-        bool (*regexiMatchW)(wchar_t* srcStr, wchar_t* regex);
+        bool (*m_regexiMatchW)(wchar_t* srcStr, wchar_t* regex);
 
         /// <summary>
         /// Format variable arguments list into given prefix string.
@@ -205,7 +264,7 @@ CNATIVE {
         /// <param name="_Format">Format message string</param>
         /// <param name="ArgList">Variable arguments list</param>
         /// <returns>Return true or false for format completion.</returns>
-        bool (*FormatVarArgsListA)(char* writeTo, const char* _Format, char* ArgList);
+        bool (*m_formatVarArgsListA)(char* writeTo, const char* _Format, char* ArgList);
         /// <summary>
         /// Format variable arguments list into given prefix string.
         /// </summary>
@@ -213,59 +272,59 @@ CNATIVE {
         /// <param name="_Format">Format message string</param>
         /// <param name="ArgList">Variable arguments list</param>
         /// <returns>Return true or false for format completion.</returns>
-        bool (*FormatVarArgsListW)(wchar_t* writeTo, const wchar_t* _Format, char* ArgList);
+        bool (*m_formatVarArgsListW)(wchar_t* writeTo, const wchar_t* _Format, char* ArgList);
         /// <summary>
         /// Compare beginning of case-senitive string against another string.
         /// </summary>
         /// <param name="str1">Beginning of string #1 to compare against.</param>
         /// <param name="str2">String #2 to compare against.</param>
         /// <returns>Only return true if is a match.</returns>
-        bool (*findSubStrFirstA)(const char* dest, const char* src);
+        bool (*m_findSubStrFirstA)(const char* dest, const char* src);
         /// <summary>
         /// Compare beginning of case-senitive string against another string.
         /// </summary>
         /// <param name="str1">Beginning of string #1 to compare against.</param>
         /// <param name="str2">String #2 to compare against.</param>
         /// <returns>Only return true if is a match.</returns>
-        bool (*findSubStrFirstW)(const wchar_t* dest, const wchar_t* src);
+        bool (*m_findSubStrFirstW)(const wchar_t* dest, const wchar_t* src);
 
         /// <summary>
         /// Test if string contains a letters or not.
         /// </summary>
         /// <param name="str">String to test if is a letters.</param>
         /// <returns>Return true if is letters.</returns>
-        bool (*islettersA)(const char* str);
+        bool (*m_isLettersA)(const char* str);
         /// <summary>
         /// Test if string contains a letters or not.
         /// </summary>
         /// <param name="str">String to test if is a letters.</param>
         /// <returns>Return true if is letters.</returns>
-        bool (*islettersW)(const wchar_t* str);
+        bool (*m_isLettersW)(const wchar_t* str);
 
         /// <summary>
         /// Test if string contains a float or not.
         /// </summary>
         /// <param name="str">String to test if is a float.</param>
         /// <returns>Return true if is a float.</returns>
-        bool (*isfloatA)(const char* str);
+        bool (*m_isFloatA)(const char* str);
         /// <summary>
         /// Test if string contains a float or not.
         /// </summary>
         /// <param name="str">String to test if is a float.</param>
         /// <returns>Return true if is a float.</returns>
-        bool (*isfloatW)(const wchar_t* str);
+        bool (*m_isFloatW)(const wchar_t* str);
         /// <summary>
         /// Test if string contains a double or not.
         /// </summary>
         /// <param name="str">String to test if is a double.</param>
         /// <returns>Return true if is a double.</returns>
-        bool (*isdoubleA)(const char* str);
+        bool (*m_isDoubleA)(const char* str);
         /// <summary>
         /// Test if string contains a double or not.
         /// </summary>
         /// <param name="str">String to test if is a double.</param>
         /// <returns>Return true if is a double.</returns>
-        bool (*isdoubleW)(const wchar_t* str);
+        bool (*m_isDoubleW)(const wchar_t* str);
         /// <summary>
         /// Append an existing string with new string.
         /// </summary>
@@ -273,7 +332,7 @@ CNATIVE {
         /// <param name="len">Maximum size of an dest string.</param>
         /// <param name="src">New string to copy from.</param>
         /// <returns>Return 1 every time.</returns>
-        int (*strcatW)(wchar_t* dest, size_t len, const wchar_t* src);
+        int (*m_strcatW)(wchar_t* dest, size_t len, const wchar_t* src);
         /// <summary>
         /// Append an existing string with new string.
         /// </summary>
@@ -281,56 +340,56 @@ CNATIVE {
         /// <param name="len">Maximum size of an dest string.</param>
         /// <param name="src">New string to copy from.</param>
         /// <returns>Return 1 every time.</returns>
-        int (*strcatA)(char *dest, size_t len, const char* src);
+        int (*m_strcatA)(char *dest, size_t len, const char* src);
         /// <summary>
         /// Convert a string to wide string.
         /// </summary>
         /// <param name="str">String</param>
         /// <param name="wstr">Buffered wide string./param>
         /// <returns>No return value.</returns>
-        void (*str_to_wstr)(char* str, wchar_t* wstr);
+        void (*m_str_to_wstr)(char* str, wchar_t* wstr);
         /// <summary>
         /// Case-senitive string to compare against another string..
         /// </summary>
         /// <param name="str1">String #1 to compare against.</param>
         /// <param name="str2">String #2 to compare against.</param>
         /// <returns>Only return true if is a match.</returns>
-        bool (*strcmpW)(const wchar_t* str1, const wchar_t* str2);
+        bool (*m_strcmpW)(const wchar_t* str1, const wchar_t* str2);
         /// <summary>
         /// Case-senitive string to compare against another string..
         /// </summary>
         /// <param name="str1">String #1 to compare against.</param>
         /// <param name="str2">String #2 to compare against.</param>
         /// <returns>Only return true if is a match.</returns>
-        bool (*strcmpA)(const char* str1, const char* str2);
+        bool (*m_strcmpA)(const char* str1, const char* str2);
         /// <summary>
         /// Case-insenitive string to compare against another string.
         /// </summary>
         /// <param name="str1">String #1 to compare against.</param>
         /// <param name="str2">String #2 to compare against.</param>
         /// <returns>Only return true if is a match.</returns>
-        bool (*stricmpW)(const wchar_t* str1, const wchar_t* str2);
+        bool (*m_stricmpW)(const wchar_t* str1, const wchar_t* str2);
         /// <summary>
         /// Case-insenitive string to compare against another string.
         /// </summary>
         /// <param name="str1">String #1 to compare against.</param>
         /// <param name="str2">String #2 to compare against.</param>
         /// <returns>Only return true if is a match.</returns>
-        bool (*stricmpA)(const char* str1, const char* str2);
+        bool (*m_stricmpA)(const char* str1, const char* str2);
         /// <summary>
         /// Check if a directory exist.
         /// </summary>
         /// <param name="pathStr">Must have directory name.</param>
         /// <param name="errorCode">Given error code if failed.</param>
         /// <returns>Return true if directory exist, false with given errorCode.</returns>
-        bool (*isDirExist)(const wchar_t* str, unsigned int* errorCode);
+        bool (*m_isDirExist)(const wchar_t* str, unsigned int* errorCode);
         /// <summary>
         /// Check if a file exist.
         /// </summary>
         /// <param name="pathStr">Must have directory (optional) and file name.</param>
         /// <param name="errorCode">Given error code if failed.</param>
         /// <returns>Return true if file exist, false with given errorCode.</returns>
-        bool (*isFileExist)(const wchar_t* pathStr, unsigned int* errorCode);
+        bool (*m_isFileExist)(const wchar_t* pathStr, unsigned int* errorCode);
         /// <summary>
         /// Format variable arguments into given prefix string.
         /// </summary>
@@ -338,7 +397,7 @@ CNATIVE {
         /// <param name="_Format">Format message string</param>
         /// <param name="...">Variable arguments</param>
         /// <returns>Return true or false for format completion.</returns>
-        bool (*FormatVarArgsA)(char* writeTo, const char* _Format, ...);
+        bool (*m_formatVarArgsA)(char* writeTo, const char* _Format, ...);
         /// <summary>
         /// Format variable arguments into given prefix string.
         /// </summary>
@@ -346,7 +405,17 @@ CNATIVE {
         /// <param name="_Format">Format message string</param>
         /// <param name="...">Variable arguments</param>
         /// <returns>Return true or false for format completion.</returns>
-        bool (*FormatVarArgsW)(wchar_t* writeTo, const wchar_t* _Format, ...);
+        bool (*m_formatVarArgsW)(wchar_t* writeTo, const wchar_t* _Format, ...);
+        /// <summary>
+        /// Format variant arguments into a custom prefix string.
+        /// </summary>
+        /// <param name="outputStr">Output string</param>
+        /// <param name="maxOutput">Maximum size of output string.</param>
+        /// <param name="_Format">Format custom message string</param>
+        /// <param name="argTotal">Must be equivalent to argList's total of arrays.</param>
+        /// <param name="argList">Variant arguments in array format.</param>
+        /// <returns>Return true or false for format completion.</returns>
+        bool (*m_formatVariantW)(wchar_t* outputStr, unsigned int maxOutput, const wchar_t* _Format, unsigned int argTotal, VARIANT* argList);
     } IUtil;
     dllport IUtil* getIUtil(unsigned int hash);
     //This variable is needed for IObject usage and prevent link breakage.
@@ -398,8 +467,8 @@ public:
             return;
         }
         else {
-            stack = (d_stack*)pIUtil->AllocMem(sizeof(d_stack));
-            stack->d_type = (T*)pIUtil->AllocMem(sizeof(T));
+            stack = (d_stack*)pIUtil->m_allocMem(sizeof(d_stack));
+            stack->d_type = (T*)pIUtil->m_allocMem(sizeof(T));
             *stack->d_type = *scan->d_type;
             scan = scan->next_d_type;
             stack->next_d_type = 0;
@@ -407,8 +476,8 @@ public:
 
         }
         while (scan) {
-            d_stack* newStack = (d_stack*)pIUtil->AllocMem(sizeof(d_stack));
-            newStack->d_type = (T*)pIUtil->AllocMem(sizeof(T));
+            d_stack* newStack = (d_stack*)pIUtil->m_allocMem(sizeof(d_stack));
+            newStack->d_type = (T*)pIUtil->m_allocMem(sizeof(T));
             *newStack->d_type = *scan->d_type;
             newStack->next_d_type = 0;
             clone->next_d_type = newStack;
@@ -424,8 +493,8 @@ public:
     class const_iterator;
     void push_back(T type) {
         if (!stack) {
-            stack = (d_stack*)pIUtil->AllocMem(sizeof(d_stack));
-            stack->d_type = (T*)pIUtil->AllocMem(sizeof(T));
+            stack = (d_stack*)pIUtil->m_allocMem(sizeof(d_stack));
+            stack->d_type = (T*)pIUtil->m_allocMem(sizeof(T));
             *stack->d_type = type;
             stack->next_d_type = 0;
         }
@@ -434,8 +503,8 @@ public:
             while (src->next_d_type) {
                 src = src->next_d_type;
             }
-            d_stack* newSrc = (d_stack*)pIUtil->AllocMem(sizeof(d_stack));
-            newSrc->d_type = (T*)pIUtil->AllocMem(sizeof(T));
+            d_stack* newSrc = (d_stack*)pIUtil->m_allocMem(sizeof(d_stack));
+            newSrc->d_type = (T*)pIUtil->m_allocMem(sizeof(T));
             *newSrc->d_type = type;
             newSrc->next_d_type = 0;
             src->next_d_type = newSrc;
@@ -445,8 +514,8 @@ public:
         if (stack) {
             d_stack* src = stack;
             d_stack* nextSrc = stack->next_d_type;
-            pIUtil->FreeMem(stack->d_type);
-            pIUtil->FreeMem(stack);
+            pIUtil->m_freeMem(stack->d_type);
+            pIUtil->m_freeMem(stack);
             stack = nextSrc;
         }
     }
@@ -470,8 +539,8 @@ public:
             }
             else
                 stack = src->next_d_type;
-            pIUtil->FreeMem(src->d_type);
-            pIUtil->FreeMem(src);
+            pIUtil->m_freeMem(src->d_type);
+            pIUtil->m_freeMem(src);
         }
         return isDel;
     }
@@ -527,8 +596,8 @@ public:
     while(src->next_d_type) {
     if (data==src->d_type) {
     prevSrc->next_d_type = src->next_d_type;
-    pIUtil->FreeMem(src->d_type);
-    pIUtil->FreeMem(src);
+    pIUtil->m_freeMem(src->d_type);
+    pIUtil->m_freeMem(src);
     return prevSrc->d_type;
     }
     prevSrc = src;
@@ -546,8 +615,8 @@ public:
                 }
                 else
                     stack = prevSrc = src->next_d_type;
-                pIUtil->FreeMem(src->d_type);
-                pIUtil->FreeMem(src);
+                pIUtil->m_freeMem(src->d_type);
+                pIUtil->m_freeMem(src);
                 return prevSrc;
             }
             prevSrc = src;
@@ -584,8 +653,8 @@ public:
     void insert(iterator iter, T newData) {
         d_stack* insert;
         if (iter != 0) {
-            insert = (d_stack*)pIUtil->AllocMem(sizeof(d_stack));
-            insert->d_type = (T*)pIUtil->AllocMem(sizeof(T));
+            insert = (d_stack*)pIUtil->m_allocMem(sizeof(d_stack));
+            insert->d_type = (T*)pIUtil->m_allocMem(sizeof(T));
             *insert->d_type = newData;
             insert->next_d_type = iter.ptr_->next_d_type;
             iter.ptr_->next_d_type = insert;
@@ -594,8 +663,8 @@ public:
         else {
             d_stack* src = stack;
             if (!src) {
-                stack = (d_stack*)pIUtil->AllocMem(sizeof(d_stack));
-                stack->d_type = (T*)pIUtil->AllocMem(sizeof(T));
+                stack = (d_stack*)pIUtil->m_allocMem(sizeof(d_stack));
+                stack->d_type = (T*)pIUtil->m_allocMem(sizeof(T));
                 *stack->d_type = newData;
                 stack->next_d_type = 0;
                 return;
@@ -608,8 +677,8 @@ public:
             }
             if (!src)
                 src = stack;
-            insert = (d_stack*)pIUtil->AllocMem(sizeof(d_stack));
-            insert->d_type = (T*)pIUtil->AllocMem(sizeof(T));
+            insert = (d_stack*)pIUtil->m_allocMem(sizeof(d_stack));
+            insert->d_type = (T*)pIUtil->m_allocMem(sizeof(T));
             *insert->d_type = newData;
             insert->next_d_type = src->next_d_type;
             src->next_d_type = insert;
@@ -621,10 +690,10 @@ public:
             d_stack* holder = 0;
             while (src) {
                 if (src->d_type)
-                    pIUtil->FreeMem(src->d_type);
+                    pIUtil->m_freeMem(src->d_type);
                 holder = src;
                 src = src->next_d_type;
-                pIUtil->FreeMem(holder);
+                pIUtil->m_freeMem(holder);
             }
             stack = 0;
         }

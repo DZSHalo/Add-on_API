@@ -1,6 +1,7 @@
 module Add_on_API.D.util;
 
 import Add_on_API.Add_on_API;
+import core.sys.windows.oaidl;
 
 struct tm {
     int tm_sec;     /* seconds after the minute - [0,59] */
@@ -61,14 +62,14 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * Size = The size of allocate memory need to be used.
          * Returns: Return allocate memory.
          */
-        void* function(uint Size) AllocMem;
+        void* function(uint Size) m_allocMem;
         /*
          * Free memory from allocate memory.
          * Params:
          * Address = Pointer of an allocate memory to be free from.
          * Returns: No return value.
          */
-        void function(void* Address) FreeMem;
+        void function(void* Address) m_freeMem;
         /*
          * Convert a string to wide string.
          * Params:
@@ -77,7 +78,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * charW = Buffered wide string
          * Returns: No return value.
          */
-        void function(const char* charA, int len, wchar* charW) toCharW;
+        void function(const char* charA, int len, wchar* charW) m_toCharW;
         /*
          * Convert a wide string to string.
          * Params:
@@ -86,91 +87,91 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * charA = Buffered string
          * Returns: No return value.
          */
-        void function(const wchar* charW, int len, char* charA) toCharA;
+        void function(const wchar* charW, int len, char* charA) m_toCharA;
         /*
          * Translate a string into boolean.
          * Params:
          * str = String to translate from.
          * Returns: Return -1 if string doesn't have a translation to boolean.
          */
-        e_boolean function(const char* str) StrToBooleanA;
+        e_boolean function(const char* str) m_strToBooleanA;
         /*
          * Translate a wide string into boolean.
          * Params:
          * str = Wide string to translate from.
          * Returns: Return -1 if string doesn't have a translation to boolean.
          */
-        e_boolean function(const wchar* str) StrToBooleanW;
+        e_boolean function(const wchar* str) m_strToBooleanW;
         /*
          * Translate a string into team index.
          * Params:
          * str = String to translate from.
          * Returns: Return -1 if string doesn't have a translation to team index.
          */
-        e_color_team_index function(const char* str) StrToTeamA;
+        e_color_team_index function(const char* str) m_strToTeamA;
         /*
          * Translate a wide string into team index.
          * Params:
          * str = Wide string to translate from.
          * Returns: Return -1 if string doesn't have a translation to team index.
          */
-        e_color_team_index function(const wchar* str) StrToTeamW;
+        e_color_team_index function(const wchar* str) m_strToTeamW;
         /*
          * Format a current string to support escape characters if any.
          * Params:
          * regStr = String to format escape characters if any.
          * Returns: No return value.
          */
-        void function(char* regStr) ReplaceA;
+        void function(char* regStr) m_replaceA;
         /*
          * Format a current string to support escape characters if any.
          * Params:
          * regStr = String to format escape characters if any.
          * Returns: No return value.
          */
-        void function(wchar* regStr) ReplaceW;
+        void function(wchar* regStr) m_replaceW;
         /*
          * Undo format a current string to support escape characters if any.
          * Params:
          * regStr = String to undo format escape characters if any.
          * Returns: No return value.
          */
-        void function(char* regStr) ReplaceUndoA;
+        void function(char* regStr) m_replaceUndoA;
         /*
          * Undo format a current string to support escape characters if any.
          * Params:
          * regStr = String to undo format escape characters if any.
          * Returns: No return value.
          */
-        void function(wchar* regStr) ReplaceUndoW;
+        void function(wchar* regStr) m_replaceUndoW;
         /*
          * Verify if whole string contain digits.
          * Params:
          * str = String to check.
          * Returns: Return true if valid.
          */
-        bool function(const char* str) isnumberA;
+        bool function(const char* str) m_isNumberA;
         /*
          * Verify if whole wide string contain digits.
          * Params:
          * str = Wide string to check.
          * Returns: Return true if valid.
          */
-        bool function(const wchar* str) isnumberW;
+        bool function(const wchar* str) m_isNumberW;
         /*
          * Verify if whole string contain characters & digits.
          * Params:
          * str = String to check.
          * Returns: Return true if valid.
          */
-        bool function(const char* str) ishashA;
+        bool function(const char* str) m_isHashA;
         /*
          * Verify if whole wide string contain characters & digits.
          * Params:
          * str = Wide string to check.
          * Returns: Return true if valid.
          */
-        bool function(const wchar* str) ishashW;
+        bool function(const wchar* str) m_isHashW;
         /*
          * Move partial of string to left or right.
          * Params:
@@ -181,7 +182,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * leftRight = True for shift to right and false for shift to left.
          * Returns: Return true for success, failed if one or more argument is invalid.
          */
-        e_boolean function(char* regStr, int len, int pos, int lenShift, bool leftRight) shiftStrA;
+        e_boolean function(char* regStr, int len, int pos, int lenShift, bool leftRight) m_shiftStrA;
         /*
          * Move partial of wide string to left or right.
          * Params:
@@ -192,7 +193,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * leftRight = True for shift to right and false for shift to left.
          * Returns: Return true for success, failed if one or more argument is invalid.
          */
-        e_boolean function(wchar* regStr, int len, int pos, int lenShift, bool leftRight) shiftStrW;
+        e_boolean function(wchar* regStr, int len, int pos, int lenShift, bool leftRight) m_shiftStrW;
         /*
          * Format a current string to support escape characters if any.
          * Params:
@@ -200,7 +201,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * isDB = True if goig to use escape characters in database query.
          * Returns: No return value.
          */
-        void function(wchar* regStr, bool isDB) regexReplaceW;
+        void function(wchar* regStr, bool isDB) m_regexReplaceW;
         /*
          * Find a regular expression string against source string to be a match.
          * Params:
@@ -208,7 +209,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * regex = Regular expression string
          * Returns: Return true if is a match.
          */
-        bool function(wchar* srcStr, wchar* regex) regexMatchW;
+        bool function(wchar* srcStr, wchar* regex) m_regexMatchW;
         /*
          * Find a regular expression string against source string to be a match.
          * Params:
@@ -216,7 +217,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * regex = Regular expression string
          * Returns: Return true if is a match.
          */
-        bool function(wchar* srcStr, wchar* regex) regexiMatchW;
+        bool function(wchar* srcStr, wchar* regex) m_regexiMatchW;
 
         /*
          * Format variable arguments list into given prefix string.
@@ -226,7 +227,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * ArgList = Variable arguments list
          * Returns: Return true or false for format completion.
          */
-        bool function(char* writeTo, const char* _Format, char * ArgList) FormatVarArgsListA;
+        bool function(char* writeTo, const char* _Format, char * ArgList) m_formatVarArgsListA;
         /*
          * Format variable arguments list into given prefix string.
          * Params:
@@ -235,7 +236,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * ArgList = Variable arguments list
          * Returns: Return true or false for format completion.
          */
-        bool function(wchar* writeTo, const wchar* _Format, char * ArgList) FormatVarArgsListW;
+        bool function(wchar* writeTo, const wchar* _Format, char * ArgList) m_formatVarArgsListW;
         /*
          * Compare beginning of case-senitive string against another string.
          * Params:
@@ -243,7 +244,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * str2 = String #2 to compare against.
          * Returns: Only return true if is a match.
          */
-        bool function(const char* dest, const char* src) findSubStrFirstA;
+        bool function(const char* dest, const char* src) m_findSubStrFirstA;
         /*
          * Compare beginning of case-senitive string against another string.
          * Params:
@@ -251,7 +252,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * str2 = String #2 to compare against.
          * Returns: Only return true if is a match.
          */
-        bool function(const wchar* dest, const wchar* src) findSubStrFirstW;
+        bool function(const wchar* dest, const wchar* src) m_findSubStrFirstW;
 
         /*
          * Test if string contains a letters or not.
@@ -259,14 +260,14 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * str = String to test if is a letters.
          * Returns: Return true if is letters.
          */
-        bool function(const char* str) islettersA;
+        bool function(const char* str) m_isLettersA;
         /*
          * Test if string contains a letters or not.
          * Params:
          * str = String to test if is a letters.
          * Returns: Return true if is letters.
          */
-        bool function(const wchar* str) islettersW;
+        bool function(const wchar* str) m_isLettersW;
 
         /*
          * Test if string contains a float or not.
@@ -274,28 +275,28 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * str = String to test if is a float.
          * Returns: Return true if is a float.
          */
-        bool function(const char* str) isfloatA;
+        bool function(const char* str) m_isFloatA;
         /*
          * Test if string contains a float or not.
          * Params:
          * str = String to test if is a float.
          * Returns: Return true if is a float.
          */
-        bool function(const wchar* str) isfloatW;
+        bool function(const wchar* str) m_isFloatW;
         /*
          * Test if string contains a double or not.
          * Params:
          * str = String to test if is a double.
          * Returns: Return true if is a double.
          */
-        bool function(const char* str) isdoubleA;
+        bool function(const char* str) m_isDoubleA;
         /*
          * Test if string contains a double or not.
          * Params:
          * str = String to test if is a double.
          * Returns: Return true if is a double.
          */
-        bool function(const wchar* str) isdoubleW;
+        bool function(const wchar* str) m_isDoubleW;
         /*
          * Append an existing string with new string.
          * Params:
@@ -304,7 +305,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * src = New string to copy from.
          * Returns: Return 1 every time.
          */
-        int function(wchar* dest, size_t len, const wchar* src) strcatW;
+        int function(wchar* dest, size_t len, const wchar* src) m_strcatW;
         /*
          * Append an existing string with new string.
          * Params:
@@ -313,7 +314,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * src = New string to copy from.
          * Returns: Return 1 every time.
          */
-        int function(char* dest, size_t len, const char* src) strcatA;
+        int function(char* dest, size_t len, const char* src) m_strcatA;
         /*
          * Convert a string to wide string.
          * Params:
@@ -321,7 +322,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * wstr = Buffered wide string./param>
          * Returns: No return value.
          */
-        void function(char* str, wchar* wstr) str_to_wstr;
+        void function(char* str, wchar* wstr) m_str_to_wstr;
         /*
          * Case-senitive string to compare against another string..
          * Params:
@@ -329,7 +330,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * str2 = String #2 to compare against.
          * Returns: Only return true if is a match.
          */
-        bool function(const wchar* str1, const wchar* str2) strcmpW;
+        bool function(const wchar* str1, const wchar* str2) m_strcmpW;
         /*
          * Case-senitive string to compare against another string..
          * Params:
@@ -337,7 +338,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * str2 = String #2 to compare against.
          * Returns: Only return true if is a match.
          */
-        bool function(const char* str1, const char* str2) strcmpA;
+        bool function(const char* str1, const char* str2) m_strcmpA;
         /*
          * Case-insenitive string to compare against another string.
          * Params:
@@ -345,7 +346,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * str2 = String #2 to compare against.
          * Returns: Only return true if is a match.
          */
-        bool function(const wchar* str1, const wchar* str2) stricmpW;
+        bool function(const wchar* str1, const wchar* str2) m_stricmpW;
         /*
          * Case-insenitive string to compare against another string.
          * Params:
@@ -353,7 +354,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * str2 = String #2 to compare against.
          * Returns: Only return true if is a match.
          */
-        bool function(const char* str1, const char* str2) stricmpA;
+        bool function(const char* str1, const char* str2) m_stricmpA;
         /*
          * Check if a directory exist.
          * Params:
@@ -361,7 +362,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * errorCode = Given error code if failed.
          * Returns: Return true if directory exist, false with given errorCode.
          */
-        bool function(const wchar* str, uint* errorCode) isDirExist;
+        bool function(const wchar* str, uint* errorCode) m_isDirExist;
         /*
          * Check if a file exist.
          * Params:
@@ -369,7 +370,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * errorCode = Given error code if failed.
          * Returns: Return true if file exist, false with given errorCode.
          */
-        bool function(const wchar* str, uint* errorCode) isFileExist;
+        bool function(const wchar* str, uint* errorCode) m_isFileExist;
         /*
          * Format variable arguments into given prefix string.
          * Params:
@@ -378,7 +379,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * ... = Variable arguments
          * Returns: Return true or false for format completion.
         */
-        bool function(char* writeTo, const char* _Format, ...) FormatVarArgsA;
+        bool function(char* writeTo, const char* _Format, ...) m_formatVarArgsA;
         /*
          * Format variable arguments into given prefix string.
          * Params:
@@ -387,7 +388,18 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * ... = Variable arguments
          * Returns: Return true or false for format completion.
          */
-        bool function(wchar* writeTo, const wchar* _Format, ...) FormatVarArgsW;
+        bool function(wchar* writeTo, const wchar* _Format, ...) m_formatVarArgsW;
+        /*
+         * Format variant arguments into a custom prefix string.
+         * Params:
+         * outputStr = Output string
+         * maxOutput = Maximum size of output string.
+         * _Format = Format custom message string
+         * argTotal = Must be equivalent to argList's total of arrays.
+         * argList = Variant arguments in array format.
+         * Returns: Return true or false for format completion.
+        */
+        bool function(wchar* outputStr, uint maxOutput, const wchar* _Format, uint argTotal, VARIANT* argList) m_formatVariantW;
     };
     extern (C) IUtil* getIUtil(uint hash);
     __gshared IUtil* pIUtil;
@@ -418,8 +430,8 @@ static if(__traits(compiles, EXT_IUTIL)) {
         }
         void push_back(T)(T type) {
             if (!stack) {
-                stack = cast(d_stack!(T)*)pIUtil.AllocMem(d_stack!(T).sizeof);
-                stack.d_type = cast(T*)pIUtil.AllocMem(T.sizeof);
+                stack = cast(d_stack!(T)*)pIUtil.m_AllocMem(d_stack!(T).sizeof);
+                stack.d_type = cast(T*)pIUtil.m_AllocMem(T.sizeof);
                 *stack.d_type = type;
                 stack.next_d_type = null;
             } else {
@@ -427,8 +439,8 @@ static if(__traits(compiles, EXT_IUTIL)) {
                 while (src.next_d_type) {
                     src = src.next_d_type;
                 }
-                d_stack!(T)* newSrc = cast(d_stack!(T)*)pIUtil.AllocMem(d_stack!(T).sizeof);
-                newSrc.d_type = cast(T*)pIUtil.AllocMem(T.sizeof);
+                d_stack!(T)* newSrc = cast(d_stack!(T)*)pIUtil.m_AllocMem(d_stack!(T).sizeof);
+                newSrc.d_type = cast(T*)pIUtil.m_AllocMem(T.sizeof);
                 *newSrc.d_type = type;
                 newSrc.next_d_type = null;
                 src.next_d_type = newSrc;
@@ -438,8 +450,8 @@ static if(__traits(compiles, EXT_IUTIL)) {
             if (stack) {
                 d_stack!(T)* src = stack;
                 d_stack!(T)* nextSrc = stack.next_d_type;
-                pIUtil.FreeMem(stack.d_type);
-                pIUtil.FreeMem(cast(void*)stack);
+                pIUtil.m_FreeMem(stack.d_type);
+                pIUtil.m_FreeMem(cast(void*)stack);
                 stack = nextSrc;
             }
         }
@@ -464,8 +476,8 @@ static if(__traits(compiles, EXT_IUTIL)) {
                 }
                 else
                     stack = src.next_d_type;
-                pIUtil.FreeMem(cast(void*)src.d_type);
-                pIUtil.FreeMem(cast(void*)src);
+                pIUtil.m_FreeMem(cast(void*)src.d_type);
+                pIUtil.m_FreeMem(cast(void*)src);
             }
             return isDel;
         }
@@ -492,10 +504,10 @@ static if(__traits(compiles, EXT_IUTIL)) {
                 d_stack!(T)* holder = null;
                 while (src) {
                     if (src.d_type)
-                        pIUtil.FreeMem(src.d_type);
+                        pIUtil.m_FreeMem(src.d_type);
                     holder = src;
                     src = src.next_d_type;
-                    pIUtil.FreeMem(holder);
+                    pIUtil.m_FreeMem(holder);
                 }
                 stack = null;
             }

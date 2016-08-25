@@ -1,5 +1,7 @@
 using System;
+#if EXT_IUTIL
 using System.Text;
+#endif
 using System.Runtime.InteropServices;
 
 [StructLayout(LayoutKind.Sequential)]
@@ -209,6 +211,9 @@ namespace Addon_API {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
         private delegate bool d_FormatVarArgsW([In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder writeTo, [In, MarshalAs(UnmanagedType.LPWStr)] string _Format /*, ...*/);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public delegate bool d_formatVariantW([In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder outputStr, [In] uint maxOutput, [In, MarshalAs(UnmanagedType.LPWStr)] string _Format, uint argTotal, [In, MarshalAs(UnmanagedType.LPArray)] params object[] argList);
 
         /// <summary>
         /// Allocate memory.
@@ -502,7 +507,16 @@ namespace Addon_API {
         /// <param name="...">Variable arguments</param>
         /// <returns>Return true or false for format completion.</returns>
         private d_FormatVarArgsW m_FormatVarArgsW;
-        
+        /// <summary>
+        /// Format variant arguments into a custom prefix string.
+        /// </summary>
+        /// <param name="outputStr">Output string</param>
+        /// <param name="maxOutput">Maximum size of output string.</param>
+        /// <param name="_Format">Format custom message string</param>
+        /// <param name="argTotal">Must be equivalent to argList's total of arrays.</param>
+        /// <param name="argList">Variant arguments in array format.</param>
+        /// <returns>Return true or false for format completion.</returns>
+        public d_formatVariantW m_formatVariantW;
 
         //Simple & easier user-defined conversion + checker for null.
         public IUtil(IUtilPtr data) {

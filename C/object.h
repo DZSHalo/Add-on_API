@@ -78,7 +78,7 @@ CNATIVE{
         }
         ~objTagGroupList() {
             if (tag_list)
-                pIUtil->FreeMem(tag_list);
+                pIUtil->m_freeMem(tag_list);
         }
     } objTagGroupList;
     typedef struct IObject {

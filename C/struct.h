@@ -168,7 +168,7 @@ struct s_machine_slot {
     short   Unknown3;                       //0x0050 // 1
     char    SessionKey[8];                  //0x0052 // This is used to accept the incoming player PLUS validate with gamespy server.
     short   Unknown4;                       //0x005A
-    int     UniqueID;                       //0x005C // increase every time a player join (notice: it is not focus on specific machine struct, it applies to all.)
+    unsigned int     UniqueID;              //0x005C // increase every time a player join (notice: it is not focus on specific machine struct, it applies to all.)
     //Below is used for Halo CE and Trial?, Halo PC doesn't have this extra data.
     //NOTICE: This below is disabled as it is no longer needed.
     //wchar_t    LastPlayersName[12];       //0x0060 // Odd.. this isnt the name of the player who's on, but i thinkn it's the Previous player's name.
@@ -680,6 +680,8 @@ struct s_vehicle {
     bool            isNotAllowPlayerEntry;  // 0x206
     char            UnknownVeh1[0x11D];     // 0x18C
     s_ident         SlaveController;        // 0x324
+    int             UnknownInt[0xA1];       // 0x328
+    int             LastInUsedTick;         // 0x5AC
     //Anything goes after this?
 }; // Size - 3580(0xDFC)
 //Major WIP Halo Structure End
@@ -844,7 +846,7 @@ struct SoundVars {
 static_assert_check(sizeof(SoundVars) == 0x17C, "Incorrect size of SoundVars");
 
 struct validationCheck {
-    int UniqueID;
+    unsigned int UniqueID;
     unsigned int isValid;
     char *message;
 };

@@ -28,7 +28,7 @@ CNATIVE {
         rconData(const char* text) {
             msg[0] = 0;
 #ifdef EXT_IUTIL
-            pIUtil->strcatA(msg, 0x50, text);
+            pIUtil->m_strcatA(msg, 0x50, text);
 #else
             throw "Error: Please include EXT_IUTIL as requirement.";
 #endif
@@ -205,9 +205,10 @@ typedef struct IPlayer {
     /// <param name="protocolMsg">See MSG_FORMAT for detail.</param>
     /// <param name="playerInfo">PlayerInfo</param>
     /// <param name="Msg">A message or predefined message.</param>
-    /// <param name="...">To fill in the blank in a pre-defined message.</param>
+    /// <param name="argTotal">Total arguments in argList.</param>
+    /// <param name="argList">To fill in the blank in a pre-defined message.</param>
     /// <returns>Return true or false if unable to send a message.</returns>
-    bool (*m_send_custom_message)(MSG_FORMAT formatMsg, MSG_PROTOCOL protocolMsg, PlayerInfo* plI, const wchar_t *Msg, ...);
+    bool (*m_send_custom_message)(MSG_FORMAT formatMsg, MSG_PROTOCOL protocolMsg, PlayerInfo* plI, const wchar_t* Msg, unsigned int argTotal, VARIANT* argList);
     /// <summary>
     /// To verify if a player is an admin.
     /// </summary>
@@ -233,9 +234,10 @@ typedef struct IPlayer {
     /// </summary>
     /// <param name="formatMsg">See MSG_FORMAT for detail.</param>
     /// <param name="Msg">A message or predefined message.</param>
-    /// <param name="...">To fill in the blank in a pre-defined message.</param>
+    /// <param name="argTotal">Total arguments in argList.</param>
+    /// <param name="argList">To fill in the blank in a pre-defined message.</param>
     /// <returns>Return true or false if unable to send a message.</returns>
-    bool (*m_send_custom_message_broadcast)(MSG_FORMAT formatMsg, const wchar_t* Msg, ...);
+    bool (*m_send_custom_message_broadcast)(MSG_FORMAT formatMsg, const wchar_t* Msg, unsigned int argTotal, VARIANT* argList);
     /// <summary>
     /// Force player to change team with optional to kill player if needed.
     /// </summary>

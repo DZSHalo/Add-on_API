@@ -3,7 +3,6 @@ module Add_on_API.D.haloEngine;
 import Add_on_API.Add_on_API;
 
 static if(__traits(compiles, EXT_IHALOENGINE)) {
-// #define haloEngineH
 
     enum REJECT_CODE:ubyte {
         CANT_JOIN_SERVER = 0,       //0

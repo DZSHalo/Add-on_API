@@ -35,6 +35,12 @@ CNATIVE {
     static GAME_MODE_S modeHost = { 0, 0, 1 };
     static const double PI = 3.141592653589793f;
 
+    typedef enum PLAYER_VALIDATE {
+        PLAYER_VALIDATE_DEFAULT = 0,
+        PLAYER_VALIDATE_BYPASS,
+        PLAYER_VALIDATE_BANNED,
+        PLAYER_VALIDATE_PASS_REJECT
+    } PLAYER_VALIDATE;
 #ifdef __cplusplus
 }
 #endif

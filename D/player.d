@@ -1,6 +1,7 @@
 module Add_on_API.D.player;
 
 import Add_on_API.Add_on_API;
+import core.sys.windows.oaidl;
 
 enum MSG_FORMAT:uint {
     MF_BLANK    = 0,
@@ -56,7 +57,7 @@ struct PlayerInfo {
         this.plS = plI.plS;
     }
 };
-static assert(PlayerInfo.sizeof ==16, "Incorrect size of PlayerInfo");
+static assert(PlayerInfo.sizeof == 16, "Incorrect size of PlayerInfo");
 struct PlayerInfoList {
     PlayerInfo plList[32];
 };
@@ -177,10 +178,11 @@ extern(C) struct IPlayer {
      * protocolMsg = See MSG_FORMAT for detail.
      * playerInfo = PlayerInfo
      * Msg = A message or predefined message.
-     * <param name="...">To fill in the blank in a pre-defined message.
+     * argTotal = Total arguments in argList.
+     * argList = To fill in the blank in a pre-defined message.
      * Returns: Return true or false if unable to send a message.
      */
-    bool function(MSG_FORMAT formatMsg, toggle chatRconRemote, ref PlayerInfo  plI, const wchar* Msg, ...) m_send_custom_message;
+    bool function(MSG_FORMAT formatMsg, toggle chatRconRemote, ref PlayerInfo  plI, const wchar* Msg, uint argTotal, VARIANT* argList) m_send_custom_message;
     /*
      * To verify if a player is an admin.
      * Params:
@@ -209,10 +211,12 @@ extern(C) struct IPlayer {
      * Params:
      * formatMsg = See MSG_FORMAT for detail.
      * Msg = A message or predefined message.
+     * argTotal = Total arguments in argList.
+     * argList = To fill in the blank in a pre-defined message.
      * <param name="...">To fill in the blank in a pre-defined message.
      * Returns: Return true or false if unable to send a message.
      */
-    bool function(MSG_FORMAT formatMsg, const wchar* Msg, ...) m_send_custom_message_broadcast;
+    bool function(MSG_FORMAT formatMsg, const wchar* Msg, uint argTotal, VARIANT* argList) m_send_custom_message_broadcast;
     /*
      * Force player to change team with optional to kill player if needed.
      * Params:

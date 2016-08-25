@@ -3,8 +3,6 @@ module Add_on_API.D.object;
 import Add_on_API.Add_on_API;
 
 static if(__traits(compiles, EXT_IOBJECT)) {
-// #define objectH
-//import Add_on_API.player; //Required in order to obtain playerInfo structure.
 
     // Structure definitions
 // #pragma pack(push, 1)
@@ -77,12 +75,12 @@ static if(__traits(compiles, EXT_IOBJECT)) {
         void clear() {
             count = 0;
             if (tag_list)
-                pIUtil.FreeMem(tag_list);
+                pIUtil.m_freeMem(tag_list);
             tag_list = null;
         }
         ~this() {
             if (tag_list)
-                pIUtil.FreeMem(tag_list);
+                pIUtil.m_freeMem(tag_list);
         }
     };
 // #pragma pack(pop)

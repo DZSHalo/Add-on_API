@@ -122,7 +122,7 @@ namespace Addon_API {
             return this.m_add != null;
         }
     }
-    public partial class Interface {
+    public partial struct Interface {
         /// <summary>
         /// Returns a ITimer class-like to add support for later execution when needed.
         /// </summary>

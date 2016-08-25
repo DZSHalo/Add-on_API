@@ -90,7 +90,7 @@ public struct S_un_b { public byte s_b1, s_b2, s_b3, s_b4; };
 [StructLayout(LayoutKind.Sequential)]
 public struct S_un_w { public ushort s_w1, s_w2; };
 [StructLayout(LayoutKind.Explicit, Size=4)]
-struct in_addr {
+public struct in_addr {
     [FieldOffset(0)]
     public S_un_b un_b;
     [FieldOffset(0)]

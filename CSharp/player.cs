@@ -1,5 +1,7 @@
 using System;
+#if EXT_IPLAYER
 using System.Text;
+#endif
 using System.Runtime.InteropServices;
 
 namespace Addon_API {
@@ -159,7 +161,6 @@ namespace Addon_API {
         public IntPtr ptr;
     }
 
-    //TODO: Need to fully finish the IPlayer functions here. Plus need to do some fixes in other API language?
     [StructLayout(LayoutKind.Sequential)]
     public struct IPlayer {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -198,10 +199,9 @@ namespace Addon_API {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_set_nickname([In] ref PlayerInfo plI, [In, MarshalAs(UnmanagedType.LPWStr)] string nickname);
-        //TODO: Need find a fix for d_send_custom_message & d_send_custom_message_broadcast
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public delegate bool d_send_custom_message([In] MSG_FORMAT formatMsg, [In] MSG_PROTOCOL protocolMsg, [In] ref PlayerInfo plI, [In, MarshalAs(UnmanagedType.LPWStr)] string Msg, [In, MarshalAs(UnmanagedType.LPWStr)] string argList);
+        public delegate bool d_send_custom_message([In] MSG_FORMAT formatMsg, [In] MSG_PROTOCOL protocolMsg, [In] ref PlayerInfo plI, [In, MarshalAs(UnmanagedType.LPWStr)] string Msg, uint argTotal, [In, MarshalAs(UnmanagedType.LPArray)] params object[] argList);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_is_admin([In] byte m_ind);
@@ -211,10 +211,9 @@ namespace Addon_API {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_get_by_biped_tag_previous([Out] s_ident bipedTag, [In] ref PlayerInfo plI);
-        //TODO: Need find a fix for d_send_custom_message & d_send_custom_message_broadcast
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public delegate bool d_send_custom_message_broadcast(MSG_FORMAT formatMsg, [In, MarshalAs(UnmanagedType.LPWStr)] string Msg, [In, MarshalAs(UnmanagedType.LPWStr)] string argList);
+        public delegate bool d_send_custom_message_broadcast(MSG_FORMAT formatMsg, [In, MarshalAs(UnmanagedType.LPWStr)] string Msg, uint argTotal, [In, MarshalAs(UnmanagedType.LPArray)] params object[] argList);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void d_change_team([In] ref PlayerInfo plI, [In] e_color_team_index new_team, [In, MarshalAs(UnmanagedType.I1)] bool forceKill);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -360,7 +359,8 @@ namespace Addon_API {
         /// <param name="protocolMsg">See MSG_FORMAT for detail.</param>
         /// <param name="plI">PlayerInfo</param>
         /// <param name="Msg">A message or predefined message.</param>
-        /// <param name="...">To fill in the blank in a pre-defined message.</param>
+        /// <param name="argTotal">Total arguments in argList.</param>
+        /// <param name="argList">To fill in the blank in a pre-defined message.</param>
         /// <returns>Return true or false if unable to send a message.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_send_custom_message m_send_custom_message;
@@ -392,7 +392,8 @@ namespace Addon_API {
         /// </summary>
         /// <param name="formatMsg">See MSG_FORMAT for detail.</param>
         /// <param name="Msg">A message or predefined message.</param>
-        /// <param name="...">To fill in the blank in a pre-defined message.</param>
+        /// <param name="argTotal">Total arguments in argList.</param>
+        /// <param name="argList">To fill in the blank in a pre-defined message.</param>
         /// <returns>Return true or false if unable to send a message.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_send_custom_message_broadcast m_send_custom_message_broadcast;
@@ -492,7 +493,6 @@ namespace Addon_API {
         /// <returns>Return total count of matched player(s).</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_get_str_to_player_list m_get_str_to_player_list;
-
 
         //Simple & easier user-defined conversion + checker for null.
         public IPlayer(IPlayerPtr data) {

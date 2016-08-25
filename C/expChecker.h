@@ -25,7 +25,7 @@ namespace addon {
     typedef bool (WINAPIC* LPOnPlayerScoreCTF)(PlayerInfo, s_ident, unsigned int, bool);
     typedef bool (WINAPIC* LPOnPlayerAttemptDropObject)(PlayerInfo, s_ident, s_biped*);
     typedef void (WINAPIC* LPOnPlayerSpawn)(PlayerInfo, s_ident, s_biped*);
-    typedef toggle (WINAPIC* LPOnPlayerValidateConnect)(PlayerExtended, s_machine_slot, s_ban_check, bool, toggle, toggle);
+    typedef PLAYER_VALIDATE (WINAPIC* LPOnPlayerValidateConnect)(PlayerExtended, s_machine_slot, s_ban_check, bool, toggle, PLAYER_VALIDATE);
     typedef bool (WINAPIC* LPOnWeaponReload)(s_object*, bool);
     typedef bool (WINAPIC* LPOnObjectCreation)(s_object*, hTagHeader*);
     typedef bool (WINAPIC* LPOnKillMultiplier)(PlayerInfo killer, unsigned int multiplier);
@@ -38,6 +38,7 @@ namespace addon {
     typedef toggle (WINAPIC* LPOnEquipmentDropCurrent)(PlayerInfo, s_ident, s_biped*, s_ident, s_weapon*, toggle);
     typedef toggle (WINAPIC* LPOnServerStatus)(int, toggle);
     typedef bool (WINAPIC* LPOnObjectCreationAttempt)(PlayerInfo plOwner, objCreationInfo object_creation, objCreationInfo* change_object, bool isOverride);
+    typedef bool (WINAPIC* LPOnGameSpyValidationCheck)(unsigned int UnqiueID, bool isValid, bool forceBypass);
     
 #pragma endregion
     template<typename T, typename U>
@@ -199,6 +200,10 @@ namespace addon {
 	//0.5.3.0 listener
     __if_exists(EXTOnObjectCreationAttempt) {
         static_assert_check(is_same<decltype(&EXTOnObjectCreationAttempt), LPVoidFunction>::value, "EXTOnObjectCreationAttempt is incorrect, please fix this.");
+    }
+	//0.5.3.2 listener
+    __if_exists(EXTOnGameSpyValidationCheck) {
+        static_assert_check(is_same<decltype(&EXTOnGameSpyValidationCheck), LPOnGameSpyValidationCheck>::value, "EXTOnGameSpyValidationCheck is incorrect, please fix this.");
     }
 
         //Database APIs verification
