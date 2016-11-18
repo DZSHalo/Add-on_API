@@ -5,7 +5,7 @@
 #define WINAPIC     __cdecl
 
 #ifndef _INC_TIME
-struct tm {
+typedef struct tm {
     int tm_sec;     /* seconds after the minute - [0,59] */
     int tm_min;     /* minutes after the hour - [0,59] */
     int tm_hour;    /* hours since midnight - [0,23] */
@@ -15,21 +15,14 @@ struct tm {
     int tm_wday;    /* days since Sunday - [0,6] */
     int tm_yday;    /* days since January 1 - [0,365] */
     int tm_isdst;   /* daylight savings time flag */
-};
+} tm;
 #define _TM_DEFINED
 #endif
 
 //Complete replacement to fix the nasty ellpsis' method.
+#ifdef __cplusplus
 typedef struct VARIANTconvert {
-    tagVARIANT variant;
-    VARIANTconvert(char* val) {
-        variant.vt = VT_LPSTR;
-        variant.pcVal = val;
-    }
-    VARIANTconvert(wchar_t* val) {
-        variant.vt = VT_LPWSTR;
-        variant.bstrVal = val;
-    }
+    VARIANT variant;
     VARIANTconvert(const char* val) {
         variant.vt = VT_LPSTR;
         variant.pcVal = (char*)val;
@@ -38,43 +31,89 @@ typedef struct VARIANTconvert {
         variant.vt = VT_LPWSTR;
         variant.bstrVal = (wchar_t*)val;
     }
-    VARIANTconvert(bool val) {
+    VARIANTconvert(const bool val) {
         variant.vt = VT_BOOL;
         variant.boolVal = val;
     }
-    VARIANTconvert(short val) {
+    VARIANTconvert(const short val) {
         variant.vt = VT_I2;
         variant.iVal = val;
     }
-    VARIANTconvert(unsigned short val) {
+    VARIANTconvert(const unsigned short val) {
         variant.vt = VT_UI2;
         variant.uiVal = val;
     }
-    VARIANTconvert(int val) {
+    VARIANTconvert(const int val) {
         variant.vt = VT_I4;
         variant.intVal = val;
     }
-    VARIANTconvert(unsigned int val) {
+    VARIANTconvert(const unsigned int val) {
         variant.vt = VT_UI4;
         variant.uintVal = val;
     }
-    VARIANTconvert(long val) {
+    VARIANTconvert(const long val) {
         variant.vt = VT_I8;
         variant.lVal = val;
     }
-    VARIANTconvert(unsigned long val) {
+    VARIANTconvert(const unsigned long val) {
         variant.vt = VT_UI8;
         variant.ulVal = val;
     }
-    VARIANTconvert(float val) {
+    VARIANTconvert(const float val) {
         variant.vt = VT_R4;
         variant.fltVal = val;
     }
-    VARIANTconvert(double val) {
+    VARIANTconvert(const double val) {
         variant.vt = VT_R8;
         variant.dblVal = val;
     }
 } VARIANTconvert;
+#else
+inline void VARIANTstr(VARIANT* var, char* val) {
+    var->vt = VT_LPSTR;
+    var->pcVal = val;
+}
+inline void VARIANTwstr(VARIANT* var, wchar_t* val) {
+    var->vt = VT_LPWSTR;
+    var->bstrVal = val;
+}
+inline void VARIANTbool(VARIANT* var, const bool val) {
+    var->vt = VT_BOOL;
+    var->boolVal = val;
+}
+inline void VARIANTshort(VARIANT* var, const short val) {
+    var->vt = VT_I2;
+    var->iVal = val;
+}
+inline void VARIANTushort(VARIANT* var, const unsigned short val) {
+    var->vt = VT_UI2;
+    var->uiVal = val;
+}
+inline void VARIANTint(VARIANT* var, const int val) {
+    var->vt = VT_I4;
+    var->intVal = val;
+}
+inline void VARIANTuint(VARIANT* var, const unsigned int val) {
+    var->vt = VT_UI4;
+    var->uintVal = val;
+}
+inline void VARIANTlong(VARIANT* var, const long val) {
+    var->vt = VT_I8;
+    var->lVal = val;
+}
+inline void VARIANTulong(VARIANT* var, const unsigned long val) {
+    var->vt = VT_UI8;
+    var->ulVal = val;
+}
+inline void VARIANTfloat(VARIANT* var, const float val) {
+    var->vt = VT_R4;
+    var->fltVal = val;
+}
+inline void VARIANTdouble(VARIANT* var, const double val) {
+    var->vt = VT_R8;
+    var->dblVal = val;
+}
+#endif
 
 #pragma pack(push,1)
     struct haloConsole {
@@ -196,13 +235,13 @@ CNATIVE {
         /// </summary>
         /// <param name="str">String to check.</param>
         /// <returns>Return true if valid.</returns>
-        bool (*m_isNumberA)(const char* str);
+        bool (*m_isNumbersA)(const char* str);
         /// <summary>
         /// Verify if whole wide string contain digits.
         /// </summary>
         /// <param name="str">Wide string to check.</param>
         /// <returns>Return true if valid.</returns>
-        bool (*m_isNumberW)(const wchar_t* str);
+        bool (*m_isNumbersW)(const wchar_t* str);
         /// <summary>
         /// Verify if whole string contain characters & digits.
         /// </summary>
@@ -248,14 +287,14 @@ CNATIVE {
         /// <param name="srcStr">Source string</param>
         /// <param name="regex">Regular expression string</param>
         /// <returns>Return true if is a match.</returns>
-        bool (*m_regexMatchW)(wchar_t* srcStr, wchar_t* regex);
+        bool (*m_regexMatchW)(const wchar_t* srcStr, const wchar_t* regex);
         /// <summary>
         /// Find a regular expression string against source string to be a match.
         /// </summary>
         /// <param name="srcStr">Source string</param>
         /// <param name="regex">Regular expression string</param>
         /// <returns>Return true if is a match.</returns>
-        bool (*m_regexiMatchW)(wchar_t* srcStr, wchar_t* regex);
+        bool (*m_regexiMatchW)(const wchar_t* srcStr, const wchar_t* regex);
 
         /// <summary>
         /// Format variable arguments list into given prefix string.
@@ -279,14 +318,14 @@ CNATIVE {
         /// <param name="str1">Beginning of string #1 to compare against.</param>
         /// <param name="str2">String #2 to compare against.</param>
         /// <returns>Only return true if is a match.</returns>
-        bool (*m_findSubStrFirstA)(const char* dest, const char* src);
+        bool (*m_findSubStrFirstA)(const char* find, const char* src);
         /// <summary>
         /// Compare beginning of case-senitive string against another string.
         /// </summary>
         /// <param name="str1">Beginning of string #1 to compare against.</param>
         /// <param name="str2">String #2 to compare against.</param>
         /// <returns>Only return true if is a match.</returns>
-        bool (*m_findSubStrFirstW)(const wchar_t* dest, const wchar_t* src);
+        bool (*m_findSubStrFirstW)(const wchar_t* find, const wchar_t* src);
 
         /// <summary>
         /// Test if string contains a letters or not.
@@ -332,7 +371,7 @@ CNATIVE {
         /// <param name="len">Maximum size of an dest string.</param>
         /// <param name="src">New string to copy from.</param>
         /// <returns>Return 1 every time.</returns>
-        int (*m_strcatW)(wchar_t* dest, size_t len, const wchar_t* src);
+        unsigned int (*m_strcatW)(wchar_t* dest, size_t len, const wchar_t* src);
         /// <summary>
         /// Append an existing string with new string.
         /// </summary>
@@ -340,7 +379,7 @@ CNATIVE {
         /// <param name="len">Maximum size of an dest string.</param>
         /// <param name="src">New string to copy from.</param>
         /// <returns>Return 1 every time.</returns>
-        int (*m_strcatA)(char *dest, size_t len, const char* src);
+        unsigned int (*m_strcatA)(char *dest, size_t len, const char* src);
         /// <summary>
         /// Convert a string to wide string.
         /// </summary>
@@ -778,6 +817,8 @@ public:
 
     };
 };
+#else
+    typedef ArgContainerVars ArgContainer;
 #endif
 
 #endif

@@ -53,6 +53,8 @@ namespace Addon_API {
         public delegate bool d_load(IntPtr self);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void d_clear(IntPtr self);
+        public delegate bool d_key_delete(IntPtr self, [In, MarshalAs(UnmanagedType.LPWStr)] string keyName, [In, MarshalAs(UnmanagedType.LPWStr)] string sectionName);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 
         /// <summary>
         /// To release ICIniFile, cannot be re-used after release.
@@ -149,7 +151,7 @@ namespace Addon_API {
         /// </summary>
         /// <param name="self">Must include pointer of existing ICIniFile variable.</param>
         /// <param name="keyName">Name of a key to get from a section. Maximum characters is 256 long.</param>
-        /// <param name="keyName">Name of a value to get from a key. Maximum characters is 256 long.</param>
+        /// <param name="valueName">Name of a value to get from a key. Maximum characters is 256 long.</param>
         /// <param name="sectionName">Name of an existing section. Maximum characters is 256 long.</param>
         /// <returns>Return true or false.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
@@ -175,6 +177,15 @@ namespace Addon_API {
         /// <returns>Does not return a value.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_clear m_clear;
+        /// <summary>
+        /// To delete a key within existing section in a file.
+        /// </summary>
+        /// <param name="self">Must include pointer of an existing ICIniFile variable.</param>
+        /// <param name="keyName">Name of a key to delete from a section. Maximum characters is 256 long.</param>
+        /// <param name="sectionName">Name of an existing section. Maximum characters is 256 long.</param>
+        /// <returns>Return true or false.</returns>
+        [MarshalAs(UnmanagedType.FunctionPtr)]
+        public d_key_delete m_key_delete;
 
         //Simple & easier user-defined conversion + checker for null.
         public ICIniFile(ICIniFilePtr data) {
@@ -252,6 +263,10 @@ namespace Addon_API {
         }
         public void m_clear() {
             _this.m_clear(ptr);
+        }
+        [return: MarshalAs(UnmanagedType.I1)]
+        public bool m_key_delete([In, MarshalAs(UnmanagedType.LPWStr)] string keyName, [In, MarshalAs(UnmanagedType.LPWStr)] string sectionName) {
+            return _this.m_key_delete(ptr, keyName, sectionName);
         }
 
 

@@ -1,21 +1,21 @@
 //APPROVED
 typedef struct s_fog_flags {
-    bool is_water : 1;
-    bool atmosphere_dominant : 1;
-    bool fog_screen_only : 1;
-    bool unused0 : 5;
-    bool unused1 : 8;
-    bool unused2 : 8;
-    bool unused3 : 8;
+    bool    is_water : 1;
+    bool    atmosphere_dominant : 1;
+    bool    fog_screen_only : 1;
+    bool    unused0 : 5;
+    bool    unused1 : 8;
+    bool    unused2 : 8;
+    bool    unused3 : 8;
 } s_fog_flags;
 static_assert_check(sizeof(s_fog_flags) == 0x04, "Incorrect size of s_fog_flags");
 
 typedef struct s_screen_layer_flags {
-    bool no_environment_multipass : 1;
-    bool no_model_multipass : 1;
-    bool no_texture_based_falloff : 1;
-    bool unused0 : 5;
-    bool unused1 : 8;
+    bool    no_environment_multipass : 1;
+    bool    no_model_multipass : 1;
+    bool    no_texture_based_falloff : 1;
+    bool    unused0 : 5;
+    bool    unused1 : 8;
 } s_screen_layer_flags;
 static_assert_check(sizeof(s_screen_layer_flags) == 0x02, "Incorrect size of s_screen_layer_flags");
 

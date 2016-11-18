@@ -1,19 +1,19 @@
 //INCOMPLETE - 1 data part is missing
-typedef enum e_interpolate_color : unsigned short {
-    INTERPOLATE_LINEARLY = 0,
-    INTERPOLATE_FASTER_NEAR_EMPTY,
-    INTERPOLATE_FASTER_NEAR_FULL,
-    INTERPOLATE_THROUGH_RANDOM_NOISE
-} e_interpolate_color;
-
-typedef enum e_anchor_color : unsigned short {
-    ANCHOR_AT_BOTH_ENDS = 0,
-    ANCHOR_AT_EMPTY,
-    ANCHOR_AT_FULL
-} e_anchor_color;
+#ifndef __cplusplus
+typedef unsigned short e_interpolate_color;
+static const e_interpolate_color INTERPOLATE_LINEARLY = 0;
+static const e_interpolate_color INTERPOLATE_FASTER_NEAR_EMPTY = 1;
+static const e_interpolate_color INTERPOLATE_FASTER_NEAR_FULL = 2;
+static const e_interpolate_color INTERPOLATE_THROUGH_RANDOM_NOISE = 3;
+typedef unsigned short e_anchor_color;
+static const e_anchor_color ANCHOR_AT_BOTH_ENDS = 0;
+static const e_anchor_color ANCHOR_AT_EMPTY = 1;
+static const e_anchor_color ANCHOR_AT_FULL = 2;
+#endif
 
 typedef struct s_stencil_data_definition {
     //Unknown
+    unsigned int noResearchDone; //TODO: No research done
 } s_stencil_data_definition;
 
 typedef struct s_meter_meta {

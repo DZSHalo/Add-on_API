@@ -10,29 +10,29 @@ typedef struct s_biped_flags {
     bool    unused3 : 8;
 } s_biped_flags;
 static_assert_check(sizeof(s_biped_flags) == 0x04, "Incorrect size of s_biped_flags");
-
-typedef enum e_export_in : unsigned short {
-    EXPORT_IN_NONE=0,
-    EXPORT_IN_BODY_VITALITY,
-    EXPORT_IN_SHIELD_VITALITY,
-    EXPORT_IN_RECENT_BODY_DAMAGE,
-    EXPORT_IN_RECENT_SHIELD_DAMAGE,
-    EXPORT_IN_RANDOM_CONSTANT,
-    EXPORT_IN_UMBRELLA_SHIELD_VITALITY,
-    EXPORT_IN_SHIELD_STUN,
-    EXPORT_IN_RECENT_UMBRELLA_SHIELD_VITALITY,
-    EXPORT_IN_UMBRELLA_SHIELD_STUN,
-    EXPORT_IN_REGION_00_DAMAGE,
-    EXPORT_IN_REGION_01_DAMAGE,
-    EXPORT_IN_REGION_02_DAMAGE,
-    EXPORT_IN_REGION_03_DAMAGE,
-    EXPORT_IN_REGION_04_DAMAGE,
-    EXPORT_IN_REGION_05_DAMAGE,
-    EXPORT_IN_REGION_06_DAMAGE,
-    EXPORT_IN_REGION_07_DAMAGE,
-    EXPORT_IN_ALIVE,
-    EXPORT_IN_COMPASS
-} e_export_in;
+#ifndef __cplusplus
+typedef unsigned short e_export_in;
+static const e_export_in EXPORT_IN_NONE = 0;
+static const e_export_in EXPORT_IN_BODY_VITALITY = 1;
+static const e_export_in EXPORT_IN_SHIELD_VITALITY = 2;
+static const e_export_in EXPORT_IN_RECENT_BODY_DAMAGE = 3;
+static const e_export_in EXPORT_IN_RECENT_SHIELD_DAMAGE = 4;
+static const e_export_in EXPORT_IN_RANDOM_CONSTANT = 5;
+static const e_export_in EXPORT_IN_UMBRELLA_SHIELD_VITALITY = 6;
+static const e_export_in EXPORT_IN_SHIELD_STUN = 7;
+static const e_export_in EXPORT_IN_RECENT_UMBRELLA_SHIELD_VITALITY = 8;
+static const e_export_in EXPORT_IN_UMBRELLA_SHIELD_STUN = 9;
+static const e_export_in EXPORT_IN_REGION_00_DAMAGE = 10;
+static const e_export_in EXPORT_IN_REGION_01_DAMAGE = 11;
+static const e_export_in EXPORT_IN_REGION_02_DAMAGE = 12;
+static const e_export_in EXPORT_IN_REGION_03_DAMAGE = 13;
+static const e_export_in EXPORT_IN_REGION_04_DAMAGE = 14;
+static const e_export_in EXPORT_IN_REGION_05_DAMAGE = 15;
+static const e_export_in EXPORT_IN_REGION_06_DAMAGE = 16;
+static const e_export_in EXPORT_IN_REGION_07_DAMAGE = 17;
+static const e_export_in EXPORT_IN_ALIVE = 18;
+static const e_export_in EXPORT_IN_COMPASS = 19;
+#endif
 
 typedef struct s_attachments_block {
     s_tag_reference     type;   //contrail, effect, light, light_volume, particle_system, sound_looping
@@ -62,20 +62,20 @@ typedef struct s_function_flags {
 } s_function_flags;
 static_assert_check(sizeof(s_function_flags) == 0x04, "Incorrect size of s_function_flags");
 
-typedef enum e_map_to :unsigned short {
-    MAP_TO_LINEAR=0,
-    MAP_TO_EARLY,
-    MAP_TO_VERY_EARLY,
-    MAP_TO_LATE,
-    MAP_TO_VERY_LATE,
-    MAP_TO_CONSINE
-} e_map_to;
+#ifndef __cplusplus
+typedef unsigned short e_map_to;
+static const e_map_to MAP_TO_LINEAR = 0;
+static const e_map_to MAP_TO_EARLY = 1;
+static const e_map_to MAP_TO_VERY_EARLY = 2;
+static const e_map_to MAP_TO_LATE = 3;
+static const e_map_to MAP_TO_VERY_LATE = 4;
+static const e_map_to MAP_TO_CONSINE = 5;
 
-typedef enum e_bound_mode : unsigned short {
-    BOUND_MODE_CLIP=0,
-    BOUND_MODE_CLIP_AND_NORMALIZE,
-    BOUND_MODE_SCALE_TO_FIT,
-} e_bound_mode;
+typedef unsigned short e_bound_mode;
+static const e_bound_mode BOUND_MODE_CLIP = 0;
+static const e_bound_mode BOUND_MODE_CLIP_AND_NORMALIZE = 1;
+static const e_bound_mode BOUND_MODE_SCALE_TO_FIT = 2;
+#endif
 
 typedef struct s_function_block {
     s_function_flags    flags;
@@ -105,12 +105,12 @@ typedef struct s_function_block {
 static_assert_check(sizeof(s_function_block) == 0x168, "Incorrect size of s_function_block");
 
 typedef struct s_scale_flags {
-    bool blend_in_hsv : 1;
-    bool more_colors : 1;
-    bool unused0 : 6;
-    bool unused1 : 8;
-    bool unused2 : 8;
-    bool unused3 : 8;
+    bool  blend_in_hsv : 1;
+    bool  more_colors : 1;
+    bool  unused0 : 6;
+    bool  unused1 : 8;
+    bool  unused2 : 8;
+    bool  unused3 : 8;
 } s_scale_flags;
 static_assert_check(sizeof(s_scale_flags) == 0x04, "Incorrect size of s_scale_flags");
 
@@ -131,10 +131,11 @@ typedef struct s_color_permutation_block {
 } s_color_permutation_block;
 static_assert_check(sizeof(s_color_permutation_block) == 0x1C, "Incorrect size of s_color_permutation_block");
 
-typedef enum e_predicted_resource_type :unsigned short {
-    PREDICTED_RESOURCE_TYPE_BITMAP=0,
-    PREDICTED_RESOURCE_TYPE_SOUND
-} e_predicted_resource_type;
+#ifndef __cplusplus
+typedef unsigned short e_predicted_resource_type;
+static const e_predicted_resource_type PREDICTED_RESOURCE_TYPE_BITMAP = 0;
+static const e_predicted_resource_type PREDICTED_RESOURCE_TYPE_SOUND = 1;
+#endif
 
 typedef struct s_predicted_resource_block {
     e_predicted_resource_type   type;
@@ -144,32 +145,32 @@ typedef struct s_predicted_resource_block {
 static_assert_check(sizeof(s_predicted_resource_block) == 0x08, "Incorrect size of s_predicted_resource_block");
 
 typedef struct s_unit_flags {
-    bool circular_aiming : 1;
-    bool destroyed_after_dying : 1;
-    bool half_speed_interpolation : 1;
-    bool fires_from_camera : 1;
-    bool entrance_inside_bounding_sphere : 1;
-    bool unused0 : 1;
-    bool causes_passenger_dialogue : 1;
-    bool resists_pings : 1;
-    bool melee_attack_is_fatal : 1;
-    bool dont_reface_during_pings : 1;
-    bool has_no_aiming : 1;
-    bool simple_creature : 1;
-    bool impact_melee_attaches_to_unit : 1;
-    bool impact_melee_dies_on_shields : 1;
-    bool cannot_open_doors_automatically : 1;
-    bool melee_attackers_cannot_attach : 1;
-    bool not_instantly_killed_by_melee : 1;
-    bool shield_sapping : 1;
-    bool runs_around_flaming : 1;
-    bool inconsequential : 1;
-    bool special_cinematic_unit : 1;
-    bool ignored_by_autoaiming : 1;
-    bool shields_fry_infection_form : 1;
-    bool integrated_light_controls_weapon : 1;
-    bool intergrated_lights_last_forever : 1;
-    bool unused1 : 7;
+    bool  circular_aiming : 1;
+    bool  destroyed_after_dying : 1;
+    bool  half_speed_interpolation : 1;
+    bool  fires_from_camera : 1;
+    bool  entrance_inside_bounding_sphere : 1;
+    bool  unused0 : 1;
+    bool  causes_passenger_dialogue : 1;
+    bool  resists_pings : 1;
+    bool  melee_attack_is_fatal : 1;
+    bool  dont_reface_during_pings : 1;
+    bool  has_no_aiming : 1;
+    bool  simple_creature : 1;
+    bool  impact_melee_attaches_to_unit : 1;
+    bool  impact_melee_dies_on_shields : 1;
+    bool  cannot_open_doors_automatically : 1;
+    bool  melee_attackers_cannot_attach : 1;
+    bool  not_instantly_killed_by_melee : 1;
+    bool  shield_sapping : 1;
+    bool  runs_around_flaming : 1;
+    bool  inconsequential : 1;
+    bool  special_cinematic_unit : 1;
+    bool  ignored_by_autoaiming : 1;
+    bool  shields_fry_infection_form : 1;
+    bool  integrated_light_controls_weapon : 1;
+    bool  intergrated_lights_last_forever : 1;
+    bool  unused1 : 7;
 } s_unit_flags;
 static_assert_check(sizeof(s_unit_flags) == 0x4, "Incorrect size of s_unit_flags");
 
@@ -202,20 +203,20 @@ typedef struct s_powered_seat_block {
 static_assert_check(sizeof(s_powered_seat_block) == 0x44, "Incorrect size of s_powered_seat_block");
 
 typedef struct s_seat_flags {
-    bool invisible : 1;
-    bool locked : 1;
-    bool driver : 1;
-    bool gunner : 1;
-    bool third_person_camera : 1;
-    bool allows_weapons : 1;
-    bool third_person_on_enter : 1;
-    bool first_person_camera_slaved_to_gun : 1;
-    bool allow_vehicle_communication_animation : 1;
-    bool not_valid_without_driver : 1;
-    bool allow_AI_noncombatants : 1;
-    bool unused0 : 5;
-    bool unused1 : 8;
-    bool unused2 : 8;
+    bool  invisible : 1;
+    bool  locked : 1;
+    bool  driver : 1;
+    bool  gunner : 1;
+    bool  third_person_camera : 1;
+    bool  allows_weapons : 1;
+    bool  third_person_on_enter : 1;
+    bool  first_person_camera_slaved_to_gun : 1;
+    bool  allow_vehicle_communication_animation : 1;
+    bool  not_valid_without_driver : 1;
+    bool  allow_AI_noncombatants : 1;
+    bool  unused0 : 5;
+    bool  unused1 : 8;
+    bool  unused2 : 8;
 } s_seat_flags;
 static_assert_check(sizeof(s_seat_flags) == 0x04, "Incorrect size of s_seat_flags");
 
@@ -258,67 +259,64 @@ typedef struct s_contact_point_block {
 static_assert_check(sizeof(s_contact_point_block) == 0x40, "Incorrect size of s_contact_point_block");
 
 typedef struct s_biped__flags {
-    bool turns_without_animating : 1;
-    bool uses_player_physics : 1;
-    bool flying : 1;
-    bool phsyics_pill_centered_at_origin : 1;
-    bool spherical : 1;
-    bool passes_through_other_bipeds : 1;
-    bool can_climb_any_surface : 1;
-    bool immune_to_falling_damage : 1;
-    bool rotate_while_airborne : 1;
-    bool uses_limp_body_physics : 1;
-    bool has_no_dying_airbone : 1;
-    bool random_speed_increase : 1;
-    bool unit_uses_old_NTSC_player_physics : 1;
-    bool unused0 : 3;
-    bool unused1 : 8;
-    bool unused2 : 8;
+    bool  turns_without_animating : 1;
+    bool  uses_player_physics : 1;
+    bool  flying : 1;
+    bool  phsyics_pill_centered_at_origin : 1;
+    bool  spherical : 1;
+    bool  passes_through_other_bipeds : 1;
+    bool  can_climb_any_surface : 1;
+    bool  immune_to_falling_damage : 1;
+    bool  rotate_while_airborne : 1;
+    bool  uses_limp_body_physics : 1;
+    bool  has_no_dying_airbone : 1;
+    bool  random_speed_increase : 1;
+    bool  unit_uses_old_NTSC_player_physics : 1;
+    bool  unused0 : 3;
+    bool  unused1 : 8;
+    bool  unused2 : 8;
 } s_biped__flags;
 static_assert_check(sizeof(s_biped__flags) == 0x04, "Incorrect size of s_biped__flags");
 
-typedef enum e_default_team : unsigned short {
-    DEFAULT_TEAM_NONE=0,
-    DEFAULT_TEAM_PLAYER,
-    DEFAULT_TEAM_HUMAN,
-    DEFAULT_TEAM_COVENANT,
-    DEFAULT_TEAM_FLOOD,
-    DEFAULT_TEAM_SENTINEL,
-    DEFAULT_TEAM_UNUSED6,
-    DEFAULT_TEAM_UNUSED7,
-    DEFAULT_TEAM_UNUSED8,
-    DEFAULT_TEAM_UNUSED9
-} e_default_team;
+#ifndef __cplusplus
+typedef unsigned short e_default_team;
+static const e_default_team DEFAULT_TEAM_NONE = 0;
+static const e_default_team DEFAULT_TEAM_PLAYER = 1;
+static const e_default_team DEFAULT_TEAM_HUMAN = 2;
+static const e_default_team DEFAULT_TEAM_COVENANT = 3;
+static const e_default_team DEFAULT_TEAM_FLOOD = 4;
+static const e_default_team DEFAULT_TEAM_SENTINEL = 5;
+static const e_default_team DEFAULT_TEAM_UNUSED6 = 6;
+static const e_default_team DEFAULT_TEAM_UNUSED7 = 7;
+static const e_default_team DEFAULT_TEAM_UNUSED8 = 8;
+static const e_default_team DEFAULT_TEAM_UNUSED9 = 9;
 
-typedef enum e_sound_volume : unsigned short {
-    SOUND_VOLUME_SILENT=0,
-    SOUND_VOLUME_MEDIUM,
-    SOUND_VOLUME_LOUD,
-    SOUND_VOLUME_SHOUT,
-    SOUND_VOLUME_QUIET
-} e_sound_volume;
+typedef unsigned short e_sound_volume;
+static const e_sound_volume SOUND_VOLUME_SILENT = 0;
+static const e_sound_volume SOUND_VOLUME_MEDIUM = 1;
+static const e_sound_volume SOUND_VOLUME_LOUD = 2;
+static const e_sound_volume SOUND_VOLUME_SHOUT = 3;
+static const e_sound_volume SOUND_VOLUME_QUIET = 4;
 
-typedef enum e_unit_action : unsigned short {
-    UNIT_ACTION_NONE=0,
-    UNIT_ACTION_DRIVER_SEAT_POWER,
-    UNIT_ACTION_GUNNER_SEAT_POWER,
-    UNIT_ACTION_AIMING_CHANGE,
-    UNIT_ACTION_MOUTH_APERTURE,
-    UNIT_ACTION_INTEGRATED_LIGHT_POWER,
-    UNIT_ACTION_CAN_BLINK,
-    UNIT_ACTION_SHIELD_SAPPING
-} e_unit_action;
+typedef unsigned short e_unit_action;
+static const e_unit_action UNIT_ACTION_NONE = 0;
+static const e_unit_action UNIT_ACTION_DRIVER_SEAT_POWER = 1;
+static const e_unit_action UNIT_ACTION_GUNNER_SEAT_POWER = 2;
+static const e_unit_action UNIT_ACTION_AIMING_CHANGE = 3;
+static const e_unit_action UNIT_ACTION_MOUTH_APERTURE = 4;
+static const e_unit_action UNIT_ACTION_INTEGRATED_LIGHT_POWER = 5;
+static const e_unit_action UNIT_ACTION_CAN_BLINK = 6;
+static const e_unit_action UNIT_ACTION_SHIELD_SAPPING = 7;
 
-typedef enum e_motion_sensor_blip_size : unsigned short {
-    BLIP_SIZE_MEDIUM=0,
-    BLIP_SIZE_SMALL,
-    BLIP_SIZE_LARGE,
-} e_motion_sensor_blip_size;
+typedef unsigned short e_motion_sensor_blip_size;
+static const e_motion_sensor_blip_size BLIP_SIZE_MEDIUM = 0;
+static const e_motion_sensor_blip_size BLIP_SIZE_SMALL = 1;
+static const e_motion_sensor_blip_size BLIP_SIZE_LARGE = 2;
 
-typedef enum e_unknown_enum : unsigned short {
-    UNKNOWN_ENUM_NONE=0,
-    UNKNOWN_ENUM_FLYING_VELOCITY
-} e_unknown_enum;
+typedef unsigned short e_unknown_enum;
+static const e_unknown_enum UNKNOWN_ENUM_NONE = 0;
+static const e_unknown_enum UNKNOWN_ENUM_FLYING_VELOCITY = 1;
+#endif
 
 typedef struct s_biped_meta {
     s_biped_flags   flags;

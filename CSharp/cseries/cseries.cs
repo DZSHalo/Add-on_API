@@ -1,7 +1,5 @@
 using System.Runtime.InteropServices;
 
-//TODO: Need to work on global defines for important message, unable to do class check compile time or don't have info of how-to...
-
 [StructLayout(LayoutKind.Sequential)]
 public struct real_range {
     public float min;

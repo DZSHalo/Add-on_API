@@ -72,6 +72,7 @@ CNATIVE{
     typedef struct objTagGroupList {
         unsigned int count;
         hTagHeader** tag_list;
+#ifdef __cplusplus
         objTagGroupList() {
             count = 0;
             tag_list = 0;
@@ -80,6 +81,7 @@ CNATIVE{
             if (tag_list)
                 pIUtil->m_freeMem(tag_list);
         }
+#endif
     } objTagGroupList;
     typedef struct IObject {
         /// <summary>

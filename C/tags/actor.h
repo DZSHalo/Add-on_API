@@ -50,45 +50,45 @@ typedef struct s_actor_more_flags {
 } s_actor_more_flags;
 static_assert_check(sizeof(s_actor_more_flags) == 0x04, "Incorrect size of s_actor_more_flags");
 
-typedef enum e_actor_type : unsigned short {
-    ACTOR_ELITE = 0,
-    ACTOR_JACKAL,
-    ACTOR_GRUNT,
-    ACTOR_HUNTER,
-    ACTOR_ENGINEER,
-    ACTOR_ASSASSIN,
-    ACTOR_PLAYER,
-    ACTOR_MARINE,
-    ACTOR_CREW,
-    ACTOR_COMBAT_FORM,
-    ACTOR_INFECTION_FORM,
-    ACTOR_CARRIER_FORM,
-    ACTOR_MONITOR,
-    ACTOR_SENTINEL,
-    ACTOR_NONE,
-    ACTOR_MOUNTED_WEAPON
-} e_actor_type;
+//TODO: Need to verify ACTOR_NONE, seems wrong here
+#ifndef __cplusplus
+typedef unsigned short e_actor_type;
+static const e_actor_type ACTOR_ELITE = 0;
+static const e_actor_type ACTOR_JACKAL = 1;
+static const e_actor_type ACTOR_GRUNT = 2;
+static const e_actor_type ACTOR_HUNTER = 3;
+static const e_actor_type ACTOR_ENGINEER = 4;
+static const e_actor_type ACTOR_ASSASSIN = 5;
+static const e_actor_type ACTOR_PLAYER = 6;
+static const e_actor_type ACTOR_MARINE = 7;
+static const e_actor_type ACTOR_CREW = 8;
+static const e_actor_type ACTOR_COMBAT_FORM = 9;
+static const e_actor_type ACTOR_INFECTION_FORM = 10;
+static const e_actor_type ACTOR_CARRIER_FORM = 11;
+static const e_actor_type ACTOR_MONITOR = 12;
+static const e_actor_type ACTOR_SENTINEL = 13;
+static const e_actor_type ACTOR_NONE = 14;
+static const e_actor_type ACTOR_MOUNTED_WEAPON = 15;
 
-typedef enum e_danger_trigger : unsigned short {
-    TRIGGER_NEVER = 0,
-    TRIGGER_SHOOTING,
-    TRIGGER_SHOOTING_NEAR_US,
-    TRIGGER_DAMAGIN_US,
-    TRIGGER_UNUSED0,
-    TRIGGER_UNUSED1,
-    TRIGGER_UNUSED2,
-    TRIGGER_UNUSED3,
-    TRIGGER_UNUSED4
-} e_danger_trigger;
+typedef unsigned short e_danger_trigger;
+static const e_danger_trigger TRIGGER_NEVER = 0;
+static const e_danger_trigger TRIGGER_SHOOTING = 1;
+static const e_danger_trigger TRIGGER_SHOOTING_NEAR_US = 2;
+static const e_danger_trigger TRIGGER_DAMAGIN_US = 3;
+static const e_danger_trigger TRIGGER_UNUSED0 = 4;
+static const e_danger_trigger TRIGGER_UNUSED1 = 5;
+static const e_danger_trigger TRIGGER_UNUSED2 = 6;
+static const e_danger_trigger TRIGGER_UNUSED3 = 7;
+static const e_danger_trigger TRIGGER_UNUSED4 = 8;
 
-typedef enum e_crouch_type : unsigned short {
-    CROUCH_NEVER=0,
-    CROUCH_DANGER,
-    CROUCH_LOW_SHIELDS,
-    CROUCH_HIGH_BEHIND_SHIELD,
-    CROUCH_ANY_TARGET,
-    CROUCH_FLOOD_SHAMBLE
-} e_crouch_type;
+typedef unsigned short e_crouch_type;
+static const e_crouch_type CROUCH_NEVER = 0;
+static const e_crouch_type CROUCH_DANGER = 1;
+static const e_crouch_type CROUCH_LOW_SHIELDS = 2;
+static const e_crouch_type CROUCH_HIGH_BEHIND_SHIELD = 3;
+static const e_crouch_type CROUCH_ANY_TARGET = 4;
+static const e_crouch_type CROUCH_FLOOD_SHAMBLE = 5;
+#endif
 
 typedef struct s_actor_meta {
     s_actor_flags       flags;

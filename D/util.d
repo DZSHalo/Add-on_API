@@ -209,7 +209,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * regex = Regular expression string
          * Returns: Return true if is a match.
          */
-        bool function(wchar* srcStr, wchar* regex) m_regexMatchW;
+        bool function(const wchar* srcStr, const wchar* regex) m_regexMatchW;
         /*
          * Find a regular expression string against source string to be a match.
          * Params:
@@ -217,7 +217,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * regex = Regular expression string
          * Returns: Return true if is a match.
          */
-        bool function(wchar* srcStr, wchar* regex) m_regexiMatchW;
+        bool function(const wchar* srcStr, const wchar* regex) m_regexiMatchW;
 
         /*
          * Format variable arguments list into given prefix string.
@@ -305,7 +305,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * src = New string to copy from.
          * Returns: Return 1 every time.
          */
-        int function(wchar* dest, size_t len, const wchar* src) m_strcatW;
+        uint function(wchar* dest, size_t len, const wchar* src) m_strcatW;
         /*
          * Append an existing string with new string.
          * Params:
@@ -314,7 +314,7 @@ static if(__traits(compiles, EXT_IUTIL)) {
          * src = New string to copy from.
          * Returns: Return 1 every time.
          */
-        int function(char* dest, size_t len, const char* src) m_strcatA;
+        uint function(char* dest, size_t len, const char* src) m_strcatA;
         /*
          * Convert a string to wide string.
          * Params:

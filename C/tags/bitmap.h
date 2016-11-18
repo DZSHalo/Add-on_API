@@ -1,78 +1,74 @@
 //INCOMPLETE - 2 data parts are missing from Guerilla
 //Total 2 unknown values and appears to possiblity have another s_tag_reference involvement.
-typedef enum e_bitmap_type : unsigned short {
-    BITMAP_TYPE_2D_TEXTURES = 0,
-    BITMAP_TYPE_3D_TEXTURES,
-    BITMAP_TYPE_CUBE_MAPS,
-    BITMAP_TYPE_SPRITES,
-    BITMAP_TYPE_INTERFACE_BITMAPS
-} e_bitmap_type;
-typedef enum e_bitmap_format : unsigned short {
-    BITMAP_FORMAT_COMPRESSED_WITH_COLOR_KEY_TRANSPARENCY = 0,
-    BITMAP_FORMAT_COMPRESSED_WITH_EXPLICIT_ALPHA,
-    BITMAP_FORMAT_COMPRESSED_WITH_INTERPOLATED_ALPHA,
-    BITMAP_FORMAT_16_BIT_COLOR,
-    BITMAP_FORMAT_32_BIT_COLOR,
-    BITMAP_FORMAT_MONOCHROME,
-} e_bitmap_format;
-typedef enum e_bitmap_usage : unsigned short {
-    BITMAP_USAGE_ALPHA_BLEND = 0,
-    BITMAP_USAGE_DEFAULT,
-    BITMAP_USAGE_HEIGHT_MAP,
-    BITMAP_USAGE_DETAIL_MAP,
-    BITMAP_USAGE_LIGHT_MAP,
-    BITMAP_USAGE_VECTOR_MAP
-} e_bitmap_usage;
+#ifndef __cplusplus
+typedef unsigned short e_bitmap_type;
+static const e_bitmap_type BITMAP_TYPE_2D_TEXTURES = 0;
+static const e_bitmap_type BITMAP_TYPE_3D_TEXTURES = 1;
+static const e_bitmap_type BITMAP_TYPE_CUBE_MAPS = 2;
+static const e_bitmap_type BITMAP_TYPE_SPRITES = 3;
+static const e_bitmap_type BITMAP_TYPE_INTERFACE_BITMAPS = 4;
+typedef unsigned short e_bitmap_format;
+static const e_bitmap_format BITMAP_FORMAT_COMPRESSED_WITH_COLOR_KEY_TRANSPARENCY = 0;
+static const e_bitmap_format BITMAP_FORMAT_COMPRESSED_WITH_EXPLICIT_ALPHA = 1;
+static const e_bitmap_format BITMAP_FORMAT_COMPRESSED_WITH_INTERPOLATED_ALPHA = 2;
+static const e_bitmap_format BITMAP_FORMAT_16_BIT_COLOR = 3;
+static const e_bitmap_format BITMAP_FORMAT_32_BIT_COLOR = 4;
+static const e_bitmap_format BITMAP_FORMAT_MONOCHROME = 5;
+typedef unsigned short e_bitmap_usage;
+static const e_bitmap_usage BITMAP_USAGE_ALPHA_BLEND = 0;
+static const e_bitmap_usage BITMAP_USAGE_DEFAULT = 1;
+static const e_bitmap_usage BITMAP_USAGE_HEIGHT_MAP = 2;
+static const e_bitmap_usage BITMAP_USAGE_DETAIL_MAP = 3;
+static const e_bitmap_usage BITMAP_USAGE_LIGHT_MAP = 4;
+static const e_bitmap_usage BITMAP_USAGE_VECTOR_MAP = 5;
+#endif
 typedef struct e_bitmap_flags {
-    bool enable_diffusion_dithering : 1;
-    bool disable_height_map_compression : 1;
-    bool uniform_sprite_sequences : 1;
-    bool filthy_sprite_bug_fix : 1;
-    bool unused : 4;
+    bool    enable_diffusion_dithering : 1;
+    bool    disable_height_map_compression : 1;
+    bool    uniform_sprite_sequences : 1;
+    bool    filthy_sprite_bug_fix : 1;
+    bool    unused : 4;
     PADDING(1);
 } e_bitmap_flags;
 static_assert_check(sizeof(e_bitmap_flags) == 0x02, "Incorrect size of e_bitmap_flags");
 
-typedef enum e_sprite_size : unsigned short {
-    SPRITE_32x32 = 0,
-    SPRITE_64x64,
-    SPRITE_128x128,
-    SPRITE_256x256,
-    SPRITE_512x512
-} e_sprite_size;
-typedef enum e_sprite_usage : unsigned short {
-    SPRITE_USAGE_BLEND_ADD_SUBTRACT_MULTIPLY_MAX = 0,
-    BITMAP_USAGE_MULTIPLY_MIN,
-    BITMAP_USAGE_DOUBLE_MULTIPLY,
-} e_sprite_usage;
+#ifndef __cplusplus
+typedef unsigned short e_sprite_size;
+static const e_sprite_size SPRITE_32x32 = 0;
+static const e_sprite_size SPRITE_64x64 = 1;
+static const e_sprite_size SPRITE_128x128 = 2;
+static const e_sprite_size SPRITE_256x256 = 3;
+static const e_sprite_size SPRITE_512x512 = 4;
+typedef unsigned short e_sprite_usage;
+static const e_sprite_usage SPRITE_USAGE_BLEND_ADD_SUBTRACT_MULTIPLY_MAX = 0;
+static const e_sprite_usage SPRITE_USAGE_MULTIPLY_MIN = 1;
+static const e_sprite_usage SPRITE_USAGE_DOUBLE_MULTIPLY = 2;
 
-typedef enum e_bitmaps_type : unsigned short {
-    BITMAPS_TYPE_2D_TEXTURE = 0,
-    BITMAPS_TYPE_3D_TEXTURE,
-    BITMAPS_TYPE_CUBE_MAP,
-    BITMAPS_TYPE_WHITE
-} e_bitmaps_type;
-typedef enum e_bitmaps_format : unsigned short {
-    BITMAPS_FORMAT_A8 = 0,
-    BITMAPS_FORMAT_Y8,
-    BITMAPS_FORMAT_AY8,
-    BITMAPS_FORMAT_A8Y8,
-    BITMAPS_FORMAT_UNUSED1,
-    BITMAPS_FORMAT_UNUSED2,
-    BITMAPS_FORMAT_R5G6B5,
-    BITMAPS_FORMAT_UNUSED3,
-    BITMAPS_FORMAT_A1R5G5B5,
-    BITMAPS_FORMAT_A4R4G4B4,
-    BITMAPS_FORMAT_X8R8G8B8,
-    BITMAPS_FORMAT_A8R8G8B8,
-    BITMAPS_FORMAT_UNUSED4,
-    BITMAPS_FORMAT_UNUSED5,
-    BITMAPS_FORMAT_DXT1,
-    BITMAPS_FORMAT_DXT3,
-    BITMAPS_FORMAT_DXT5,
-    BITMAPS_FORMAT_P8_BUMP
-} e_bitmaps_format;
-
+typedef unsigned short e_bitmaps_type;
+static const e_bitmaps_type BITMAPS_TYPE_2D_TEXTURE = 0;
+static const e_bitmaps_type BITMAPS_TYPE_3D_TEXTURE = 1;
+static const e_bitmaps_type BITMAPS_TYPE_CUBE_MAP = 2;
+static const e_bitmaps_type BITMAPS_TYPE_WHITE = 3;
+typedef unsigned short e_bitmaps_format;
+static const e_bitmaps_format BITMAPS_FORMAT_A8 = 0;
+static const e_bitmaps_format BITMAPS_FORMAT_Y8 = 1;
+static const e_bitmaps_format BITMAPS_FORMAT_AY8 = 2;
+static const e_bitmaps_format BITMAPS_FORMAT_A8Y8 = 3;
+static const e_bitmaps_format BITMAPS_FORMAT_UNUSED1 = 4;
+static const e_bitmaps_format BITMAPS_FORMAT_UNUSED2 = 5;
+static const e_bitmaps_format BITMAPS_FORMAT_R5G6B5 = 6;
+static const e_bitmaps_format BITMAPS_FORMAT_UNUSED3 = 7;
+static const e_bitmaps_format BITMAPS_FORMAT_A1R5G5B5 = 8;
+static const e_bitmaps_format BITMAPS_FORMAT_A4R4G4B4 = 9;
+static const e_bitmaps_format BITMAPS_FORMAT_X8R8G8B8 = 10;
+static const e_bitmaps_format BITMAPS_FORMAT_A8R8G8B8 = 11;
+static const e_bitmaps_format BITMAPS_FORMAT_UNUSED4 = 12;
+static const e_bitmaps_format BITMAPS_FORMAT_UNUSED5 = 13;
+static const e_bitmaps_format BITMAPS_FORMAT_DXT1 = 14;
+static const e_bitmaps_format BITMAPS_FORMAT_DXT3 = 15;
+static const e_bitmaps_format BITMAPS_FORMAT_DXT5 = 16;
+static const e_bitmaps_format BITMAPS_FORMAT_P8_BUMP = 17;
+#endif
 typedef struct s_bitmaps_flags {
     bool    power_of_two_dimensions : 1;
     bool    compressed : 1;

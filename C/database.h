@@ -58,7 +58,8 @@ CNATIVE {
     dllport IDatabase* getIDatabase(unsigned int hash);
 #endif
 #ifdef EXT_IDATABASESTATEMENT
-    typedef struct IDBStmt {
+    typedef struct IDBStmt IDBStmt;
+    struct IDBStmt {
         /// <summary>
         /// To release a statement, cannot be re-used.
         /// </summary>
@@ -211,7 +212,7 @@ CNATIVE {
         /// <param name="Column">Column's number.</param>
         /// <returns>Return true if is nullable or false.</returns>
         bool (*m_is_column_nullable)(IDBStmt* self, SQLUSMALLINT Column);
-    } IDBStmt;
+    };
     dllport IDBStmt* getIDBStmt(unsigned int hash);
 #endif
 #ifdef __cplusplus

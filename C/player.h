@@ -5,7 +5,7 @@
 CNATIVE {
 #endif
 
-    typedef enum MSG_FORMAT : unsigned int {
+    typedef enum MSG_FORMAT {
         MF_BLANK = 0,
         MF_SERVER = 1,
         MF_HEXT = 2,
@@ -15,16 +15,17 @@ CNATIVE {
         MF_ERROR = 6,
         MF_ALERT = 7
     } MSG_FORMAT;
-    typedef enum MSG_PROTOCOL : unsigned int {
+    typedef enum MSG_PROTOCOL {
         MP_CHAT = 0,
         MP_RCON = 1,
         MP_REMOTE = 2
     } MSG_PROTOCOL;
 
-    struct rconData {
+    typedef struct rconData {
         char* msg_ptr;
         unsigned int unk; // always 0
         char msg[0x50];
+#ifdef __cplusplus
         rconData(const char* text) {
             msg[0] = 0;
 #ifdef EXT_IUTIL
@@ -35,7 +36,8 @@ CNATIVE {
             unk = 0;
             msg_ptr = msg;
         }
-    };
+#endif
+    } rconData;
     static_assert_check(sizeof(rconData) == 0x58, "Incorrect size of rconData");
     #pragma pack(push,1)
     typedef struct PlayerExtended {
@@ -59,6 +61,7 @@ CNATIVE {
         float handicap_shield;
         float handicap_health;
         float handicap_speed;
+#ifdef __cplusplus
         PlayerExtended() {
             isInServer=0;
             adminLvl=0;
@@ -77,6 +80,7 @@ CNATIVE {
             handicap_health = 1;
             handicap_speed = 1;
         }
+#endif
     } PlayerExtended;
     static_assert_check(sizeof(PlayerExtended) == 343, "Incorrect size of PlayerExtended");
     typedef struct PlayerInfo {
@@ -84,6 +88,7 @@ CNATIVE {
         s_machine_slot* mS;
         s_player_reserved_slot* plR;
         s_player_slot* plS;
+#ifdef __cplusplus
         PlayerInfo() {
             plEx = 0;
             mS = 0;
@@ -96,6 +101,7 @@ CNATIVE {
             this->plR = plI.plR;
             this->plS = plI.plS;
         }
+#endif
     } PlayerInfo;
     static_assert_check(sizeof(PlayerInfo) == 16, "Incorrect size of PlayerInfo");
     typedef struct PlayerInfoList {
@@ -151,13 +157,13 @@ typedef struct IPlayer {
     /// </summary>
     /// <param name="fullName">Player's full name.</param>
     /// <returns>Return ID of full name from database.</returns>
-    unsigned int(*m_get_id_full_name)(wchar_t* fullName);
+    unsigned int (*m_get_id_full_name)(wchar_t* fullName);
     /// <summary>
     /// Get ID from IP Address, excluded port number.
     /// </summary>
     /// <param name="ipAddress">Player's IP Address, excluded port number.</param>
     /// <returns>Return ID  from database.</returns>
-    unsigned int(*m_get_id_ip_address)(wchar_t* ipAddress);
+    unsigned int (*m_get_id_ip_address)(wchar_t* ipAddress);
     /// <summary>
     /// Get ID from port, excluded IP Address.
     /// </summary>
@@ -170,21 +176,21 @@ typedef struct IPlayer {
     /// <param name="ID">ID</param>
     /// <param name="fullName">Full name</param>
     /// <returns>Does not return any value.</returns>
-    void (*m_get_full_name_id)(int ID, wchar_t* fullName);
+    bool (*m_get_full_name_id)(int ID, wchar_t* fullName);
     /// <summary>
     /// Get IP Address, excluded port number, from ID.
     /// </summary>
     /// <param name="ID">ID</param>
     /// <param name="ipAddress">IP Address, excluded port number</param>
     /// <returns>Does not return any value.</returns>
-    void (*m_get_ip_address_id)(int ID, wchar_t* ipAddress);
+    bool (*m_get_ip_address_id)(int ID, wchar_t* ipAddress);
     /// <summary>
     /// Get port number, excluded IP Address, from ID.
     /// </summary>
     /// <param name="ID">ID</param>
     /// <param name="port">Port number, excluded IP Address</param>
     /// <returns>Does not return any value.</returns>
-    void (*m_get_port_id)(int ID, wchar_t* port);
+    bool (*m_get_port_id)(int ID, wchar_t* port);
     /// <summary>
     /// Update PlayerInfo from database.
     /// </summary>
@@ -247,7 +253,7 @@ typedef struct IPlayer {
     /// <returns>Does not return any value.</returns>
     void (*m_change_team)(PlayerInfo* playerInfo, const e_color_team_index new_team, bool forcekill);
     /// <summary>
-    /// To apply camouflage duration on specific player.
+    /// To apply camouflage duration, in second(s), on specific player.
     /// </summary>
     /// <param name="playerInfo">PlayerInfo</param>
     /// <param name="duration">In seconds format.</param>
@@ -259,21 +265,21 @@ typedef struct IPlayer {
     /// </summary>
     /// <param name="plEx">Player to ban.</param>
     /// <param name="gmtm">Time/date to expire ban.</param>
-    /// <returns>Return true or false unable to ban player.</returns>
-    bool (*m_ban_player)(PlayerExtended* plEx, tm* gmtm);
+    /// <returns>Return true or false unable to ban player, -1 for invalid argument.</returns>
+    ext_boolean (*m_ban_player)(PlayerExtended* plEx, tm* gmtm);
     /// <summary>
     /// Ban CD hash key from host server.
     /// </summary>
     /// <param name="CDHash">CD hash key to ban. (Must have 33 characters allocate to copy, 33th is to null termate.)</param>
     /// <param name="gmtm">Time/date to expire ban.</param>
-    /// <returns>Return true or false unable to ban CD hash key.</returns>
+    /// <returns>Return true or false unable to ban CD hash key, -1 for invalid argument.</returns>
     ext_boolean (*m_ban_CD_key)(wchar_t* CDHash, tm* gmtm);
     /// <summary>
     /// Ban IP Address from host server.
     /// </summary>
     /// <param name="IP_Address">IP Address to ban.. (Must have 16 characters allocate to copy.)</param>
     /// <param name="gmtm">Time/date to expire ban.</param>
-    /// <returns>Return true or false unable to ban IP Address.</returns>
+    /// <returns>Return true or false unable to ban IP Address, -1 for invalid argument.</returns>
     ext_boolean (*m_ban_ip)(wchar_t* IP_Address, tm* gmtm);
     /// <summary>
     /// Get ID from banned IP Address.
@@ -299,7 +305,7 @@ typedef struct IPlayer {
     /// <param name="mS">machine slot</param>
     /// <param name="m_ip">IP address, excluded port number</param>
     /// <returns>Return true or false if unable get IP address.</returns>
-    bool (*m_get_ip)(s_machine_slot* mS, in_addr* m_ip);
+    bool (*m_get_ip)(s_machine_slot* mS, IN_ADDR* m_ip);
     /// <summary>
     /// Get port number, excluded IP address, from machine slot.
     /// </summary>
@@ -313,7 +319,7 @@ typedef struct IPlayer {
     /// <param name="mS">machine slot</param>
     /// <param name="CDHash">CD hash key. (Must have 33 characters allocate to copy, 33th is to null termate.)</param>
     /// <returns>Does not return any value.</returns>
-    void (*m_get_CD_hash)(s_machine_slot* mS, char* CDHash);
+    bool (*m_get_CD_hash)(s_machine_slot* mS, char* CDHash);
     /// <summary>
     /// Find a match of player(s) from regex expression search.
     /// </summary>

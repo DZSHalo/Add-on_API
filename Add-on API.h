@@ -39,26 +39,29 @@
 #define CNATIVE extern "C"
 #else
 #define CNATIVE
+#ifndef _STDBOOL
+typedef _Bool bool;
+#endif
 #endif
 
 #define toggle char
 #define ext_boolean int
 
-typedef enum EAO_RETURN : signed int {
+typedef enum EAO_RETURN {
     EAO_ONE_TIME_UPDATE = 2,
     EAO_OVERRIDE = 1,
     EAO_CONTINUE = 0,
     EAO_FAIL = -1
 } EAO_RETURN;
 
-typedef enum CMD_RETURN : signed int {
+typedef enum CMD_RETURN {
     CMD_FAIL = -1,
     CMD_NO_MATCH = 0,
     CMD_SUCCESS = 1,
     CMD_SUCCESS_DELAY = 2
 } CMD_RETURN;
 
-typedef enum e_boolean : unsigned char {
+typedef enum e_boolean {
     BOOL_FAIL = (unsigned char)-1,
     BOOL_FALSE = 0,
     BOOL_TRUE = 1
@@ -68,6 +71,9 @@ typedef enum e_boolean : unsigned char {
 
 #include "C\cseries\cseries.h"
 //Vanilla Tags
+#ifdef __cplusplus
+#include "CPlusPlus\tags\tag_include.hpp"
+#endif
 #include "C\tags\tag_include.h"
 
 
@@ -161,7 +167,7 @@ CNATIVE {
         /// <param name="plI">Bind to specific player or use null for general.</param>
         /// <param name="execTime">Amount of ticks later to execute a timer event. (1 tick = 1/30 second)</param>
         /// <returns>Return ID of timer event.</returns>
-        unsigned long (*m_add)(unsigned int hash, PlayerInfo* plI, unsigned int execTime);
+        unsigned int (*m_add)(unsigned int hash, PlayerInfo* plI, unsigned int execTime);
         /// <summary>
         /// Remove a timer event.
         /// </summary>

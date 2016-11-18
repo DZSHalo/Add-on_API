@@ -59,7 +59,7 @@ CNATIVE {
         /// <param name="plI">Bind user of this execution process.</param>
         /// <param name="protocolMsg">For output the message to binded user.</param>
         /// <returns>Only return true or false.</returns>
-        bool(*m_load_from_file)(unsigned int hash, const wchar_t* fileName, PlayerInfo plI, MSG_PROTOCOL protocolMsg);
+        bool (*m_load_from_file)(unsigned int hash, const wchar_t* fileName, PlayerInfo plI, MSG_PROTOCOL protocolMsg);
     } ICommand;
     CNATIVE dllport ICommand* getICommand(unsigned int hash);
 #ifdef __cplusplus

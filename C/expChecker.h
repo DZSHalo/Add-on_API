@@ -275,6 +275,6 @@ namespace addon {
     #endif
 }
 #else
-    assert("EXTOnTimerCancel is incorrect, please fix this.");
+#pragma WARNING("Please verify if you have defined, exported, and included all necessary requirement to compile your Add-on as C does not have any support for expChecker.")
 #endif
 #endif

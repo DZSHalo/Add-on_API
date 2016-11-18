@@ -21,7 +21,8 @@ typedef struct s_tag_reference {
 static_assert_check(sizeof(s_tag_reference) == 0x10, "Incorrect size of s_tag_reference");
 
 typedef struct s_tag_block_definition {
-
+    //TODO: Need to research again since didn't investigate this for long time.
+    unsigned int noResearchDone; //TODO: No research done
 } s_tag_block_definition;
 
 typedef struct s_tag_block {
@@ -29,6 +30,6 @@ typedef struct s_tag_block {
     void*   address;
     const   s_tag_block_definition* definition;
 } s_tag_block;
-typedef struct s_tag_group {
+//typedef struct s_tag_group {
     //TODO: Is this needed?
-} s_tag_group;
+//} s_tag_group;

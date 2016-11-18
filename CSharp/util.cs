@@ -180,9 +180,9 @@ namespace Addon_API {
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_isDoubleW([In, MarshalAs(UnmanagedType.LPWStr)] string str);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate int d_strcatW([In, MarshalAs(UnmanagedType.LPWStr)] StringBuilder dest, uint len, [In, MarshalAs(UnmanagedType.LPWStr)] string src);
+        public delegate uint d_strcatW([In, MarshalAs(UnmanagedType.LPWStr)] StringBuilder dest, uint len, [In, MarshalAs(UnmanagedType.LPWStr)] string src);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate int d_strcatA([In, MarshalAs(UnmanagedType.LPStr)] StringBuilder dest, uint len, [In, MarshalAs(UnmanagedType.LPStr)] string src);
+        public delegate uint d_strcatA([In, MarshalAs(UnmanagedType.LPStr)] StringBuilder dest, uint len, [In, MarshalAs(UnmanagedType.LPStr)] string src);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void d_str_to_wstr([In, MarshalAs(UnmanagedType.LPStr)] string dest, [In, MarshalAs(UnmanagedType.LPWStr)] StringBuilder src);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]

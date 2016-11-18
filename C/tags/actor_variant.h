@@ -20,42 +20,36 @@ typedef struct s_change_color_block {
     PADDING(0x08);
 } s_change_color_block;
 static_assert_check(sizeof(s_change_color_block) == 0x20, "Incorrect size of s_change_color_block");
+#ifndef __cplusplus
+typedef unsigned short e_movement_type;
+static const e_movement_type MOVEMENT_ALWAYS_RUN = 0;
+static const e_movement_type MOVEMENT_ALWAYS_CROUCH = 1;
+static const e_movement_type MOVEMENT_SWITCH_TYPES = 2;
 
-typedef enum e_movement_type : unsigned short {
-    MOVEMENT_ALWAYS_RUN=0,
-    MOVEMENT_ALWAYS_CROUCH,
-    MOVEMENT_SWITCH_TYPES
-} e_movement_type;
+typedef unsigned short e_special_fire_mode;
+static const e_special_fire_mode SPECIAL_FIRE_MODE_NONE = 0;
+static const e_special_fire_mode SPECIAL_FIRE_MODE_OVERCHARGE = 1;
+static const e_special_fire_mode SPECIAL_FIRE_MODE_SECONDARY_TRIGGER = 2;
 
-typedef enum e_special_fire_mode : unsigned short {
-    SPECIAL_FIRE_MODE_NONE=0,
-    SPECIAL_FIRE_MODE_OVERCHARGE,
-    SPECIAL_FIRE_MODE_SECONDARY_TRIGGER
-} e_special_fire_mode;
+typedef unsigned short e_special_fire_situation;
+static const e_special_fire_situation SPECIAL_FIRE_SITUATION_NEVER = 0;
+static const e_special_fire_situation SPECIAL_FIRE_SITUATION_ENEMY_VISIBLE = 1;
+static const e_special_fire_situation SPECIAL_FIRE_SITUATION_STRAFING = 2;
 
-typedef enum e_special_fire_situation : unsigned short {
-    SPECIAL_FIRE_SITUATION_NEVER=0,
-    SPECIAL_FIRE_SITUATION_ENEMY_VISIBLE,
-    SPECIAL_FIRE_SITUATION_STRAFING
-} e_special_fire_situation;
+typedef unsigned short e_grenade_type;
+static const e_grenade_type GRENADE_TYPE_HUMAN_FRAGMENTATION = 0;
+static const e_grenade_type GRENADE_TYPE_COVENANT_PLASMA = 1;
 
-typedef enum e_grenade_type : unsigned short {
-    GRENADE_TYPE_HUMAN_FRAGMENTATION=0,
-    GRENADE_TYPE_COVENANT_PLASMA
-} e_grenade_type;
+typedef unsigned short e_trajectory_type;
+static const e_trajectory_type TRAJECTORY_TYPE_TOSS = 0;
+static const e_trajectory_type TRAJECTORY_TYPE_LOB = 1;
+static const e_trajectory_type TRAJECTORY_TYPE_BOUNCE = 2;
 
-typedef enum e_trajectory_type : unsigned short {
-    TRAJECTORY_TYPE_TOSS=0,
-    TRAJECTORY_TYPE_LOB,
-    TRAJECTORY_TYPE_BOUNCE
-} e_trajectory_type;
-
-typedef enum e_grenade_stimulus : unsigned short {
-    GRENADE_STIMULUS_NEVER=0,
-    GRENADE_STIMULUS_VISIBLE_TARGET,
-    GRENADE_STIMULUS_SEEK_COVER
-} e_grenade_stimulus;
-
+typedef unsigned short e_grenade_stimulus;
+static const e_grenade_stimulus GRENADE_STIMULUS_NEVER = 0;
+static const e_grenade_stimulus GRENADE_STIMULUS_VISIBLE_TARGET = 1;
+static const e_grenade_stimulus GRENADE_STIMULUS_SEEK_COVER = 2;
+#endif
 typedef struct s_actor_variant_meta {
     s_actor_variant_flags flags;
     s_tag_reference actor_definition;   //actr

@@ -1,8 +1,9 @@
 //APPROVED
-typedef enum e_collection_type : unsigned short {
-    COLLECTION_TYPE_SCREEN_FACING = 0,
-    COLLECTION_TYPE_VIEWER_FACING
-} e_collection_type;
+#ifndef __cplusplus
+typedef unsigned short e_collection_type;
+static const e_collection_type COLLECTION_TYPE_SCREEN_FACING = 0;
+static const e_collection_type COLLECTION_TYPE_VIEWER_FACING = 1;
+#endif
 
 typedef struct s_detail_object_type_flags {
     bool    unused : 2;

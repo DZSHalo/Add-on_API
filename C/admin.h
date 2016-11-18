@@ -1,7 +1,7 @@
 #ifndef adminH
 #define adminH
 
-typedef enum LOGIN_VALIDATION : signed int {
+typedef enum LOGIN_VALIDATION {
     LOGIN_INVALID = -1,
     LOGIN_FAIL = 0,
     LOGIN_OK = 1

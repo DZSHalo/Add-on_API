@@ -1,22 +1,22 @@
 //APPROVED
 
 typedef struct s_damage_flags {
-    bool does_not_hurt_owner : 1;
-    bool can_cause_headshots : 1;
-    bool pings_resistant_units : 1;
-    bool does_not_hurt_friends : 1;
-    bool does_not_ping_units : 1;
-    bool detonates_explosives : 1;
-    bool only_hurts_shields : 1;
-    bool cause_flaming_death : 1;
-    bool damage_indicators_always_point_down : 1;
-    bool skips_shields : 1;
-    bool only_hurts_one_infection_form : 1;
-    bool can_cause_multiplayer_headshots : 1;
-    bool infection_form_pop : 1;
-    bool unused0 : 3;
-    bool unused1 : 8;
-    bool unused2 : 8;
+    bool    does_not_hurt_owner : 1;
+    bool    can_cause_headshots : 1;
+    bool    pings_resistant_units : 1;
+    bool    does_not_hurt_friends : 1;
+    bool    does_not_ping_units : 1;
+    bool    detonates_explosives : 1;
+    bool    only_hurts_shields : 1;
+    bool    cause_flaming_death : 1;
+    bool    damage_indicators_always_point_down : 1;
+    bool    skips_shields : 1;
+    bool    only_hurts_one_infection_form : 1;
+    bool    can_cause_multiplayer_headshots : 1;
+    bool    infection_form_pop : 1;
+    bool    unused0 : 3;
+    bool    unused1 : 8;
+    bool    unused2 : 8;
 } s_damage_flags;
 static_assert_check(sizeof(s_damage_flags) == 0x4, "Incorrect size of s_damage_flags");
 

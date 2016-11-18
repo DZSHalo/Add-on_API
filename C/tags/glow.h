@@ -1,33 +1,30 @@
 //APPROVED
 typedef struct s_glow_flags {
-    bool modify_particle_color_in_range : 1;
-    bool particles_move_backards : 1;
-    bool particles_move_in_both_directions : 1; //Easter egg: Guerilla only shows as "partices" when should be "particles".
-    bool trailing_particles_fade_over_time : 1;
-    bool trailing_particles_shrink_over_time : 1;
-    bool trailing_particles_slow_over_time : 1;
-    bool unused0 : 1;
-    bool unused1 : 1;
-    bool unused2 : 8;
-    bool unused3 : 8;
-    bool unused4 : 8;
+    bool    modify_particle_color_in_range : 1;
+    bool    particles_move_backards : 1;
+    bool    particles_move_in_both_directions : 1; //Easter egg: Guerilla only shows as "partices" when should be "particles".
+    bool    trailing_particles_fade_over_time : 1;
+    bool    trailing_particles_shrink_over_time : 1;
+    bool    trailing_particles_slow_over_time : 1;
+    bool    unused0 : 1;
+    bool    unused1 : 1;
+    bool    unused2 : 8;
+    bool    unused3 : 8;
+    bool    unused4 : 8;
 } s_glow_flags;
 static_assert_check(sizeof(s_glow_flags) == 0x04, "Incorrect size of s_glow_flags");
-
-typedef enum e_boundary_effect : unsigned short {
-    BOUNDARY_EFFECT_BOUNCE = 0,
-    BOUNDARY_EFFECT_WRAP = 1
-} e_boundary_effect;
-typedef enum e_normal_particle : unsigned short {
-    DISTRIBUTED_RANDOMLY = 0,
-    DISTRIBUTED_UNIFORMLY = 1
-} e_normal_particle;
-typedef enum e_trailing_particle : unsigned short {
-    EMIT_VERTICALLY = 0,
-    EMIT_NORMAL_UP = 1,
-    EMIT_RANDOMLY = 2
-} e_trailing_particle;
-
+#ifndef __cplusplus
+typedef unsigned short e_boundary_effect;
+static const e_boundary_effect BOUNDARY_EFFECT_BOUNCE = 0;
+static const e_boundary_effect BOUNDARY_EFFECT_WRAP = 1;
+typedef unsigned short e_normal_particle;
+static const e_normal_particle DISTRIBUTED_RANDOMLY = 0;
+static const e_normal_particle DISTRIBUTED_UNIFORMLY = 1;
+typedef unsigned short e_trailing_particle;
+static const e_trailing_particle EMIT_VERTICALLY = 0;
+static const e_trailing_particle EMIT_NORMAL_UP = 1;
+static const e_trailing_particle EMIT_RANDOMLY = 2;
+#endif
 typedef struct s_glow_meta {
     char                attachment_marker[0x20];
     unsigned short      number_of_particles;

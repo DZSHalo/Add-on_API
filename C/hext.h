@@ -13,12 +13,18 @@ CNATIVE {
     static const wchar_t me[] = L"me";
     static const wchar_t backslash = L'\\';
     static const wchar_t dotW = L'.';
-
+#ifdef __cplusplus
     typedef enum GAME_MODE : unsigned short {
-        GAME_SINGLE,
+        GAME_SINGLE = 0,
         GAME_MULTI,
         GAME_HOSTING
     } GAME_MODE;
+#else
+    typedef unsigned short GAME_MODE;
+    static const GAME_MODE GAME_SINGLE = 0;
+    static const GAME_MODE GAME_MULTI = 1;
+    static const GAME_MODE GAME_HOSTING = 2;
+#endif
     typedef struct GAME_MODE_S {
         bool SINGLE;
         bool MULTI;

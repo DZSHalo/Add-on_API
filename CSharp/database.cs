@@ -1,8 +1,7 @@
+#if EXT_IDATABASE || EXT_IDATABASESTATEMENT
 using System;
 using System.Runtime.InteropServices;
 using System.Data.Odbc;
-
-#if EXT_IDATABASE || EXT_IDATABASESTATEMENT
 
 namespace Addon_API {
 #if EXT_IDATABASE

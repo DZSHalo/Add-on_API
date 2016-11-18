@@ -1,16 +1,16 @@
 //APPROVED
-typedef enum e_trailing_edge_shape : unsigned short {
-    TRAILING_EDGE_SHAPE_FLAT=0,
-    TRAILING_EDGE_SHAPE_CONCAVE_TRIANGULAR,
-    TRAILING_EDGE_SHAPE_CONVEX_TRIANGULAR,
-    TRAILING_EDGE_SHAPE_TRAPEZOID_SHORT_TOP,
-    TRAILING_EDGE_SHAPE_TRAPEZOID_SHORT_BOTTOM
-} e_trailing_edge_shape;
+#ifndef __cplusplus
+typedef unsigned short e_trailing_edge_shape;
+static const e_trailing_edge_shape TRAILING_EDGE_SHAPE_FLAT = 0;
+static const e_trailing_edge_shape TRAILING_EDGE_SHAPE_CONCAVE_TRIANGULAR = 1;
+static const e_trailing_edge_shape TRAILING_EDGE_SHAPE_CONVEX_TRIANGULAR = 2;
+static const e_trailing_edge_shape TRAILING_EDGE_SHAPE_TRAPEZOID_SHORT_TOP = 3;
+static const e_trailing_edge_shape TRAILING_EDGE_SHAPE_TRAPEZOID_SHORT_BOTTOM = 4;
 
-typedef enum e_attached_edge_shape : unsigned short {
-    ATTACHED_EDGE_SHAPE_FLAT=0,
-    ATTACHED_EDGE_SHAPE_CONCAVE_TRIANGULAR
-} e_attached_edge_shape;
+typedef unsigned short e_attached_edge_shape;
+static const e_attached_edge_shape ATTACHED_EDGE_SHAPE_FLAT = 0;
+static const e_attached_edge_shape ATTACHED_EDGE_SHAPE_CONCAVE_TRIANGULAR = 1;
+#endif
 
 typedef struct s_attachment_point {
     signed short    height_to_next_attachment_vertices;

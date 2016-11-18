@@ -32,14 +32,21 @@ NOTICE:
 #define machineindex char
 
 //Team Color Begin
+#ifdef __cplusplus
 #pragma warning(push)
 #pragma warning(disable:4341)
-enum e_color_team_index:signed char {
+enum e_color_team_index : signed char {
     COLOR_TEAM_NONE = -1, //Reserved for H-Ext usage ONLY!
     COLOR_TEAM_RED = 0,
     COLOR_TEAM_BLUE = 1
 };
 #pragma warning(pop)
+#else
+typedef signed char e_color_team_index;
+static const e_color_team_index COLOR_TEAM_NONE = -1; //Reserved for H-Ext usage ONLY!
+static const e_color_team_index COLOR_TEAM_RED = 0;
+static const e_color_team_index COLOR_TEAM_BLUE = 1;
+#endif
 //Team Color End
 
 //Color Indexes Start
@@ -72,31 +79,31 @@ enum e_color_index {
 #define UNKNOWN(size) char STR_CAT_DELAYED(_unused_,__COUNTER__)[size]
 #define UNKNOWN_BITFIELD(size) char STR_CAT_DELAYED(_unusedbf_, __COUNTER__) : size
 
-struct chatData {
+typedef struct chatData {
     unsigned int type;      //range of 0 - 3, sort from Global, Team, Vehicle, and Server (CE only)
     unsigned int player;    //range of 0 - 15
     wchar_t* msg;           //range of 0 - TBA
-};
-struct rconDecode {
+} chatData;
+typedef struct rconDecode {
     char pass[9];
     char cmd[65];
-};
+} rconDecode;
 static_assert_check(sizeof(rconDecode) == 0x4A, "Incorrect size of rconDecode");
 
-struct bone {
+typedef struct bone {
     float unknown[10];
     real_vector3d World;
-};
+} bone;
 static_assert_check(sizeof(bone) == 0x34, "Incorrect size of bone");
-struct s_player_reserved_slot {
+typedef struct s_player_reserved_slot {
     wchar_t PlayerName[12];     //0x00
     short ColorIndex;           //0x18      // See defined color indexes above.
     short Unknown1;             //0x1A      // 0xFFFF
     machineindex MachineIndex;  //0x1C      // Index to the Machine List (which has their CURRENT cdhash and IP. (it also has the LAST player's name))
     char Unknown2;              //0x1D      //something. But, if these 4 chars are FF's, then the player isn't on.
-    char Team;                  //0x1E
+    e_color_team_index Team;    //0x1E
     playerindex PlayerIndex;    //0x1F      // Index to their StaticPlayer
-};  //size of 0x20
+} s_player_reserved_slot;  //size of 0x20
 static_assert_check(sizeof(s_player_reserved_slot) == 0x20, "Incorrect size of s_player_reserved_slot");
 
 #ifndef s_addr
@@ -115,18 +122,18 @@ typedef struct in_addr {
 } IN_ADDR, *PIN_ADDR;
 #endif
 
-struct MachineSP3 {
-    in_addr IPAddress;
+typedef struct MachineSP3 {
+    IN_ADDR IPAddress;
     unsigned short port;
-}; //At the moment do not know complete size...
-struct MachineSP2 {
+} MachineSP3; //At the moment do not know complete size...
+typedef struct MachineSP2 {
     MachineSP3* data3;
-}; //At the moment do not know complete size...
-struct MachineSP1 {
+} MachineSP2; //At the moment do not know complete size...
+typedef struct MachineSP1 {
     MachineSP2* data2;
-}; //At the moment do not know complete size...
+} MachineSP1; //At the moment do not know complete size...
 
-struct s_machine_slot {
+typedef struct s_machine_slot {
     MachineSP1*    data1;                   //0x0000 // Following this, i found a pointer next to other useless stuff. Then, another pointer, then i found some stuff that looked like it /MIGHT/ very well be strings related to a hash. *shrug*
     int     Unknown0[2];                    //0x0004
     short   machineIndex;                   //0x000C
@@ -177,43 +184,43 @@ struct s_machine_slot {
     //char    IP[32];                       //0x0080
     //char    CDhash[32];                            // a solid block array, so it's not necessarily a c_str i think, but there's still usually just 0's afterwards anyways.
     //unsigned char    UnknownZeros[44];             // zeros..
-}; // Size: 0xEC = Halo CE & Trial, 0x60 = Halo PC
+} s_machine_slot; // Size: 0xEC = Halo CE & Trial, 0x60 = Halo PC
 static_assert_check(sizeof(s_machine_slot) == 0x60, "Incorrect size of s_machine_slot");
 
-struct s_player_slot {//Verified offsets.
+typedef struct s_player_slot {//Verified offsets.
     short    PlayerID;                      //0x000
     short    IsLocal;                       //0x002            // 0=Local(no bits set), -1=Other Client(All bits set)
     wchar_t Name[12];                       //0x004            // Unicode
-    s_ident    UnknownIdent;                  //0x01C
-    int    Team;                           //0x020            // 0=Red, 1=Blue; if do client host, you will see hud's team changed instant.
-    s_ident    SwapObject;                    //0x024
+    s_ident    UnknownIdent;                //0x01C
+    int    Team;                            //0x020            // 0=Red, 1=Blue; if do client host, you will see hud's team changed instant.
+    s_ident    SwapObject;                  //0x024
     short    SwapType;                      //0x028            // Vehicle=8, Weapon=6
     short    SwapSeat;                      //0x02A            // Warthog-Driver=0, Passenger=1, Gunner=2, Weapon=-1
-    int    RespawnTimer;                   //0x02C            // Counts down when dead, Alive=0
-    int    Unknown;                        //0x02F
-    s_ident    CurrentBiped;                  //0x034
-    s_ident    PreviousBiped;                 //0x038
+    int    RespawnTimer;                    //0x02C            // Counts down when dead, Alive=0
+    int    Unknown;                         //0x02F
+    s_ident    CurrentBiped;                //0x034
+    s_ident    PreviousBiped;               //0x038
     //IMPORTANT: need to verify this.
-    //   uint LocationID;                  // This is very, very interesting. BG is split into 25 location ID's. 1 - 19
+    //   uint LocationID;                   // This is very, very interesting. BG is split into 25 location ID's. 1 - 19
     short    LocationID;                    //0x03C            //Should be uint?
     //short    ClusterIndex;                //0x03C
     char    Swap : 1;                       //0x03E.0
-    char    UnknownBits4 :7;                //0x03E.7
+    char    UnknownBits4 :7;                //0x03E.1-7
     char    UnknownByte;                    //0x03F
-    s_ident    UnknownIdent1;                 //0x040            //BulletCount?
-    int    LastBulletShotTime;             //0x044            // since game start(0)
+    s_ident    UnknownIdent1;               //0x040            //BulletCount?
+    int    LastBulletShotTime;              //0x044            // since game start(0)
     wchar_t Name1[12];                      //0x048
     short    ColorIndex;                    //0x060            // See defined color indexes above.
     short    Unknown00;                     //0x062
     playerindex    MachineIndex;            //0x064            // Index to the Machine List (which has their CURRENT cdhash and IP. (it also has the LAST player's name))
     char    Unknown0;                       //0x065            //something. But, if these 4 chars are FF's, then the player isn't on.
-    char    iTeam;                          //0x066
+    e_color_team_index    iTeam;            //0x066
     playerindex    PlayerIndex;             //0x067            // Index to their StaticPlayer
-    int    Unknown1;                       //0x068
+    int    Unknown1;                        //0x068
     float    VelocityMultiplier;            //0x06C <--- and below are correct!
-    s_ident    UnknownIdent3[4];              //0x070
-    int    Unknown2;                       //0x080
-    int    LastDeathTime;                  //0x084        // since game start(0)
+    s_ident    UnknownIdent3[4];            //0x070
+    int    Unknown2;                        //0x080
+    int    LastDeathTime;                   //0x084        // since game start(0)
     unsigned short    killInOrderObjective;           //0x088
     char    Unknown3[18];                   //0x08A
     short    KillsCount;                    //0x09C
@@ -228,39 +235,39 @@ struct s_player_slot {//Verified offsets.
     short    FlagReturnCount;               //0x0C6
     short    FlagCaptureCount;              //0x0C8
     char    Unknown7[6];                    //0x0CA
-    s_ident    UnknownIdent4;                 //0x0D0
+    s_ident    UnknownIdent4;               //0x0D0
     char    Unknown8;                       //0x0D4
     bool    HasQuit;                        //0x0D5
     char    Unknown81[6];                   //0x0D6
     short    Ping;                          //0x0DC
     char    Unknown9[14];                   //0x0DE
-    s_ident    UnknownIdent5;                 //0x0EC
-    int    Unknown10;                      //0x0F0
-    int    SomeTime;                       //0x0F4
-    real_vector3d    World;                         //0x0F8
-    s_ident    UnknownIdent6;                 //0x104
+    s_ident    UnknownIdent5;               //0x0EC
+    int    Unknown10;                       //0x0F0
+    int    SomeTime;                        //0x0F4
+    real_vector3d    World;                 //0x0F8
+    s_ident    UnknownIdent6;               //0x104
     char    Unknown11[20];                  //0x108
-    char    Melee        :    1;            //0x11C.0
-    char    Action        :    1;           //0x11C.1
-    char    UnknownBit    :   1;            //0x11C.2
-    char    Flashlight    :    1;           //0x11C.3
-    char    UnknownBit1    :    4;          //0x11C.4
-    char    UnknownBit2    :    5;          //0x11D.0
-    char    Reload        :    1;           //0x11D.5
-    char    UnknownBit3    :    2;          //0x11D.6
+    char    Melee       :   1;              //0x11C.0
+    char    Action      :   1;              //0x11C.1
+    char    UnknownBit  :   1;              //0x11C.2
+    char    Flashlight  :   1;              //0x11C.3
+    char    UnknownBit1 :   4;              //0x11C.4
+    char    UnknownBit2 :   5;              //0x11D.0
+    char    Reload      :   1;              //0x11D.5
+    char    UnknownBit3 :   2;              //0x11D.6
     char    Unknown12[26];                  //0x11E
-    real_vector2d    Rotation;                      //0x138        // Yaw, Pitch (again, in radians.
+    real_vector2d    Rotation;              //0x138        // Yaw, Pitch (again, in radians.
     float    ForwardVelocityMultiplier;     //0x140
     float    HorizontalVelocityMultiplier;  //0x144
     float    RateOfFireVelocityMultiplier;  //0x148
     short    HeldWeaponIndex;               //0x14C
     short    GrenadeIndex;                  //0x14E
     char    Unknown13[4];                   //0x150
-    real_vector3d    LookVect;                      //0x154
+    real_vector3d    LookVect;              //0x154
     char    Unknown14[16];                  //0x160
-    real_vector3d    WorldDelayed;                  //0x170    // Oddly enough... it matches the world vect, but seems to lag behind (Possibly what the client reports is _its_ world coord?)
+    real_vector3d    WorldDelayed;          //0x170    // Oddly enough... it matches the world vect, but seems to lag behind (Possibly what the client reports is _its_ world coord?)
     char    Unknown15[132];                 //0x17C
-};
+} s_player_slot;
 static_assert_check(sizeof(s_player_slot) == 0x200, "Incorrect size of s_player_slot");
 
 /*
@@ -289,19 +296,19 @@ is 48, 92, 24, 00 hex.
 #define GAMETYPE_ODDBALL 3
 #define GAMETYPE_KOTH 4
 #define GAMETYPE_RACE 5
-struct s_gametype {                        //UNDONE GameType Struct is not 100% decoded.
+typedef struct s_gametype {                        //UNDONE GameType Struct is not 100% decoded.
     wchar_t name[24];                    // 0x00
     unsigned int game_stage;                    // 0x30 1=CTF, 2=Slayer, 3=Oddball, 4=KOTH, 5=Race
-    bool isTeamPlay;                    // 0x34
+    bool    isTeamPlay;                    // 0x34
     unsigned char NULL0[3];                        // 0x35
-    bool showEnemyRadar: 1;                // 0x38.0
-    bool friendlyIndicator: 1;            // 0x38.1
-    bool infiniteGrenade: 1;            // 0x38.2
-    bool noShield: 1;                    // 0x38.3
-    bool invisible: 1;                    // 0x38.4
-    bool isCustomEquipment: 1;            // 0x38.5
-    bool showFriendlyRadar: 1;            // 0x38.6
-    bool unknown: 1;                    // 0x38.7
+    bool    showEnemyRadar: 1;                // 0x38.0
+    bool    friendlyIndicator: 1;            // 0x38.1
+    bool    infiniteGrenade: 1;            // 0x38.2
+    bool    noShield: 1;                    // 0x38.3
+    bool    invisible: 1;                    // 0x38.4
+    bool    isCustomEquipment: 1;            // 0x38.5
+    bool    showFriendlyRadar: 1;            // 0x38.6
+    bool    unknown: 1;                    // 0x38.7
     unsigned char Unknown0[3];                    // 0x39        //TODO need to find out what these are and 0x38 as well.
     unsigned int objective_indicator;          // 0x3C 0=Motion Tracker, 1=Navpoints, 2=None
     unsigned int is_odd_man_out;                    // 0x40
@@ -331,49 +338,49 @@ struct s_gametype {                        //UNDONE GameType Struct is not 100% 
     unsigned int Unknown3;                        // 0x84
     unsigned int TraitBallWithout;                // 0x88 0=None, 1=Invisible, 2=Extra Damage, 3=Damage Resistent
     unsigned char Unknown4[14];                    // 0x8C - 0x99 unknown
-    bool Unknown5;                        // 0x9A
-    bool Unknown6;                        // 0x9B
-    bool noDeathBonus;                    // 0x9C
-    bool noKillPenalty;                    // 0x9D
-    bool isKillInOrder_flagMustReset;    // 0x9E    isKillInOrder = Slayer, FlagMustReset = CTF    //CTF and Slayer is sharing this... must be union structure?
-    bool isFlagAtHomeToScore;            // 0x9F    CTF usage
+    bool    Unknown5;                        // 0x9A
+    bool    Unknown6;                        // 0x9B
+    bool    noDeathBonus;                    // 0x9C
+    bool    noKillPenalty;                    // 0x9D
+    bool    isKillInOrder_flagMustReset;    // 0x9E    isKillInOrder = Slayer, FlagMustReset = CTF    //CTF and Slayer is sharing this... must be union structure?
+    bool    isFlagAtHomeToScore;            // 0x9F    CTF usage
     unsigned int SingleFlagTimer;                // 0xA0 CTF usage, 0 = off, 1800 = 1 min, and so on.
-};
+} s_gametype;
 static_assert_check(sizeof(s_gametype) == 0xA4, "Incorrect size of s_gametype");
 
 
-struct GametypeGFlag {
+typedef struct GametypeGFlag {
     real_vector3d World;        //0x00 Coordinate of where to respawn at.
     UNKNOWN(8);                 //0x0C Nulls...
     UNKNOWN(4);                 //0x14 Don't know...
     float unknown;              //0x18 Possible float?
     UNKNOWN(8);                 //0x1C Nulls...
     unsigned int unknown2;      //0x24 Always -1
-};
+} GametypeGFlag;
 static_assert_check(sizeof(GametypeGFlag) == 0x28, "Incorrect size of GametypeGFlag");
 
-struct GameTypeCTFg {               //size = 0x38
+typedef struct GameTypeCTFg {               //size = 0x38
     GametypeGFlag* flagParams[2];   //0x0000        // 0 = Red flag, 1 = Blue flag
     s_ident teamFlagIds[2];         //0x0008
     unsigned int teamScore[2];      //0x0010        //0 = Red team, 1 = Blue team
     unsigned int scoreLimit;        //0x0018        //Not sure what size this is atm.
-    bool flagCaptured[2];           //0x001C        // 0 = Red flag, 1 = Blue flag
+    bool    flagCaptured[2];           //0x001C        // 0 = Red flag, 1 = Blue flag
     unsigned short Unknown1;        //0x001E
     //Trial version end for CTF
     unsigned int flagNotAtBase[2];  //0x0020        //Timer in ticks; 0 = Red flag, 1 = Blue flag
     UNKNOWN(0x10);                  //0x0028        //Missing some other informations, need to edit more here.
-};
-struct GameTypeKOTHg {                                  //size = 0x288
+} GameTypeCTFg;
+typedef struct GameTypeKOTHg {                                  //size = 0x288
     unsigned int hillScoreTicks[16];                    //0x0000        //Scoring in ticks base on player id                                                //0x0038
     unsigned int hillScoreTicksRelativeMapTicks[16];    //0x0040        //Tick difference from how int in map ticks and is in hill base on player id.      //0x0078
-    bool isInHill[16];                                  //0x0080        //Player is in hill, base on player id                                              //0x00B8
+    bool    isInHill[16];                                  //0x0080        //Player is in hill, base on player id                                              //0x00B8
     UNKNOWN(0x100);                                     //0x0090        //Don't know what this is and it's relative to hill being moved around if set.      //0x00C8
     unsigned int Unknown2;                              //0x0190        //Goes up when someone entered                                                      //0x01C8
     unsigned int Unknown3;                              //0x0194        //Tick goes up when someone is in the hill.                                         //0x01CC
     s_ident player;                                     //0x0198        //Shows the player id.                                                              //0x01D0
     UNKNOWN(0xEC);                                      //0x019C        //Dunno what the rest are.                                                          //0x01D4
-};
-struct GameTypeODDBALLg {               //size = 0x148
+} GameTypeKOTHg;
+typedef struct GameTypeODDBALLg {               //size = 0x148
     unsigned int scoreLimit;            //0x0000        //Total ticks to win.                                                               //0x02C0
     unsigned int scoreTicks[16];        //0x0004                                                                                            //0x02C4
     unsigned int scoreTicks2[16];       //0x0044        //Always the same with above.                                                       //0x0304
@@ -381,8 +388,8 @@ struct GameTypeODDBALLg {               //size = 0x148
     s_ident holder[16];                 //0x00C4        //This is base on oddball #, not player. Also using player id                       //0x0384
     unsigned int relocateTicks[16];     //0x0104        //This is base on oddball #, not player. Also using player id                       //0x03C4
     unsigned int Unknown5;              //0x0144        //Null                                                                              //0x0404
-};
-struct GameTypeRACEg {                  //size = 0x148
+} GameTypeODDBALLg;
+typedef struct GameTypeRACEg {                  //size = 0x148
     unsigned int checkpointTotal;       //0x0000        //Total navpoints around the map to score per lap.                                  //0x0408
     unsigned int Unknown6[16];          //0x0004        //Nulls                                                                             //0x040C
     unsigned int checkpointCurrent[16]; //0x0044        //Counting to checkpointTotal                                                       //0x044C
@@ -390,21 +397,21 @@ struct GameTypeRACEg {                  //size = 0x148
     unsigned int raceLaps[16];          //0x0088        //Total laps completed                                                              //0x0490
     unsigned int Unknown8[16];          //0x00C8        //So far just nulls...                                                              //0x04D0
     unsigned int Unknown9[16];          //0x0108        //Don't know what these are and not relative to players.                            //0x0510
-};
-struct GameTypeSLAYERg {            //size = 0x80
+} GameTypeRACEg;
+typedef struct GameTypeSLAYERg {            //size = 0x80
     unsigned int playerScore[16];   //0x0000                                                                                            //0x0550
     unsigned int playerScore2[16];  //0x0040        //Duplicated and appear useless...                                                  //0x0590
-};
-struct GameTypeGlobals {
+} GameTypeSLAYERg;
+typedef struct GameTypeGlobals {
     GameTypeCTFg ctfGlobal;
     GameTypeKOTHg kothGlobal;
     GameTypeODDBALLg oddballGlobal;
     GameTypeRACEg raceGlobal;
     GameTypeSLAYERg slayerGlobal;
-};
+} GameTypeGlobals;
 static_assert_check(sizeof(GameTypeGlobals) == 0x5D0, "Incorrect size of GameTypeGlobals");
 
-struct s_server_header {
+typedef struct s_server_header {
     unsigned int* Unknown0;        //0x000 // at least I _think_ it's a pointer since there _is_ something if i follow it.
     unsigned short state;           //0x004
     unsigned short Unknown2;        //0x006
@@ -419,21 +426,21 @@ struct s_server_header {
     short Unknown09;                //0x1E6
     short totalPlayers;             //0x1E8
     short Unknown10;                //0x1EA    // i think LastSlotFilled
-};
+} s_server_header;
 
-struct damageFlags {
-    bool unknown1:2;            //0.0-0.1
-    bool kill1:1;               //0.2
-    bool unknown2:1;            //0.3
-    bool kill2:1;               //0.4
-    bool unknown3:3;            //0.5-0.9
-    bool unknown4:3;            //1.0-1.2
-    bool cannotTakeDamage:1;    //1.3
-    bool unknown5:4;            //1.4 - 1.9
-};
+typedef struct damageFlags {
+    bool    unknown1:2;            //0.0-0.1
+    bool    kill1:1;               //0.2
+    bool    unknown2:1;            //0.3
+    bool    kill2:1;               //0.4
+    bool    unknown3:3;            //0.5-0.9
+    bool    unknown4:3;            //1.0-1.2
+    bool    cannotTakeDamage:1;    //1.3
+    bool    unknown5:4;            //1.4 - 1.9
+} damageFlags;
 static_assert_check(sizeof(damageFlags) == 0x02, "Incorrect size of damageFlags");
 
-struct s_object {
+typedef struct s_object {
     s_ident         ModelTag;               // 0x0000
     int             Zero;                   // 0x0004
     char            Flags[4];               // 0x0008
@@ -493,31 +500,31 @@ struct s_object {
     int             UnknownMatrix0[16];     //D3DXMATRIX UnknownMatrix;     // 0x0174
     int             UnknownMatrix1[16];     //D3DXMATRIX UnknownMatrix1;    // 0x01B4
     //Everything after this is 0x01F4
-};
+} s_object;
 static_assert_check(sizeof(s_object) == 0x1F4, "Incorrect size of s_object");
 
-struct actionFlags {    // these are action flags, basically client button presses and these don't actually control whether or not an event occurs
-    bool crouching : 1;             // (a few of these bit flags are thanks to halo devkit)
-    bool jumping : 1;               // 2
+typedef struct actionFlags {    // these are action flags, basically client button presses and these don't actually control whether or not an event occurs
+    bool    crouching : 1;             // (a few of these bit flags are thanks to halo devkit)
+    bool    jumping : 1;               // 2
     char UnknownBit : 2;            // 3
-    bool Flashlight : 1;            // 5
-    bool UnknownBit2 : 1;           // 6
-    bool actionPress : 1;           // 7 think this is just when they initially press the action button
-    bool melee : 1;                 // 8
+    bool    Flashlight : 1;            // 5
+    bool    UnknownBit2 : 1;           // 6
+    bool    actionPress : 1;           // 7 think this is just when they initially press the action button
+    bool    melee : 1;                 // 8
     char UnknownBit3 : 2;           // 9
-    bool reload : 1;                // 11
-    bool primaryWeaponFire : 1;     // 12 right mouse
-    bool secondaryWeaponFire : 1;   // 13 left mouse
-    bool secondaryWeaponFire1 : 1;  // 14
-    bool actionHold : 1;            // 15 holding action button
+    bool    reload : 1;                // 11
+    bool    primaryWeaponFire : 1;     // 12 right mouse
+    bool    secondaryWeaponFire : 1;   // 13 left mouse
+    bool    secondaryWeaponFire1 : 1;  // 14
+    bool    actionHold : 1;            // 15 holding action button
     char UnknownBit4 : 1;           // 16
-};
+} actionFlags;
 static_assert_check(sizeof(actionFlags) == 0x02, "Incorrect size of actionFlags");
 
-struct s_biped {
+typedef struct s_biped {
     s_object        sObject;                    // 0x0000
     int             Unknown[4];                 // 0x01F4
-    short           IsInvisible;                // 0x0204    normal = 0x41 invis = 0x51 (bitfield) Offset 0x422 is set zero for camo to start.
+    short           isInvisible;                // 0x0204    normal = 0x41 invis = 0x51 (bitfield) Offset 0x422 is set zero for camo to start.
     char            Flashlight;                 // 0x0206
     char            Frozen;                     // 0x0207
     actionFlags     actionBits;                 // 0x0208 & 0x0209
@@ -580,26 +587,26 @@ struct s_biped {
     bone            LeftHand;                   // 0x0890
     bone            RightHand;                  // 0x08C4
     char            Unknown5[1216];             // 0x08F8 //Missing 0x092C?
-}; // Size - 3564(0x0DEC) bytes
+} s_biped; // Size - 3564(0x0DEC) bytes
 
 //Major WIP Halo Structure Begin
-struct s_weapon {
+typedef struct s_weapon {
     s_object        sObject;
     char            Unknown[12];                        //0x01F4
     s_ident         UnknownIdent;                       //0x0200  //Relative to assigne biped being dropped from.
     unsigned int    NetworkTime;                        //0x0204
     char            Unknown1[36];                       //0x0208
 
-    bool Unknown16:4;                                   //0x022C.0-3
-    bool Unknown17:1;                                   //0x022C.4
-    bool isPickedup:1;                                  //0x022C.4-5
-    bool isNotReturned:1;                               //0x022C.6
-    bool Unknown18:1;                                   //0x022C.7
+    bool    Unknown16:4;                                   //0x022C.0-3
+    bool    Unknown17:1;                                   //0x022C.4
+    bool    isPickedup:1;                                  //0x022C.4-5
+    bool    isNotReturned:1;                               //0x022C.6
+    bool    Unknown18:1;                                   //0x022C.7
     char Unknown19[3];                                  //0x022D
-    bool Unknown20:1;                                   //0x0230.0
-    bool Melee:1;                                       //0x0230.1
-    bool Unknown21:2;                                   //0x0230.2-3
-    bool Unknown22:4;                                   //0x0230.4-7
+    bool    Unknown20:1;                                   //0x0230.0
+    bool    Melee:1;                                       //0x0230.1
+    bool    Unknown21:2;                                   //0x0230.2-3
+    bool    Unknown22:4;                                   //0x0230.4-7
     char Unknown23[3];                                  //0x0231
 
     unsigned int    Unknown24;                          //0x0234
@@ -630,9 +637,9 @@ struct s_weapon {
     char            Unknown14[12];
     unsigned int    BulletCountInRemainingClips1;
     char            Unknown15[52];
-}; // Size - 1644(0x066C)
+} s_weapon; // Size - 1644(0x066C)
 
-struct s_vehicle {
+typedef struct s_vehicle {
     s_ident         ModelTag;               // 0x0000
     int             Zero;                   // 0x0004
     char            Flags[4];               // 0x0008
@@ -683,7 +690,7 @@ struct s_vehicle {
     int             UnknownInt[0xA1];       // 0x328
     int             LastInUsedTick;         // 0x5AC
     //Anything goes after this?
-}; // Size - 3580(0xDFC)
+} s_vehicle; // Size - 3580(0xDFC)
 //Major WIP Halo Structure End
 
 //TODO: Variable of offset seems to have some sort of data usage base from SDMHaloMapLoader.c/h Need to do some research.
@@ -703,8 +710,8 @@ typedef struct s_map_header {
 static_assert_check(sizeof(s_map_header) == 0x68, "Incorrect size of s_map_header");
 
 typedef struct s_map_status {
-    bool Unknown1;              //0x00
-    bool Unknown2;              //0x01
+    bool    Unknown1;              //0x00
+    bool    Unknown2;              //0x01
     unsigned short Unknown3;    //0x02 NULLs
     unsigned int Unknown4;      //0x04
     unsigned int Unknown5;      //0x08
@@ -716,11 +723,11 @@ typedef struct s_map_status {
 } s_map_status;
 static_assert_check(sizeof(s_map_status) == 0x20, "Incorrect size of s_map_status");
 
-struct s_console_header {
-    bool gamePause;                 //0x00
-    bool allowConsole;              //0x01
+typedef struct s_console_header {
+    bool    gamePause;                 //0x00
+    bool    allowConsole;              //0x01
     unsigned short unknown01;       //0x02 //Nulls
-    bool isNotConsole;              //0x04
+    bool    isNotConsole;              //0x04
     unsigned char unknown02;        //0x05
     unsigned char unknown03;        //0x06
     unsigned char keyPress;         //0x07
@@ -734,7 +741,7 @@ struct s_console_header {
     unsigned int unknown11;         //0x94
     char inputName[32];             //0x98
     char input[255];                //0xB8
-};
+} s_console_header;
 static_assert_check(sizeof(s_console_header) == 0x1B7, "Incorrect size of s_console_header");
 
 typedef struct s_ban_check {
@@ -749,32 +756,34 @@ static_assert_check(sizeof(s_ban_check) == 0x76, "Incorrect size of s_ban_check"
 //Extras for Add-on API usage.
 
 typedef struct s_cheat_header {
-    bool deathlessPlayer;       //0x00
-    bool jetPack;               //0x01
-    bool infiniteAmmo;          //0x02
-    bool bumpPossession;        //0x03
-    bool superJump;             //0x04
-    bool reflexDamage;          //0x05
-    bool medUsa;                //0x06
-    bool omnipotent;            //0x07
-    bool controller;            //0x08
-    bool bottomlessClip;        //0x09
+    bool    deathlessPlayer;       //0x00
+    bool    jetPack;               //0x01
+    bool    infiniteAmmo;          //0x02
+    bool    bumpPossession;        //0x03
+    bool    superJump;             //0x04
+    bool    reflexDamage;          //0x05
+    bool    medUsa;                //0x06
+    bool    omnipotent;            //0x07
+    bool    controller;            //0x08
+    bool    bottomlessClip;        //0x09
 } s_cheat_header;
 static_assert_check(sizeof(s_cheat_header) == 0xA, "Incorrect size of s_cheat_header");
 
-struct D3DCOLOR_COLORVALUE_ARGB {
+typedef struct D3DCOLOR_COLORVALUE_ARGB {
     float a;
     float r;
     float g;
     float b;
+#ifdef __cplusplus
     D3DCOLOR_COLORVALUE_ARGB() {
         a=1.0f;
         r=1.0f;
         g=1.0f;
         b=1.0f;
     }
-};
-typedef struct {
+#endif
+} D3DCOLOR_COLORVALUE_ARGB;
+typedef struct s_console_color_list {
     D3DCOLOR_COLORVALUE_ARGB* x0_Black;         //0x00
     D3DCOLOR_COLORVALUE_ARGB* x1_DodgerBlue;    //0x04
     D3DCOLOR_COLORVALUE_ARGB* x2_Cyan;          //0x08
@@ -793,7 +802,7 @@ typedef struct {
 } s_console_color_list;
 static_assert_check(sizeof(s_console_color_list) == 0x38, "Incorrect size of s_console_color_list");
 
-struct GlobalVars {
+typedef struct GlobalVars {
     unsigned int ptrAcceptableASCIICharsArray;      //Unknown if this is correct.
     unsigned int ptrExceptionHandlerFunc;           //Halo CE 0x006207AC
     s_console_color_list s_console_color_list;      //Halo CE 0x006207B0 - 0x006207E4
@@ -806,17 +815,17 @@ struct GlobalVars {
     unsigned int ptrFlood_CarrierFunc;              //Part 2 - Is a pointer for a Flood Carrier Func?
     unsigned int ptrFlood_Carrier_Parms1[4];        //Part 3 - Parameters?
     //Etc, etc, etc. Don't have time to figure out the rest.
-};
+} GlobalVars;
 
-struct SoundPlay {
+typedef struct SoundPlay {
     short inUsed;       //0x00 //If is -1, then not in used. If is 0 or above, then in used.
     short Priority;     //0x02 //0 = general action, 1 = Unknown, 2 = UI sounds, 3 = possible loop or background sounds.
-};
-struct SoundVars {
-    bool soundEnabled;              //0x00    //Not entirely sure...
-    bool globalSoundOn;             //0x01
-    bool muteSoundAsNotInWindow;    //0x02
-    bool UNKNOWN0;                  //0x03
+} SoundPlay;
+typedef struct SoundVars {
+    bool    soundEnabled;              //0x00    //Not entirely sure...
+    bool    globalSoundOn;             //0x01
+    bool    muteSoundAsNotInWindow;    //0x02
+    bool    UNKNOWN0;                  //0x03
     unsigned int UNKNOWN1;          //0x04    Full of nulls
     unsigned int UNKNOWNPTR0;       //0x08    Some kind of pointer to a struct?
     unsigned int time;              //0x0C    counting up
@@ -842,14 +851,14 @@ struct SoundVars {
     short UNKNOWN10;                //0xE0
     short UNKNOWN11;                //0xE2
     SoundPlay sPlay[38];            //0xE4
-};
+} SoundVars;
 static_assert_check(sizeof(SoundVars) == 0x17C, "Incorrect size of SoundVars");
 
-struct validationCheck {
+typedef struct validationCheck {
     unsigned int UniqueID;
     unsigned int isValid;
     char *message;
-};
+} validationCheck;
 static_assert_check(sizeof(validationCheck) == 0xC, "Incorrect size of validationCheck");
 #pragma pack(pop)
 

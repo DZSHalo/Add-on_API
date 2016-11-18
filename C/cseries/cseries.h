@@ -1,6 +1,7 @@
 #pragma once
 
-//TODO: Need to check how to detect big/little endian order to fix this.
+//TODO: Need to separate C++ and C structs, constructor & operators aren't permitted in C struct.
+
 /*#define MAKE_ID(tmp) (tmp >> 24) |\
 ((tmp >> 8) & 0x0000ff00) |\
 ((tmp << 8) & 0x00ff0000) | \
@@ -31,10 +32,12 @@ typedef struct real_color_alpha {
 typedef struct real_vector2d {
     real x;
     real y;
+#ifdef __cplusplus
     real_vector2d(float x, float y) {
         this->x = x;
         this->y = y;
     }
+#endif
 } real_vector2d;
 typedef struct real_rotation2d {
     real yaw;
@@ -44,6 +47,7 @@ typedef struct real_vector3d {
     real x;
     real y;
     real z;
+#ifdef __cplusplus
     real_vector3d() {
         this->x = this->y = this->z = (float)0xFFFFFFFF;
     }
@@ -60,6 +64,7 @@ typedef struct real_vector3d {
     bool operator != (real_vector3d &v3) {
         return !this->operator==(v3);
     }
+#endif
 } real_vector3d;
 typedef struct real_offset3d {
     // X-Component
@@ -104,12 +109,14 @@ typedef union s_ident {
         short index;
         short salt;
     };
+#ifdef __cplusplus
     s_ident() {
         Tag = -1;
     };
     s_ident(int _Tag) {
         Tag = _Tag;
     };
+#endif
 } s_ident;
 
 typedef struct s_ident_ret {

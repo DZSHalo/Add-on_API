@@ -1,6 +1,7 @@
 #ifndef haloEngineH
 #define haloEngineH
 
+#ifdef __cplusplus
 typedef enum REJECT_CODE : unsigned char {
     REJECT_CANT_JOIN_SERVER = 0,       //0
     REJECT_INVALID_CONNECTION_REQUEST, //1
@@ -20,13 +21,38 @@ typedef enum REJECT_CODE : unsigned char {
     REJECT_ADMIN_REQUIRED_PATCH,       //15
     REJECT_REQUEST_DELETE_SAVED,       //16
 } REJECT_CODE;
-
 typedef enum HALO_VERSION : unsigned char {
     HV_UNKNOWN = 0,
     HV_TRIAL,   //1,
     HV_PC,      //2,
     HV_CE,      //3
 } HALO_VERSION;
+#else
+typedef unsigned char REJECT_CODE;
+static const REJECT_CODE REJECT_CANT_JOIN_SERVER = 0;
+static const REJECT_CODE REJECT_INVALID_CONNECTION_REQUEST = 1;
+static const REJECT_CODE REJECT_PASSWORD_REJECTED = 2;
+static const REJECT_CODE REJECT_SERVER_IS_FULL = 3;
+static const REJECT_CODE REJECT_CD_KEY_INVALID = 4;
+static const REJECT_CODE REJECT_CD_KEY_INUSED = 5;
+static const REJECT_CODE REJECT_OP_BANNED = 6;
+static const REJECT_CODE REJECT_OP_KICKED = 7;
+static const REJECT_CODE REJECT_VIDEO_TEST = 8;
+static const REJECT_CODE REJECT_CHECKPOINT_SAVED = 9;
+static const REJECT_CODE REJECT_ADDRESS_INVALID = 10;
+static const REJECT_CODE REJECT_PROFILE_REQUIRED = 11;
+static const REJECT_CODE REJECT_INCOMPATIBLE_NETWORK = 12;
+static const REJECT_CODE REJECT_OLDER_PLAYER_VERSION = 13;
+static const REJECT_CODE REJECT_NEWER_PLAYER_VERSION = 14;
+static const REJECT_CODE REJECT_ADMIN_REQUIRED_PATCH = 15;
+static const REJECT_CODE REJECT_REQUEST_DELETE_SAVED = 16;
+
+typedef unsigned char HALO_VERSION;
+static const HALO_VERSION HV_UNKNOWN = 0;
+static const HALO_VERSION HV_TRIAL = 1;
+static const HALO_VERSION HV_PC = 2;
+static const HALO_VERSION HV_CE = 3;
+#endif
 
 #ifndef DIRECT3D_VERSION
 #define DIRECTX9 unsigned int
@@ -186,14 +212,14 @@ CNATIVE {
         /// <param name="index">Input an Add-on index slot number.</param>
         /// <param name="getInfo">Output a matched Add-on or not.</param>
         /// <returns>Return true or false if unable find a match.</returns>
-        bool(*m_ext_add_on_get_info_index)(unsigned int index, addon_info* getInfo);
+        bool (*m_ext_add_on_get_info_index)(unsigned int index, addon_info* getInfo);
         /// <summary>
         /// Obtain an Add-on information if able to find a match.
         /// </summary>
         /// <param name="name">Input name of an Add-on. (Maximum permitted is 128 characters long.)</param>
         /// <param name="getInfo">Output a matched Add-on or not.</param>
         /// <returns>Return true or false if unable find a match.</returns>
-        bool(*m_ext_add_on_get_info_by_name)(wchar_t* name, addon_info* getInfo);
+        bool (*m_ext_add_on_get_info_by_name)(wchar_t* name, addon_info* getInfo);
         /// <summary>
         /// Reload an Add-on while still running Halo.
         /// </summary>

@@ -13,21 +13,20 @@ typedef struct s_decal_flags {
     bool    unused1 : 4;
 } s_decal_flags;
 static_assert_check(sizeof(s_decal_flags) == 0x02, "Incorrect size of s_decal_flags");
+#ifndef __cplusplus
+typedef unsigned short e_decal_type;
+static const e_decal_type DECAL_TYPE_SCRATCH = 0;
+static const e_decal_type DECAL_TYPE_SPLATTER = 1;
+static const e_decal_type DECAL_TYPE_BURN = 2;
+static const e_decal_type DECAL_TYPE_PAINTED_SIGN = 3;
 
-typedef enum e_decal_type : unsigned short {
-    DECAL_TYPE_SCRATCH=0,
-    DECAL_TYPE_SPLATTER,
-    DECAL_TYPE_BURN,
-    DECAL_TYPE_PAINTED_SIGN
-} e_decal_type;
-
-typedef enum e_decal_layer : unsigned short {
-    DECAL_LAYER_PRIMARY=0,
-    DECAL_LAYER_SECONDARY,
-    DECAL_LAYER_LIGHT,
-    DECAL_LAYER_ALPHA_TESTED,
-    DECAL_LAYER_WATER
-} e_decal_layer;
+typedef unsigned short e_decal_layer;
+static const e_decal_layer DECAL_LAYER_PRIMARY = 0;
+static const e_decal_layer DECAL_LAYER_SECONDARY = 1;
+static const e_decal_layer DECAL_LAYER_LIGHT = 2;
+static const e_decal_layer DECAL_LAYER_ALPHA_TESTED = 3;
+static const e_decal_layer DECAL_LAYER_WATER = 4;
+#endif
 
 typedef struct s_decal_meta {
     //decal
