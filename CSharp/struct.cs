@@ -11,7 +11,7 @@ public enum e_color_team_index : sbyte {
 
 //Color Indexes Start
 public enum e_color_index {
-    COLOR_WHITE = 0,
+    COLOR_WHITE     = 0,
     COLOR_BLACK,    //1,
     COLOR_RED,      //2
     COLOR_BLUE,     //3
@@ -46,7 +46,7 @@ public struct rconData {
     public uint unk; // always 0
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x50)]
     public string msg;
-    
+
     public rconData([MarshalAs(UnmanagedType.LPStr, SizeConst=0x50)] string text) {
         msg = text;
         unk = 0;
@@ -614,26 +614,124 @@ public struct s_object {
     public int[]             UnknownMatrix1;     //D3DXMATRIX UnknownMatrix1;    // 0x01B4
     //Everything after this is 0x01F4
 };
-
-[StructLayout(LayoutKind.Sequential)]
 public struct s_objectPtr {
     public IntPtr ptr;
 }
+
+[Flags]
+public enum actionFlags : ushort {  // these are action flags, basically client button presses and these don't actually control whether or not an event occurs
+    NONE = 0,
+    crouching = 1 << 0,             // 0 (a few of these bit flags are thanks to halo devkit)
+    jumping = 1 << 1,               // 1
+    unknown0 = 1 << 2,              // 2
+    unknown1 = 1 << 3,              // 3
+    Flashlight = 1 << 4,            // 4
+    unknown2 = 1 << 5,              // 5
+    actionPress = 1 << 6,           // 6 think this is just when they initially press the action button
+    melee = 1 << 7,                 // 7
+    unknown3 = 1 << 8,              // 8
+    unknown4 = 1 << 9,              // 9
+    reload = 1 << 10,               // 10
+    primaryWeaponFire = 1 << 11,    // 11 right mouse
+    secondaryWeaponFire = 1 << 12,  // 12 left mouse
+    secondaryWeaponFire1 = 1 << 13, // 13
+    actionHold = 1 << 14,           // 14 holding action button
+    UnknownBit4 = 1 << 15,          // 15
+}
+
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct s_biped {
+    public s_object sObject;                                //0x0000
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+    public int[]            Unknown;                        //0x01F4
+    public short            isVisible;                      //0x0204    normal = 0x41 invis = 0x51 (bitfield) Offset 0x422 is set zero for camo to start.
+    public byte             Flashlight;                     //0x0206
+    public byte             Frozen;                         //0x0207
+    public actionFlags      actionBits;                     //0x0208 & 0x0209
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+    public byte[]           Unknown1;                       //0x020A
+    public int              UnknownCounter1;                //0x020C
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+    public int[]            UnknownLongs1;                  //0x0210
+    public s_ident          PlayerOwner;                    //0x0218
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+    public int              UnknownLongs3;                  //0x021C
+    public real_vector3d    RightVect;                      //0x0224
+    public real_vector3d    UpVect;                         //0x0230
+    public real_vector3d    LookVect;                       //0x023C
+    public real_vector3d    ZeroVect;                       //0x0248
+    public real_vector3d    RealLookVect;                   //0x0254
+    public real_vector3d    UnknownVect3;                   //0x0260
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x34)]
+    public byte[]           Unknown2;                       //0x026C
+    public byte             actionVehicle_crouch_stand;     //0x02A0
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x51)]
+    public byte[]           Unknown9;                       //0x02A1
+    public ushort           CurWeaponIndex0;                //0x02F2    (Do not attempt to edit this, will crash Halo)
+    public ushort           CurWeaponIndex1;                //0x02F4    (Read only)
+    public ushort           Unknown6;                       //0x02F6
+    public s_ident          PrimaryWeapon;                  //0x02F8
+    public s_ident          SecondaryWeapon;                //0x02FC
+    public s_ident          ThirdWeapon;                    //0x0300
+    public s_ident          FourthWeapon;                   //0x0304
+    public uint             PrimaryWeaponLastUse;           //0x0308
+    public uint             SecondaryWeaponLastUse;         //0x0308
+    public uint             ThirdWeaponLastUse;             //0x0308
+    public uint             FourthWeaponLastUse;            //0x0308
+    public int              UnknownLongs2;                  //0x031C <-- INCORRECT OFFSET?
+    public byte             grenadeIndex;                   //0x031C <-- INCORRECT OFFSET?
+    public byte             grenadeIndex1;                  //0x031D
+    public byte             grenade0;                       //0x031E
+    public byte             grenade1;                       //0x031F
+    public byte             Zoom;                           //0x0320
+    public byte             Zoom1;                          //0x0321
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+    public byte[]           Unknown3;                       //0x0322
+    public s_ident          SlaveController;                //0x0324
+    public s_ident          WeaponController;               //0x0328
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 468)]
+    public byte[]           Unknown4;                       //0x032C
+    public byte             Unknown7;                       //0x0500
+    public ushort           inAirTicks;                     //0x0501
+    public byte             isWalking;                      //0x0502
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 76)]
+    public byte[]           Unknown8;                       //0x0504
+    public bone             LeftThigh;                      //0x0550
+    public bone             RightThigh;                     //0x0584
+    public bone             Pelvis;                         //0x05B8
+    public bone             LeftCalf;                       //0x05EC
+    public bone             RightCalf;                      //0x0620
+    public bone             Spine;                          //0x0654
+    public bone             LeftClavicle;                   //0x0688
+    public bone             LeftFoot;                       //0x06BC
+    public bone             Neck;                           //0x06F0
+    public bone             RightClavicle;                  //0x0724
+    public bone             RightFoot;                      //0x0758
+    public bone             Head;                           //0x078C
+    public bone             leftUpperArm;                   //0x07C0
+    public bone             RightUpperArm;                  //0x08F4
+    public bone             leftLowerArm;                   //0x0828
+    public bone             RightLowerArm;                  //0x085C
+    public bone             LeftHand;                       //0x0890
+    public bone             RightHand;                      //0x08C4
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1216)]
+    public byte[]           Unknown8;                       //0x08F8
+};
 
 //TODO: Need to put s_biped, s_weapon, and s_vehicle in here before production release
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 public struct s_map_header {
     [MarshalAs(UnmanagedType.ByValArray, SizeConst=4)]
-    public byte[] head;           //0x00
+    public byte[] head;         //0x00
     public uint haloVersion;    //0x04
     public uint length;         //0x08
     [MarshalAs(UnmanagedType.ByValArray, SizeConst=4)]
-    public byte[] PADDING0;       //0x0C //Nulls
+    public byte[] PADDING0;     //0x0C //Nulls
     public uint index_offset;   //0x10
     public uint metadata_size;  //0x14
     [MarshalAs(UnmanagedType.ByValArray, SizeConst=8)]
-    public byte[] PADDING1;       //0x18 //Nulls
+    public byte[] PADDING1;     //0x18 //Nulls
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst=32)]
     public string name;         //0x20
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst=32)]
@@ -710,6 +808,9 @@ public struct s_ban_check {
     public byte[] unknown1;             //0x5A
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst=12)]
     public string requestPlayerName;    //0x5E
+}
+public struct s_ban_check_ptr {
+    public IntPtr ptr;
 }
 
 //Extras for Add-on API usage.

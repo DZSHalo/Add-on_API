@@ -100,9 +100,9 @@ namespace Addon_API {
     [StructLayoutAttribute(LayoutKind.Sequential)]
     public struct IUtil {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate IntPtr d_AllocMem([In] uint Size);
+        public delegate IntPtr d_allocMem([In] uint Size);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate void d_FreeMem([In] IntPtr Address);
+        public delegate void d_freeMem([In] IntPtr Address);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void d_toCharW([In, MarshalAs(UnmanagedType.LPStr)] string charA, int len, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder charW);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -221,13 +221,13 @@ namespace Addon_API {
         /// <param name="Size">The size of allocate memory need to be used.</param>
         /// <returns>Return allocate memory.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public d_AllocMem AllocMem;
+        public d_allocMem m_allocMem;
         /// <summary>
         /// Free memory from allocate memory.
         /// </summary>
         /// <param name="Address">Pointer of an allocate memory to be free from.</param>
         /// <returns>No return.</returns>
-        public d_FreeMem FreeMem;
+        public d_freeMem m_freeMem;
         /// <summary>
         /// Convert a string to wide string.
         /// </summary>

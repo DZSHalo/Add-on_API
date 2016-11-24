@@ -96,7 +96,7 @@ static if(__traits(compiles, EXT_IHALOENGINE)) {
          * arg4 = Unknown, usually 1 (Use at your risk!)
          * arg5 = Unknown, usually 3 (Use at your risk!)
          * Returns: Does not return a value. (May will be changed later on.)*/
-        void function(uint player, ubyte* packet, uint packetCode, uint arg1, uint arg2, uint arg3, uint arg4, uint arg5) m_add_packet_to_player_queue;
+        void function(uint machine_index, ubyte* packet, uint packetCode, uint arg1, uint arg2, uint arg3, uint arg4, uint arg5) m_add_packet_to_player_queue;
         /*
          * To add a queue send to all players.
          * Params:
@@ -108,14 +108,14 @@ static if(__traits(compiles, EXT_IHALOENGINE)) {
          * arg4 = Unknown, usually 1 (Use at your risk!)
          * arg5 = Unknown, usually 3 (Use at your risk!)
          * Returns: Does not return a value. (May will be changed later on.)*/
-        void function(ubyte * packet, uint packetCode, uint arg1, uint arg2, uint arg3, uint arg4, uint arg5) m_add_packet_to_global_queue;
+        void function(ubyte* packet_data, uint packetCode, uint arg1, uint arg2, uint arg3, uint arg4, uint arg5) m_add_packet_to_global_queue;
         /*
          * Dispatch a rcon message to specific player.
          * Params:
          * data = A message you would like to send.
          * plI = Specific player to receive this rcon message.
          * Returns: Does not return a value. (May will be changed later on.)*/
-        void function(ref rconData  d, ref PlayerInfo  plI) m_dispatch_rcon;
+        void function(ref rconData data, ref PlayerInfo  plI) m_dispatch_rcon;
         /*
          * Dispatch a chat message to specific player.
          * Params:
@@ -123,18 +123,18 @@ static if(__traits(compiles, EXT_IHALOENGINE)) {
          * len = Length of characters from data, maximum is 80 (0x50).
          * plI = Specific player to receive this chat message.
          * Returns: Does not return a value. (May will be changed later on.)*/
-        void function(ref chatData  d, int len, ref PlayerInfo  plI) m_dispatch_player;
+        void function(ref chatData data, int len, ref PlayerInfo  plI) m_dispatch_player;
         /*
          * Dispatch a chat message to all players.
          * Params:
          * data = A message you would like to send.
          * len = Length of characters from data, maximum is 80 (0x50).
          * Returns: Does not return a value. (May will be changed later on.)*/
-        void function(ref chatData  d, int len) m_dispatch_global;
+        void function(ref chatData data, int len) m_dispatch_global;
         /*
          * To send a rejection code reason to player and disconnect player from host.
          * Params:
-         * player = Pass down an active s_machine_slot pointer.
+         * mH = Pass down an active s_machine_slot pointer.
          * code = See REJECT_CODE for codes available to use.
          * Returns: Return true if successfully sent packet.*/
         bool function(s_machine_slot* mH, REJECT_CODE code) m_send_reject_code;
@@ -151,7 +151,7 @@ static if(__traits(compiles, EXT_IHALOENGINE)) {
          * Params:
          * command = Input a command.
          * Returns: Return true if execution is a success.*/
-        bool function(const(char*) cmd) m_exec_command;
+        bool function(const(char*) comand) m_exec_command;
         /*
          * Get the current password for hosting un/lock.
          * Params:
@@ -163,7 +163,7 @@ static if(__traits(compiles, EXT_IHALOENGINE)) {
          * Params:
          * pass = Set the current password. (Maximum permitted is 8 characters long.)
          * Returns: Does not return a value.*/
-        void function(wchar* pass) m_set_server_password;
+        void function(const wchar* pass) m_set_server_password;
         /*
          * Get the current rcon password for authorized players to execute command.
          * Params:
@@ -175,7 +175,7 @@ static if(__traits(compiles, EXT_IHALOENGINE)) {
          * Params:
          * pass = Set the current rcon password. (Maximum permitted is 8 characters long.)
          * Returns: Does not return a value.*/
-        void function(char* pass) m_set_rcon_password;
+        void function(const char* pass) m_set_rcon_password;
         //Halo Simulate Functions End
         /*
          * Obtain an Add-on information if able to find a match.
@@ -183,20 +183,20 @@ static if(__traits(compiles, EXT_IHALOENGINE)) {
          * index = Input an Add-on index slot number.
          * getInfo = Output a matched Add-on or not.
          * Returns: Return true or false if unable find a match.*/
-        bool function(uint index, ref addon_info  getInfo) m_ext_add_on_get_info_index;
+        bool function(uint index, ref addon_info getInfo) m_ext_add_on_get_info_index;
         /*
          * Obtain an Add-on information if able to find a match.
          * Params:
          * name = Input name of an Add-on. (Maximum permitted is 128 characters long.)
          * getInfo = Output a matched Add-on or not.
          * Returns: Return true or false if unable find a match.*/
-        bool function(wchar* name, ref addon_info  getInfo) m_ext_add_on_get_info_by_name;
+        bool function(wchar* name, ref addon_info getInfo) m_ext_add_on_get_info_by_name;
         /*
          * Reload an Add-on while still running Halo.
          * Params:
          * name = Input name of an Add-on. (Maximum permitted is 128 characters long.)
          * Returns: Return true or false if unable to reload Add-on.*/
-        bool function(wchar* name) m_ext_add_on_reload;
+        bool function(const wchar* name) m_ext_add_on_reload;
     };
     export extern(C) IHaloEngine* getIHaloEngine(uint hash);
 

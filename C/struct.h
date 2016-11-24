@@ -504,20 +504,20 @@ typedef struct s_object {
 static_assert_check(sizeof(s_object) == 0x1F4, "Incorrect size of s_object");
 
 typedef struct actionFlags {    // these are action flags, basically client button presses and these don't actually control whether or not an event occurs
-    bool    crouching : 1;             // (a few of these bit flags are thanks to halo devkit)
-    bool    jumping : 1;               // 2
-    char UnknownBit : 2;            // 3
-    bool    Flashlight : 1;            // 5
-    bool    UnknownBit2 : 1;           // 6
-    bool    actionPress : 1;           // 7 think this is just when they initially press the action button
-    bool    melee : 1;                 // 8
-    char UnknownBit3 : 2;           // 9
-    bool    reload : 1;                // 11
-    bool    primaryWeaponFire : 1;     // 12 right mouse
-    bool    secondaryWeaponFire : 1;   // 13 left mouse
-    bool    secondaryWeaponFire1 : 1;  // 14
-    bool    actionHold : 1;            // 15 holding action button
-    char UnknownBit4 : 1;           // 16
+    bool    crouching : 1;              // 0 (a few of these bit flags are thanks to halo devkit)
+    bool    jumping : 1;                // 1
+    char UnknownBit : 2;                // 2
+    bool    Flashlight : 1;             // 4
+    bool    UnknownBit2 : 1;            // 5
+    bool    actionPress : 1;            // 6 think this is just when they initially press the action button
+    bool    melee : 1;                  // 7
+    char UnknownBit3 : 2;               // 8
+    bool    reload : 1;                 // 10
+    bool    primaryWeaponFire : 1;      // 11 right mouse
+    bool    secondaryWeaponFire : 1;    // 12 left mouse
+    bool    secondaryWeaponFire1 : 1;   // 13
+    bool    actionHold : 1;             // 14 holding action button
+    char UnknownBit4 : 1;               // 15
 } actionFlags;
 static_assert_check(sizeof(actionFlags) == 0x02, "Incorrect size of actionFlags");
 
@@ -538,7 +538,7 @@ typedef struct s_biped {
     real_vector3d   LookVect;                   // 0x023C
     real_vector3d   ZeroVect;                   // 0x0248
     real_vector3d   RealLookVect;               // 0x0254
-    real_vector3d   Unknownreal_vector3d;       // 0x0260
+    real_vector3d   UnknownVect3;               // 0x0260
     char            Unknown2[0x34];             // 0x026C
     unsigned char   actionVehicle_crouch_stand; // 0x02A0 Is this really true? Found this from Wizard's code (Standing = 4) (Crouching = 3) (Vehicle = 0)
     char            Unknown9[0x51];             // 0x02A1
@@ -553,8 +553,8 @@ typedef struct s_biped {
     unsigned int    SecondaryWeaponLastUse;     // 0x030C
     unsigned int    ThirdWeaponLastUse;         // 0x0310
     unsigned int    FourthWeaponLastUse;        // 0x0314
-    int             UnknownLongs2;              // 0x031C
-    char            grenadeIndex;               // 0x031C
+    int             UnknownLongs2;              // 0x031C <-- INCORRECT OFFSET?
+    char            grenadeIndex;               // 0x031C <-- INCORRECT OFFSET?
     char            grenadeIndex1;              // 0x031D
     char            grenade0;                   // 0x031E
     char            grenade1;                   // 0x031F
@@ -567,7 +567,7 @@ typedef struct s_biped {
     unsigned char   Unknown7;                   // 0x0500    Relative to swap biped, not sure what else uses this.
     unsigned short  inAirticks;                 // 0x0501    Amount of time in the air?
     unsigned char   isWalking;                  // 0x0503    0 = else, 1 = While on ground & is walking, 2 = rarely seen + seems to be using bit values
-    char            Unknown8[76];               // 0x0328    0x422 (unsigned short) is set zero for camo to start.
+    char            Unknown8[76];               // 0x0504    0x422 (unsigned short) is set zero for camo to start.
     bone            LeftThigh;                  // 0x0550
     bone            RightThigh;                 // 0x0584
     bone            Pelvis;                     // 0x05B8
@@ -597,17 +597,17 @@ typedef struct s_weapon {
     unsigned int    NetworkTime;                        //0x0204
     char            Unknown1[36];                       //0x0208
 
-    bool    Unknown16:4;                                   //0x022C.0-3
-    bool    Unknown17:1;                                   //0x022C.4
-    bool    isPickedup:1;                                  //0x022C.4-5
-    bool    isNotReturned:1;                               //0x022C.6
-    bool    Unknown18:1;                                   //0x022C.7
-    char Unknown19[3];                                  //0x022D
-    bool    Unknown20:1;                                   //0x0230.0
-    bool    Melee:1;                                       //0x0230.1
-    bool    Unknown21:2;                                   //0x0230.2-3
-    bool    Unknown22:4;                                   //0x0230.4-7
-    char Unknown23[3];                                  //0x0231
+    bool            Unknown16:4;                        //0x022C.0-3
+    bool            Unknown17:1;                        //0x022C.4
+    bool            isPickedup:1;                       //0x022C.4-5
+    bool            isNotReturned:1;                    //0x022C.6
+    bool            Unknown18:1;                        //0x022C.7
+    char            Unknown19[3];                       //0x022D
+    bool            Unknown20:1;                        //0x0230.0
+    bool            Melee:1;                            //0x0230.1
+    bool            Unknown21:2;                        //0x0230.2-3
+    bool            Unknown22:4;                        //0x0230.4-7
+    char            Unknown23[3];                       //0x0231
 
     unsigned int    Unknown24;                          //0x0234
 
@@ -695,60 +695,60 @@ typedef struct s_vehicle {
 
 //TODO: Variable of offset seems to have some sort of data usage base from SDMHaloMapLoader.c/h Need to do some research.
 typedef struct s_map_header {
-    char head[4];                   //0x00
-    unsigned int haloVersion;       //0x04
-    unsigned int length;            //0x08
+    char            head[4];        //0x00
+    unsigned int    haloVersion;    //0x04
+    unsigned int    length;         //0x08
     PADDING(4);                     //0x0C //Nulls
-    unsigned int index_offset;      //0x10
-    unsigned int metadata_size;     //0x14
+    unsigned int    index_offset;   //0x10
+    unsigned int    metadata_size;  //0x14
     PADDING(8);                     //0x18 //Nulls
-    char name[32];                  //0x20
-    char build[32];                 //0x40
-    unsigned int type;              //0x060 // 0 = Campaign, 1 = Multi-player, 2 = Menu
-    unsigned int unknown07;         //0x064
+    char            name[32];       //0x20
+    char            build[32];      //0x40
+    unsigned int    type;           //0x060 // 0 = Campaign, 1 = Multi-player, 2 = Menu
+    unsigned int    unknown07;      //0x064
 } s_map_header;
 static_assert_check(sizeof(s_map_header) == 0x68, "Incorrect size of s_map_header");
 
 typedef struct s_map_status {
-    bool    Unknown1;              //0x00
-    bool    Unknown2;              //0x01
-    unsigned short Unknown3;    //0x02 NULLs
-    unsigned int Unknown4;      //0x04
-    unsigned int Unknown5;      //0x08
-    unsigned int upTime;        //0x0C 1 sec = 30 ticks <-- use this as recommended upTime
-    unsigned int Unknown6;      //0x10
-    unsigned int upTime1;       //0x14 1 sec = 30 ticks
-    float Unknown7;             //0x18
-    unsigned int Unknown8;      //0x1C Don't know what this is and it's increasing rapidly...
+    bool            Unknown1;       //0x00
+    bool            Unknown2;       //0x01
+    unsigned short  Unknown3;       //0x02 NULLs
+    unsigned int    Unknown4;       //0x04
+    unsigned int    Unknown5;       //0x08
+    unsigned int    upTime;         //0x0C 1 sec = 30 ticks <-- use this as recommended upTime
+    unsigned int    Unknown6;       //0x10
+    unsigned int    upTime1;        //0x14 1 sec = 30 ticks
+    float           Unknown7;       //0x18
+    unsigned int    Unknown8;       //0x1C Don't know what this is and it's increasing rapidly...
 } s_map_status;
 static_assert_check(sizeof(s_map_status) == 0x20, "Incorrect size of s_map_status");
 
 typedef struct s_console_header {
-    bool    gamePause;                 //0x00
-    bool    allowConsole;              //0x01
-    unsigned short unknown01;       //0x02 //Nulls
-    bool    isNotConsole;              //0x04
-    unsigned char unknown02;        //0x05
-    unsigned char unknown03;        //0x06
-    unsigned char keyPress;         //0x07
-    unsigned short unknown04;       //0x08
-    unsigned short unknown05;       //0x0A
-    unsigned short unknown06;       //0x0C
-    unsigned short unknown07[61];   //0x10 //Nulls
-    unsigned int unknown08;         //0x88
-    unsigned int unknown09;         //0x8C
-    unsigned int unknown10;         //0x90
-    unsigned int unknown11;         //0x94
-    char inputName[32];             //0x98
-    char input[255];                //0xB8
+    bool            gamePause;          //0x00
+    bool            allowConsole;       //0x01
+    unsigned short  unknown01;          //0x02 //Nulls
+    bool            isNotConsole;       //0x04
+    unsigned char   unknown02;          //0x05
+    unsigned char   unknown03;          //0x06
+    unsigned char   keyPress;           //0x07
+    unsigned short  unknown04;          //0x08
+    unsigned short  unknown05;          //0x0A
+    unsigned short  unknown06;          //0x0C
+    unsigned short  unknown07[61];      //0x10 //Nulls
+    unsigned int    unknown08;          //0x88
+    unsigned int    unknown09;          //0x8C
+    unsigned int    unknown10;          //0x90
+    unsigned int    unknown11;          //0x94
+    char            inputName[32];      //0x98
+    char            input[255];         //0xB8
 } s_console_header;
 static_assert_check(sizeof(s_console_header) == 0x1B7, "Incorrect size of s_console_header");
 
 typedef struct s_ban_check {
     wchar_t password[9];                //0x00
-    char cdKeyHash[32];                 //0x12
-    char unknown0[40];                  //0x32
-    char unknown1[4];                   //0x5A
+    char    cdKeyHash[32];              //0x12
+    char    unknown0[40];               //0x32
+    char    unknown1[4];                //0x5A
     wchar_t requestPlayerName[12];      //0x5E
 } s_ban_check; // Size - 100 (0x64) bytes
 static_assert_check(sizeof(s_ban_check) == 0x76, "Incorrect size of s_ban_check");

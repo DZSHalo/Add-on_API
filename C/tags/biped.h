@@ -115,8 +115,8 @@ typedef struct s_scale_flags {
 static_assert_check(sizeof(s_scale_flags) == 0x04, "Incorrect size of s_scale_flags");
 
 typedef struct s_biped_change_color_block {
-    e_source_in_out darken_by;
-    e_source_in_out scale_by;
+    e_source_in_out     darken_by;
+    e_source_in_out     scale_by;
     s_scale_flags       scale_flags;
     real_color          color_lower_bound;
     real_color          color_upper_bound;

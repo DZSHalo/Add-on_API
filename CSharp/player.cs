@@ -188,11 +188,11 @@ namespace Addon_API {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate uint d_get_id_port([In, MarshalAs(UnmanagedType.LPWStr)] string port);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate void d_get_full_name_id([In] int ID, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder fullName);
+        public delegate void d_get_full_name_id([In] uint ID, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder fullName);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate void d_get_ip_address_id([In] int ID, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder ipAddress);
+        public delegate void d_get_ip_address_id([In] uint ID, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder ipAddress);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate void d_get_port_id([In] int ID, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder port);
+        public delegate void d_get_port_id([In] uint ID, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder port);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_update([In] ref PlayerInfo plI);
@@ -220,13 +220,13 @@ namespace Addon_API {
         public delegate void d_apply_camo([In] ref PlayerInfo plI, [In] uint duration);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public delegate bool d_ban_player([In] ref PlayerExtended plEx, [In] ref tm gmtm);
+        public delegate ext_boolean d_ban_player([In] ref PlayerExtended plEx, [In] ref tm gmtm);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public delegate bool d_ban_CD_key([In, MarshalAs(UnmanagedType.LPWStr)] string CDHash, [In] ref tm gmtm);
+        public delegate ext_boolean d_ban_CD_key([In, MarshalAs(UnmanagedType.LPWStr)] string CDHash, [In] ref tm gmtm);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public delegate bool d_ban_ip([In, MarshalAs(UnmanagedType.LPWStr)] string IP_Address, [In] ref tm gmtm);
+        public delegate ext_boolean d_ban_ip([In, MarshalAs(UnmanagedType.LPWStr)] string IP_Address, [In] ref tm gmtm);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate uint d_ban_ip_get_id([In, MarshalAs(UnmanagedType.LPWStr)] string IP_Address);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -243,7 +243,7 @@ namespace Addon_API {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void d_get_CD_hash([In] ref s_machine_slot mS, [In, Out, MarshalAs(UnmanagedType.LPStr)] StringBuilder CDHash);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate ushort d_get_str_to_player_list([In, MarshalAs(UnmanagedType.LPWStr)] string regexSearch, [In, Out] ref PlayerInfoList plMatch, [In] ref PlayerInfo plOwner);
+        public delegate short d_get_str_to_player_list([In, MarshalAs(UnmanagedType.LPWStr)] string regexSearch, [In, Out] ref PlayerInfoList plMatch, [In] ref PlayerInfo plOwner);
         /// <summary>
         /// Get PlayerInfo from machine index if in used.
         /// </summary>
@@ -420,7 +420,7 @@ namespace Addon_API {
         /// </summary>
         /// <param name="plEx">Player to ban.</param>
         /// <param name="gmtm">Time/date to expire ban.</param>
-        /// <returns>Return true or false unable to ban player.</returns>
+        /// <returns>Return true or false unable to ban player, -1 for invalid argument.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_ban_player m_ban_player;
         /// <summary>
@@ -428,7 +428,7 @@ namespace Addon_API {
         /// </summary>
         /// <param name="CDHash">CD hash key to ban. (Must have 33 characters allocate to copy, 33th is to null termate.)</param>
         /// <param name="gmtm">Time/date to expire ban.</param>
-        /// <returns>Return true or false unable to ban CD hash key.</returns>
+        /// <returns>Return true or false unable to ban CD hash key, -1 for invalid argument.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_ban_CD_key m_ban_CD_key;
         /// <summary>
@@ -436,7 +436,7 @@ namespace Addon_API {
         /// </summary>
         /// <param name="IP_Address">IP Address to ban.. (Must have 16 characters allocate to copy.)</param>
         /// <param name="gmtm">Time/date to expire ban.</param>
-        /// <returns>Return true or false unable to ban IP Address.</returns>
+        /// <returns>Return true or false unable to ban IP Address, -1 for invalid argument.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_ban_ip m_ban_ip;
         /// <summary>
@@ -472,7 +472,7 @@ namespace Addon_API {
         /// Get port number, excluded IP address, from machine slot.
         /// </summary>
         /// <param name="mS">machine slot</param>
-        /// <param name=m_port"">Port number, excluded IP address</param>
+        /// <param name="m_port">Port number, excluded IP address</param>
         /// <returns>Return true or false if unable get port.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_get_port m_get_port;
@@ -480,7 +480,7 @@ namespace Addon_API {
         /// Get CD hash from machine slot.
         /// </summary>
         /// <param name="mS">machine slot</param>
-        /// <param name="CDHash">CD hash key. (Must have 33 characters allocate to copy, 33th is to null termate.)</param>
+        /// <param name="CDHash">CD hash key. (Must have 33 characters allocated to copy, 33th is a null termated.)</param>
         /// <returns>Does not return any value.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_get_CD_hash m_get_CD_hash;

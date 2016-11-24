@@ -39,7 +39,7 @@ CNATIVE {
     static GAME_MODE_S modeMulti = { 0, 1, 0 };
     static GAME_MODE_S modeMultiHost = { 0, 1, 1 };
     static GAME_MODE_S modeHost = { 0, 0, 1 };
-    static const double PI = 3.141592653589793f;
+    static const double PI = 3.14159265358979323846;
 
     typedef enum PLAYER_VALIDATE {
         PLAYER_VALIDATE_DEFAULT = 0,

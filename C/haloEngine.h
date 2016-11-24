@@ -192,7 +192,7 @@ CNATIVE {
         /// </summary>
         /// <param name="pass">Set the current password. (Maximum permitted is 8 characters long.)</param>
         /// <returns>Does not return a value.</returns>
-        void (*m_set_server_password)(wchar_t* pass);
+        void (*m_set_server_password)(const wchar_t* pass);
         /// <summary>
         /// Get the current rcon password for authorized players to execute command.
         /// </summary>
@@ -204,7 +204,7 @@ CNATIVE {
         /// </summary>
         /// <param name="pass">Set the current rcon password. (Maximum permitted is 8 characters long.)</param>
         /// <returns>Does not return a value.</returns>
-        void (*m_set_rcon_password)(char* pass);
+        void (*m_set_rcon_password)(const char* pass);
         //Halo Simulate Functions End
         /// <summary>
         /// Obtain an Add-on information if able to find a match.
@@ -225,7 +225,7 @@ CNATIVE {
         /// </summary>
         /// <param name="name">Input name of an Add-on. (Maximum permitted is 128 characters long.)</param>
         /// <returns>Return true or false if unable to reload Add-on.</returns>
-        bool (*m_ext_add_on_reload)(wchar_t* name);
+        bool (*m_ext_add_on_reload)(const wchar_t* name);
     } IHaloEngine;
     //static_assert_check(sizeof(IHaloEngine) == 0x20, sizeof(IHaloEngine));// "Incorrect size of IHaloEngine!");
     dllport IHaloEngine* WINAPIC getIHaloEngine(unsigned int hash);

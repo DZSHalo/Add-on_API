@@ -187,7 +187,7 @@ namespace Addon_API {
         public delegate void d_set_object_spawn_player_x([In] byte pl_ind);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public delegate bool d_get_lookup_group_tag_list([In] e_tag_group group_tag, [In, Out] objTagGroupList tag_list);
+        public delegate bool d_get_lookup_group_tag_list([In] e_tag_group tag_group, [In, Out] objTagGroupList tag_list);
 
         /// <summary>
         /// Get pointer of object's active structure.
@@ -290,10 +290,11 @@ namespace Addon_API {
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_move_and_reset m_move_and_reset;
         /// <summary>
-        /// Set object, usually cheats, to specific player. NOTE: Make sure you set it back to zero after you're done using it!
+        /// Obtain list of specific object tags.
         /// </summary>
-        /// <param name="pl_ind">Player index</param>
-        /// <returns>Does not return any value.</returns>
+        /// <param name="tag_group">Find specific object tag group.</param>
+        /// <param name="tag_list">Output list of specific object tags.</param>
+        /// <returns>Return true or false if unable to find tag group.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_set_object_spawn_player_x m_set_object_spawn_player_x;
         [MarshalAs(UnmanagedType.FunctionPtr)]

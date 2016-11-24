@@ -5,13 +5,6 @@ import Add_on_API.Add_on_API;
 static if(__traits(compiles, EXT_ICINIFILE)) {
 
     enum INIFILELENMAX = 512;
-    struct Record {
-        wchar[256] comments;
-        wchar commented;
-        wchar[128] section;
-        wchar[128] key;
-        wchar[256] value;
-    };
     enum commentChar: wchar {
         pound = '#',
         semiColon = ';'
@@ -63,7 +56,7 @@ static if(__traits(compiles, EXT_ICINIFILE)) {
          * len = Length of the content.
          * Returns: Return true or false.
          */
-        bool function(ICIniFile* self, ref const wchar*  content, ref uint  len) m_content;
+        bool function(ICIniFile* self, ref const wchar* content, ref uint len) m_content;
         /*
          * To add a section in a file.
          * Params:

@@ -36,7 +36,7 @@ static if (__traits(compiles, EXT_IDATABASE)) {
          * Option = See Attribute at https://msdn.microsoft.com/en-us/library/ms713605.aspx for details.</param>
          * Param = See ValuePtr at https://msdn.microsoft.com/en-us/library/ms713605.aspx for details.</param>
          * ParamLen = See StringLength at https://msdn.microsoft.com/en-us/library/ms713605.aspx for details.</param>
-         * <returns>Return true or false.
+         * Returns: Return true or false.
          */
         bool function(SQLWCHAR* ConnectionStr, SQLINTEGER Option, SQLPOINTER Param, SQLINTEGER ParamLen) m_connect;
         /*
@@ -46,25 +46,25 @@ static if (__traits(compiles, EXT_IDATABASE)) {
          * User = Username if required to connect.</param>
          * Pass = Password if required to connect.</param>
          * Exclusive = True to restrict access to database or false to share database.</param>
-         * <returns>Return true or false.
+         * Returns: Return true or false.
          */
-        bool function(SQLWCHAR* MDBPath, SQLWCHAR* User, SQLWCHAR* Pass, bool Exclusive) m_connect_mdb;
+        bool function(const SQLWCHAR* MDBPath, const SQLWCHAR* User, const SQLWCHAR* Pass, bool Exclusive) m_connect_mdb;
         /*
          * To disconnect current active database.
          * Params:
-         * <returns>Does not return any value.
+         * Returns: Does not return any value.
          */
         void function() m_disconnect;
         /*
          * To verify if active database is still connected.
          * Params:
-         * <returns>Return false if connection is dead from last attempt query or other value.
+         * Returns: Return false if connection is dead from last attempt query or other value.
          */
         SQLINTEGER function() m_status;
         /*
          * To check an active database has up-to-date tables, if not it will automate update the tables.
          * Params:
-         * <returns>Does not return any value.
+         * Returns: Does not return any value.
          */
         void function() m_check;
 }
@@ -93,14 +93,14 @@ static if (__traits(compiles, EXT_IDATABASESTATEMENT)) {
          * self = Must include pointer of existing IDBStmt variable.
          * Returns: Return 0 for no column or the amount of column(s).
          */
-        ushort function(IDBStmt* self) m_get_column_count;
+        short function(IDBStmt* self) m_get_column_count;
         /*
          * Get total of changed row count after query executed.
          * Params:
          * self = Must include pointer of existing IDBStmt variable.
          * Returns: Return 0 for no changed or the amount of changed row(s).
          */
-        uint function(IDBStmt* self) m_get_changed_row_count;
+        int function(IDBStmt* self) m_get_changed_row_count;
         /*
          * To query a statement to database handler.
          * Params:
@@ -137,9 +137,8 @@ static if (__traits(compiles, EXT_IDATABASESTATEMENT)) {
          * Returns: Return true or false.
          */
         bool function(IDBStmt* self) m_fetch_next;
-        //Default: ULONG nRow, bool Absolute = 1
         /*
-         * Fetch data from specific queried absolute row.
+         * Fetch data from specific queried absolute row. //Default: ULONG nRow, bool Absolute = 1
          * Params:
          * self = Must include pointer of existing IDBStmt variable.
          * nRow = Row number to get data from.
@@ -168,10 +167,8 @@ static if (__traits(compiles, EXT_IDATABASESTATEMENT)) {
          * Returns: Return true or false.
          */
         bool function(IDBStmt* self) m_cancel;
-
-        //Default: unsigned short Column, LPVOID pBuffer, ULONG pBufferSize, LONG* pReturnedBufferSize = NULL, unsigned short nType = SQL_C_TCHAR
         /*
-         * To bind column's data.
+         * To bind column's data. //Default: unsigned short Column, LPVOID pBuffer, ULONG pBufferSize, LONG* pReturnedBufferSize = NULL, unsigned short nType = SQL_C_TCHAR
          * Params:
          * self = Must include pointer of existing IDBStmt variable.
          * Column = Column's number.
@@ -190,9 +187,8 @@ static if (__traits(compiles, EXT_IDATABASESTATEMENT)) {
          * Returns: Return 0 if cannot find column's name or colum's number.
          */
         SQLUSMALLINT function(IDBStmt* self, SQLWCHAR* Column) m_get_column_by_name;
-        //Default unsigned short Column; LPVOID pBuffer; ULONG pBufLen; LONG* dataLen = NULL; int Type = SQL_C_DEFAULT;
         /*
-         * To get data from fetched query statement.
+         * To get data from fetched query statement. //Default unsigned short Column; LPVOID pBuffer; ULONG pBufLen; LONG* dataLen = NULL; int Type = SQL_C_DEFAULT;
          * Params:
          * self = Must include pointer of existing IDBStmt variable.
          * Column = Column's number.

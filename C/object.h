@@ -102,7 +102,7 @@ CNATIVE{
         /// <param name="tagType">Type of tag.</param>
         /// <param name="tag">Name of an asset tag.</param>
         /// <returns>Return pointer of tag header of an asset tag.</returns>
-        hTagHeader* (*m_lookup_tag_type_name)(const e_tag_group group_tag, const char* tag_name);
+        hTagHeader* (*m_lookup_tag_type_name)(e_tag_group group_tag, const char* tag_name);
         /// <summary>
         /// To destroy an existing object.
         /// </summary>
@@ -115,7 +115,7 @@ CNATIVE{
         /// <param name="model_Tag">Unique asset tag s_ident.</param>
         /// <param name="plI">PlayerInfo</param>
         /// <returns>Return true or false if unable to copy.</returns>
-        bool (*m_copy)(s_ident* model_Tag, PlayerInfo plI);
+        bool (*m_copy)(s_ident model_Tag, PlayerInfo plI);
         /// <summary>
         /// Eject object, usually bipeds, from enterable object. (NOTE: This does not instant eject object if there's an eject animation involved.)
         /// </summary>
@@ -143,7 +143,7 @@ CNATIVE{
         /// <param name="out_objId">Unique s_ident of an object creation.</param>
         /// <param name="location">Location to spawn at.</param>
         /// <returns>Return true or false if unable to create an object.</returns>
-        bool (*m_create)(s_ident model_Tag, s_ident parentId, int idlingTime, s_ident* out_objId, real_vector3d* location);
+        bool (*m_create)(s_ident model_Tag, s_ident parentId, int idlingTime, s_ident* out_objId, const real_vector3d* location);
         /// <summary>
         /// Assign equipment to biped.
         /// </summary>
@@ -170,14 +170,20 @@ CNATIVE{
         /// <param name="obj_id">Unique s_ident of an object created.</param>
         /// <param name="location">Location to move at.</param>
         /// <returns>Does not return any value.</returns>
-        void (*m_move_and_reset)(s_ident obj_id, real_vector3d* location);
+        void (*m_move_and_reset)(s_ident obj_id, const real_vector3d* location);
         /// <summary>
         /// Set object, usually cheats, to specific player. NOTE: Make sure you set it back to zero after you're done using it!
         /// </summary>
         /// <param name="pl_ind">Player index</param>
         /// <returns>Does not return any value.</returns>
         void (*m_set_object_spawn_player_x)(playerindex pl_ind);
-        bool (*m_get_lookup_group_tag_list)(const e_tag_group group_tag, objTagGroupList* tag_list);
+        /// <summary>
+        /// Obtain list of specific object tags.
+        /// </summary>
+        /// <param name="tag_group">Find specific object tag group.</param>
+        /// <param name="tag_list">Output list of specific object tags.</param>
+        /// <returns>Return true or false if unable to find tag group.</returns>
+        bool (*m_get_lookup_group_tag_list)(const e_tag_group tag_group, objTagGroupList* tag_list);
     } IObject;
 
 CNATIVE dllport IObject* getIObject(unsigned int hash);

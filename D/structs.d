@@ -82,7 +82,7 @@ struct rconDecode {
 };
 static assert(rconDecode.sizeof == 0x4A, "Incorrect size of rconDecode");
 
-struct vect3 {
+struct real_vector3d {
     float x = cast(float)0xFFFFFFFF;
     float y = cast(float)0xFFFFFFFF;
     float z = cast(float)0xFFFFFFFF;
@@ -91,7 +91,7 @@ struct vect3 {
         this.y = y;
         this.z = z;
     }
-    bool opEquals(ref vect3 v3) {
+    bool opEquals(ref real_vector3d v3) {
         if (v3.x == this.x && v3.y == this.y && v3.z == this.z)
             return 1;
         return 0;
@@ -114,7 +114,7 @@ struct vect2 {
 
 struct bone {
     float[10] unknown;
-    vect3 World;
+    real_vector3d World;
 };
 static assert(bone.sizeof == 0x34, "Incorrect size of bone");
 
@@ -278,7 +278,7 @@ struct s_player_slot {//Verified offsets.
     s_ident    UnknownIdent5;                 //0x0EC
     uint    Unknown10;                      //0x0F0
     uint    SomeTime;                       //0x0F4
-    vect3    World;                         //0x0F8
+    real_vector3d    World;                         //0x0F8
     s_ident    UnknownIdent6;                 //0x104
     char[20]    Unknown11;                  //0x108
     ubyte[2] bitFieldFlag2;
@@ -298,9 +298,9 @@ struct s_player_slot {//Verified offsets.
     short    HeldWeaponIndex;               //0x14C
     short    GrenadeIndex;                  //0x14E
     char[4]    Unknown13;                   //0x150
-    vect3    LookVect;                      //0x154
+    real_vector3d    LookVect;                      //0x154
     char[16]    Unknown14;                  //0x160
-    vect3    WorldDelayed;                  //0x170    // Oddly enough... it matches the world vect, but seems to lag behind (Possibly what the client reports is _its_ world coord?)
+    real_vector3d    WorldDelayed;                  //0x170    // Oddly enough... it matches the world vect, but seems to lag behind (Possibly what the client reports is _its_ world coord?)
     char[132]    Unknown15;                 //0x17C
 };
 //pragma(msg, PlayerS.Unknown15.offsetof);
@@ -392,7 +392,7 @@ static assert(s_gametype.sizeof == 0xA4, "Incorrect size of s_gametype");
 
 struct GametypeGFlag {
     align(1):
-    vect3 World;            //0x00 Coordinate of where to respawn at.
+    real_vector3d World;            //0x00 Coordinate of where to respawn at.
     ubyte[8] UNKNOWN0;      //0x0C Nulls...
     ubyte[4] UNKNOWN1;      //0x14 Don't know...
     float unknown;          //0x18 Possible float?
@@ -492,154 +492,154 @@ static assert(damageFlags.sizeof == 0x02, "Incorrect size of damageFlags");
 
 struct s_object {
     align (1):
-    s_ident    ModelTag;              // 0x0000
-    int    Zero;                   // 0x0004
-    char[4]    Flags;               // 0x0008
-    int    Timer;                  // 0x000C
+    s_ident         ModelTag;               // 0x0000
+    int             Zero;                   // 0x0004
+    char[4]         Flags;                  // 0x0008
+    int             Timer;                  // 0x000C
     ubyte bitFieldFlag0;
-    /*char    unkBits : 2;            // 0x0010
-    bool    ignoreGravity:1;
-    char    unk1:3;
-    bool    unk2:1;
-    bool    noCollision:1;*/
-    char[3]    unkBytes1;           // 0x0011
-    int    Timer2;                 // 0x0014
-    int[17]    Zero2;              // 0x0018
-    vect3    World;                 // 0x005C
-    vect3    Velocity;              // 0x0068
-    vect3    Rotation;              // 0x0074
-    vect3    Scale;                 // 0x0080
-    vect3    VelocityPitchYawRoll;  // 0x008C  //current velocity for pitch, yaw, and roll
-    int    LocationID;             // 0x0098
-    int    Unknown1;               // 0x009C
-    vect3    UnknownVect2;          // 0x00A0
-    float[2]    Unknown2;           // 0x00AC
-    int    Unknown3;               // 0x00B4
-    short    GameObject;            // 0x00B8    // 0 >= is game object, -1 = is NOT game object
-    short    Unknown4;              // 0x00BA
-    int    Unknown5;               // 0x00BD
-    s_ident    Player;                // 0x00C0
-    int[2]    Unknown6;            // 0x00C4
-    s_ident    AntrMeta;              // 0x00CC
-    int[2]    Unknown7;            // 0x00D0
-    float    HealthMax;             // 0x00D8
-    float    ShieldMax;             // 0x00DC
-    float    Health;                // 0x00E0
-    float    Shield1;               // 0x00E4
-    int[7]    Unknown8;            // 0x00E8
-    short    Unknown9;              // 0x0104
-    damageFlags    damageFlag;      // 0x0106
-    short    Unknown10;             // 0x0108
-    short    Unknown11;             // 0x010A
-    int[2]    Unknown12;           // 0x010C
-    s_ident    VehicleWeapon;         // 0x0114
-    s_ident    Weapon;                // 0x0118
-    s_ident    Vehicle;               // 0x011C
-    short    SeatType;              // 0x0120
-    short    Unknown13;             // 0x0122
-    int    Unknown14;              // 0x0124
-    float    Shield2;               // 0x0128
-    float    Flashlight1;           // 0x012C
-    float    Unknown15;             // 0x0130
-    float    Flashlight2;           // 0x0134
-    int[5]    Unknown16;           // 0x0138
-    s_ident    UnknownIdent1;         // 0x014C
-    s_ident    UnknownIdent2;         // 0x0150
-    int[6]    Zero3;               // 0x0154
-    s_ident    UnknownIdent3;         // 0x016C
-    s_ident    UnknownIdent4;         // 0x0170
-    int[16] UnknownMatrix0;        //D3DXMATRIX UnknownMatrix;     // 0x0174
-    int[16] UnknownMatrix1;        //D3DXMATRIX UnknownMatrix1;    // 0x01B4
+    /*char            unkBits : 2;            // 0x0010
+    bool            ignoreGravity:1;
+    char            unk1:3;
+    bool            unk2:1;
+    bool            noCollision:1;*/
+    char[3]         unkBytes1;              // 0x0011
+    int             Timer2;                 // 0x0014
+    int[17]         Zero2;                  // 0x0018
+    real_vector3d   World;                  // 0x005C
+    real_vector3d   Velocity;               // 0x0068
+    real_vector3d   Rotation;               // 0x0074
+    real_vector3d   Scale;                  // 0x0080
+    real_vector3d   VelocityPitchYawRoll;   // 0x008C  //current velocity for pitch, yaw, and roll
+    int             LocationID;             // 0x0098
+    int             Unknown1;               // 0x009C
+    real_vector3d   UnknownVect2;           // 0x00A0
+    float[2]        Unknown2;               // 0x00AC
+    int             Unknown3;               // 0x00B4
+    short           GameObject;             // 0x00B8    // 0 >= is game object, -1 = is NOT game object
+    short           Unknown4;               // 0x00BA
+    int             Unknown5;               // 0x00BD
+    s_ident         Player;                 // 0x00C0
+    int[2]          Unknown6;               // 0x00C4
+    s_ident         AntrMeta;               // 0x00CC
+    int[2]          Unknown7;               // 0x00D0
+    float           HealthMax;              // 0x00D8
+    float           ShieldMax;              // 0x00DC
+    float           Health;                 // 0x00E0
+    float           Shield1;                // 0x00E4
+    int[7]          Unknown8;               // 0x00E8
+    short           Unknown9;               // 0x0104
+    damageFlags     damageFlag;             // 0x0106
+    short           Unknown10;              // 0x0108
+    short           Unknown11;              // 0x010A
+    int[2]          Unknown12;              // 0x010C
+    s_ident         VehicleWeapon;          // 0x0114
+    s_ident         Weapon;                 // 0x0118
+    s_ident         Vehicle;                // 0x011C
+    short           SeatType;               // 0x0120
+    short           Unknown13;              // 0x0122
+    int             Unknown14;              // 0x0124
+    float           Shield2;                // 0x0128
+    float           Flashlight1;            // 0x012C
+    float           Unknown15;              // 0x0130
+    float           Flashlight2;            // 0x0134
+    int[5]          Unknown16;              // 0x0138
+    s_ident         UnknownIdent1;          // 0x014C
+    s_ident         UnknownIdent2;          // 0x0150
+    int[6]          Zero3;                  // 0x0154
+    s_ident         UnknownIdent3;          // 0x016C
+    s_ident         UnknownIdent4;          // 0x0170
+    int[16]         UnknownMatrix0;         //D3DXMATRIX UnknownMatrix;     // 0x0174
+    int[16]         UnknownMatrix1;         //D3DXMATRIX UnknownMatrix1;    // 0x01B4
     //Everything after this is 0x01F4
 };
 static assert(s_object.sizeof == 0x1F4, "Incorrect size of s_object");
 
 struct actionFlags {    // these are action flags, basically client button presses and these don't actually control whether or not an event occurs
     ubyte[2] bitFieldFlag;
-    /*bool crouching : 1;             // (a few of these bit flags are thanks to halo devkit)
-    bool jumping : 1;               // 2
-    char UnknownBit : 2;            // 3
-    bool Flashlight : 1;            // 5
-    bool UnknownBit2 : 1;           // 6
-    bool actionPress : 1;           // 7 think this is just when they initially press the action button
-    bool melee : 1;                 // 8
-    char UnknownBit3 : 2;           // 9
-    bool reload : 1;                // 11
-    bool primaryWeaponFire : 1;     // 12 right mouse
-    bool secondaryWeaponFire : 1;   // 13 left mouse
-    bool secondaryWeaponFire1 : 1;  // 14
-    bool actionHold : 1;            // 15 holding action button
-    char UnknownBit4 : 1;           // 16*/
+    /*bool crouching : 1;           // 0 (a few of these bit flags are thanks to halo devkit)
+    bool jumping : 1;               // 1
+    char UnknownBit : 2;            // 2
+    bool Flashlight : 1;            // 4
+    bool UnknownBit2 : 1;           // 5
+    bool actionPress : 1;           // 6 think this is just when they initially press the action button
+    bool melee : 1;                 // 7
+    char UnknownBit3 : 2;           // 8
+    bool reload : 1;                // 10
+    bool primaryWeaponFire : 1;     // 11 right mouse
+    bool secondaryWeaponFire : 1;   // 12 left mouse
+    bool secondaryWeaponFire1 : 1;  // 13
+    bool actionHold : 1;            // 14 holding action button
+    char UnknownBit4 : 1;           // 15
 };
 static assert(actionFlags.sizeof == 0x02, "Incorrect size of actionFlags");
 
 struct s_biped {
     align (1):
-    s_object sObject;                // 0x0000
-    uint[4]    Unknown;                // 0x01F4
-    short    IsInvisible;            // 0x0204    normal = 0x41 invis = 0x51 (bitfield) Offset 0x422 is set zero for camo to start.
-    char    Flashlight;                // 0x0206
-    char    Frozen;                    // 0x0207
-    actionFlags    actionBits;            // 0x0208 & 0x0209
-    char[2]    Unknown1;            // 0x020A
-    uint    UnknownCounter1;        // 0x020C
-    uint[2]    UnknownLongs1;        // 0x0210
-    s_ident    PlayerOwner;            // 0x0218
-    uint[2]    UnknownLongs3;        // 0x021C
-    vect3    RightVect;                // 0x0224
-    vect3    UpVect;                    // 0x0230
-    vect3    LookVect;                // 0x023C
-    vect3    ZeroVect;                // 0x0248
-    vect3    RealLookVect;            // 0x0254
-    vect3    UnknownVect3;            // 0x0260
-    char[0x34]    Unknown2;            // 0x026C
-    ubyte    actionVehicle_crouch_stand;    // 0x2A0 Is this really true? Found this from Wizard's code (Standing = 4) (Crouching = 3) (Vehicle = 0)
-    char[0x51]    Unknown9;            // 0x02A1
-    ushort    CurWeaponIndex0;        // 0x02F2    (Do not attempt to edit this, will crash Halo)
-    ushort    CurWeaponIndex1;        // 0x02F4    (Read only)
-    ushort    Unknown6;                // 0x02F6
-    s_ident    PrimaryWeapon;            // 0x02F8
-    s_ident    SecondaryWeapon;        // 0x02FC
-    s_ident    ThirdWeapon;            // 0x0300
-    s_ident    FourthWeapon;            // 0x0304
-    uint    PrimaryWeaponLastUse;    // 0x0308
-    uint    SecondaryWeaponLastUse;    // 0x030C
-    uint    ThirdWeaponLastUse;        // 0x0310
-    uint    FourthWeaponLastUse;    // 0x0314
-    uint    UnknownLongs2;            // 0x031C
-    char    grenadeIndex;            // 0x031C
-    char    grenadeIndex1;            // 0x031D
-    char    grenade0;                // 0x031E
-    char    grenade1;                // 0x031F
-    char    Zoom;                    // 0x0320
-    char    Zoom1;                    // 0x0321
-    char[2]    Unknown3;            // 0x0322
-    s_ident    SlaveController;        // 0x0324    Only effective for moving the Biped, sometimes does update the facing direction
-    s_ident    WeaponController;        // 0x0328    Does update where to point, fire the weapon, and reload. Have not confirmed with other player's.
-    char[468]    Unknown4;            // 0x032C
-    ubyte    Unknown7;                // 0x0500    Relative to swap biped, not sure what else uses this.
-    ushort    inAirticks;                // 0x0501    Amount of time in the air?
-    ubyte    isWalking;                // 0x0503    0 = else, 1 = While on ground & is walking, 2 = rarely seen + seems to be using bit values
-    char[76]    Unknown8;            // 0x0328    0x422 (ushort) is set zero for camo to start.
-    bone    LeftThigh;                // 0x0550
-    bone    RightThigh;                // 0x0584
-    bone    Pelvis;                    // 0x05B8
-    bone    LeftCalf;                // 0x05EC
-    bone    RightCalf;                // 0x0620
-    bone    Spine;                    // 0x0654
-    bone    LeftClavicle;            // 0x0688
-    bone    LeftFoot;                // 0x06BC
-    bone    Neck;                    // 0x06F0
-    bone    RightClavicle;            // 0x0724
-    bone    RightFoot;                // 0x0758
-    bone    Head;                    // 0x078C
-    bone    LeftUpperArm;            // 0x07C0
-    bone    RightUpperArm;            // 0x07F4
-    bone    LeftLowerArm;            // 0x0828
-    bone    RightLowerArm;            // 0x085C
-    bone    LeftHand;                // 0x0890
-    bone    RightHand;                // 0x08C4
-    char[1216]    Unknown5;            // 0x08F8 //Missing 0x092C?
+    s_object        sObject;                    // 0x0000
+    uint[4]         Unknown;                    // 0x01F4
+    short           IsInvisible;                // 0x0204    normal = 0x41 invis = 0x51 (bitfield) Offset 0x422 is set zero for camo to start.
+    char            Flashlight;                 // 0x0206
+    char            Frozen;                     // 0x0207
+    actionFlags     actionBits;                 // 0x0208 & 0x0209
+    char[2]         Unknown1;                   // 0x020A
+    uint            UnknownCounter1;            // 0x020C
+    uint[2]         UnknownLongs1;              // 0x0210
+    s_ident         PlayerOwner;                // 0x0218
+    uint[2]         UnknownLongs3;              // 0x021C
+    real_vector3d   RightVect;                  // 0x0224
+    real_vector3d   UpVect;                     // 0x0230
+    real_vector3d   LookVect;                   // 0x023C
+    real_vector3d   ZeroVect;                   // 0x0248
+    real_vector3d   RealLookVect;               // 0x0254
+    real_vector3d   UnknownVect3;               // 0x0260
+    char[0x34]      Unknown2;                   // 0x026C
+    ubyte           actionVehicle_crouch_stand; // 0x02A0 Is this really true? Found this from Wizard's code (Standing = 4) (Crouching = 3) (Vehicle = 0)
+    char[0x51]      Unknown9;                   // 0x02A1
+    ushort          CurWeaponIndex0;            // 0x02F2    (Do not attempt to edit this, will crash Halo)
+    ushort          CurWeaponIndex1;            // 0x02F4    (Read only)
+    ushort          Unknown6;                   // 0x02F6
+    s_ident         PrimaryWeapon;              // 0x02F8
+    s_ident         SecondaryWeapon;            // 0x02FC
+    s_ident         ThirdWeapon;                // 0x0300
+    s_ident         FourthWeapon;               // 0x0304
+    uint            PrimaryWeaponLastUse;       // 0x0308
+    uint            SecondaryWeaponLastUse;     // 0x030C
+    uint            ThirdWeaponLastUse;         // 0x0310
+    uint            FourthWeaponLastUse;        // 0x0314
+    uint            UnknownLongs2;              // 0x031C <-- INCORRECT OFFSET?
+    char            grenadeIndex;               // 0x031C <-- INCORRECT OFFSET?
+    char            grenadeIndex1;              // 0x031D
+    char            grenade0;                   // 0x031E
+    char            grenade1;                   // 0x031F
+    char            Zoom;                       // 0x0320
+    char            Zoom1;                      // 0x0321
+    char[2]         Unknown3;                   // 0x0322
+    s_ident         SlaveController;            // 0x0324    Only effective for moving the Biped, sometimes does update the facing direction
+    s_ident         WeaponController;           // 0x0328    Does update where to point, fire the weapon, and reload. Have not confirmed with other player's.
+    char[468]       Unknown4;                   // 0x032C
+    ubyte           Unknown7;                   // 0x0500    Relative to swap biped, not sure what else uses this.
+    ushort          inAirticks;                 // 0x0501    Amount of time in the air?
+    ubyte           isWalking;                  // 0x0503    0 = else, 1 = While on ground & is walking, 2 = rarely seen + seems to be using bit values
+    char[76]        Unknown8;                   // 0x0328    0x422 (ushort) is set zero for camo to start.
+    bone            LeftThigh;                  // 0x0550
+    bone            RightThigh;                 // 0x0584
+    bone            Pelvis;                     // 0x05B8
+    bone            LeftCalf;                   // 0x05EC
+    bone            RightCalf;                  // 0x0620
+    bone            Spine;                      // 0x0654
+    bone            LeftClavicle;               // 0x0688
+    bone            LeftFoot;                   // 0x06BC
+    bone            Neck;                       // 0x06F0
+    bone            RightClavicle;              // 0x0724
+    bone            RightFoot;                  // 0x0758
+    bone            Head;                       // 0x078C
+    bone            LeftUpperArm;               // 0x07C0
+    bone            RightUpperArm;              // 0x07F4
+    bone            LeftLowerArm;               // 0x0828
+    bone            RightLowerArm;              // 0x085C
+    bone            LeftHand;                   // 0x0890
+    bone            RightHand;                  // 0x08C4
+    char[1216]      Unknown5;                   // 0x08F8 //Missing 0x092C?
 }; // Size - 3564(0x0DEC) bytes
 
 
@@ -688,121 +688,121 @@ align (1) struct s_weapon {
     s_ident         UnknownIdent2;                  //0x02CC
     uint            LastBulletFiredTime;            //0x02DO
     char[16]        Unknown12;                      //0x02D4
-    vect3[2]        Unknown13;                      //0x02E4
+    real_vector3d[2]        Unknown13;                      //0x02E4
     char[12]        Unknown14;
     uint            BulletCountInRemainingClips1;
     char[52]        Unknown15;
 }; // Size - 1644(0x066C)
 
 align (1) struct s_vehicle {
-    s_ident    ModelTag;                  // 0x0000
-    long    Zero;                       // 0x0004
-    char    Flags[4];                   // 0x0008
-    long    Timer;                      // 0x000C
-    char    Flags2[4];                  // 0x0010
-    long    Timer2;                     // 0x0014
-    long    Zero2[17];                  // 0x0018
-    vect3    World;                     // 0x005C
-    vect3    Velocity;                  // 0x0068
-    vect3    LowerRot;                  // 0x0074  //incorrect
-    vect3    Rotation;                  // 0x0080  //incorrect
-    vect3    UnknownVect1;              // 0x008C
-    long    LocationID;                 // 0x0098
-    long    UnknownO1;                  // 0x009C
-    vect3    UnknownVect2;              // 0x00A0
-    float    UnknownO2[2];              // 0x00AC
-    long    UnknownO3[3];               // 0x00B4
-    s_ident    Player;                    // 0x00C0
-    long    UnknownO4[2];               // 0x00C4
-    s_ident    AntrMeta;                  // 0x00CC
-    long    UnknownO5[4];               // 0x00D0
-    float    Health;                    // 0x00E0
-    float    Shield1;                   // 0x00E4
-    long    UnknownO6[11];              // 0x00E8
-    s_ident    VehicleWeapon;             // 0x0114
-    s_ident    CurrentFirstPersonOn;      // 0x0118
-    s_ident    Vehicle;                   // 0x011C
-    short    SeatType;                  // 0x0120
-    short    UnknownO7;                 // 0x0122
-    long    UnknownO8;                  // 0x0124
-    float    Shield2;                   // 0x0128
-    float    Headlight1;                // 0x012C
-    float    Unknown9;                  // 0x0130
-    float    Headlight2;                // 0x0134
-    long    UnknownO10[5];              // 0x0138
-    s_ident    UnknownIdent1;             // 0x014C
-    s_ident    UnknownIdent2;             // 0x0150
-    long    Zero3[6];                   // 0x0154
-    s_ident    UnknownIdent3;             // 0x016C
-    s_ident    UnknownIdent4;             // 0x0170
-    vect3 UnknownMatrix;                // 0x0174
-    vect3 UnknownMatrix1;               // 0x0180
+    s_ident    ModelTag;                    // 0x0000
+    long    Zero;                           // 0x0004
+    char    Flags[4];                       // 0x0008
+    long    Timer;                          // 0x000C
+    char    Flags2[4];                      // 0x0010
+    long    Timer2;                         // 0x0014
+    long    Zero2[17];                      // 0x0018
+    real_vector3d   World;                  // 0x005C
+    real_vector3d   Velocity;               // 0x0068
+    real_vector3d   LowerRot;               // 0x0074  //incorrect
+    real_vector3d   Rotation;               // 0x0080  //incorrect
+    real_vector3d   UnknownVect1;           // 0x008C
+    long            LocationID;             // 0x0098
+    long            UnknownO1;              // 0x009C
+    real_vector3d   UnknownVect2;           // 0x00A0
+    float           UnknownO2[2];           // 0x00AC
+    long            UnknownO3[3];           // 0x00B4
+    s_ident         Player;                 // 0x00C0
+    long            UnknownO4[2];           // 0x00C4
+    s_ident         AntrMeta;               // 0x00CC
+    long            UnknownO5[4];           // 0x00D0
+    float           Health;                 // 0x00E0
+    float           Shield1;                // 0x00E4
+    long            UnknownO6[11];          // 0x00E8
+    s_ident         VehicleWeapon;          // 0x0114
+    s_ident         CurrentFirstPersonOn;   // 0x0118
+    s_ident         Vehicle;                // 0x011C
+    short           SeatType;               // 0x0120
+    short           UnknownO7;              // 0x0122
+    long            UnknownO8;              // 0x0124
+    float           Shield2;                // 0x0128
+    float           Headlight1;             // 0x012C
+    float           Unknown9;               // 0x0130
+    float           Headlight2;             // 0x0134
+    long            UnknownO10[5];          // 0x0138
+    s_ident         UnknownIdent1;          // 0x014C
+    s_ident         UnknownIdent2;          // 0x0150
+    long            Zero3[6];               // 0x0154
+    s_ident         UnknownIdent3;          // 0x016C
+    s_ident         UnknownIdent4;          // 0x0170
+    real_vector3d   UnknownMatrix;          // 0x0174
+    real_vector3d   UnknownMatrix1;         // 0x0180
     //** END OBJECT part
-    char    UnknownVeh0[0x7A];          // 0x018C
-    bool    isNotAllowPlayerEntry;      // 0x206
-    char    UnknownVeh1[0x11D];         // 0x18C
-    s_ident    SlaveController;           // 0x324
+    char            UnknownVeh0[0x7A];      // 0x018C
+    bool            isNotAllowPlayerEntry;  // 0x206
+    char            UnknownVeh1[0x11D];     // 0x18C
+    s_ident         SlaveController;        // 0x324
     //Anything goes after this?
 }; // Size - 3580(0xDFC)
 //Major WIP Halo Structure End
 
 //TODO: Variable of offset seems to have some sort of data usage base from SDMHaloMapLoader.c/h Need to do some research.
 align (1) struct s_map_header {
-    char head[4];                   //0x00
-    uint haloVersion;      //0x04
-    uint length;           //0x08
-    ubyte[4] PADDING0;                     //0x0C //Nulls
-    uint offset;           //0x10
-    uint metaSize;         //0x14
-    ubyte[8] PADDING1;                     //0x18 //Nulls
-    char mapName[32];               //0x20
-    char builddate[32];             //0x40
-    uint type;             //0x060 // 0 = Campaign, 1 = Multi-player, 2 = Menu
-    uint unknown07;        //0x064
+    char head[4];           //0x00
+    uint haloVersion;       //0x04
+    uint length;            //0x08
+    ubyte[4] PADDING0;      //0x0C //Nulls
+    uint offset;            //0x10
+    uint metaSize;          //0x14
+    ubyte[8] PADDING1;      //0x18 //Nulls
+    char mapName[32];       //0x20
+    char builddate[32];     //0x40
+    uint type;              //0x060 // 0 = Campaign, 1 = Multi-player, 2 = Menu
+    uint unknown07;         //0x064
 };
 static assert(s_map_header.sizeof == 0x68, "Incorrect size of s_map_header");
 
 align (1) struct s_map_status {
-    bool Unknown1;      //0x00
-    bool Unknown2;      //0x01
-    ushort Unknown3;      //0x02 NULLs
-    uint Unknown4;     //0x04
-    uint Unknown5;     //0x08
-    uint upTime;       //0x0C 1 sec = 30 ticks <-- use this as recommended upTime
-    uint Unknown6;     //0x10
-    uint upTime1;      //0x14 1 sec = 30 ticks
-    float Unknown7;     //0x18
-    uint Unknown8;     //0x1C Don't know what this is and it's increasing rapidly...
+    bool   Unknown1;    //0x00
+    bool   Unknown2;    //0x01
+    ushort Unknown3;    //0x02 NULLs
+    uint   Unknown4;    //0x04
+    uint   Unknown5;    //0x08
+    uint   upTime;      //0x0C 1 sec = 30 ticks <-- use this as recommended upTime
+    uint   Unknown6;    //0x10
+    uint   upTime1;     //0x14 1 sec = 30 ticks
+    float  Unknown7;    //0x18
+    uint   Unknown8;    //0x1C Don't know what this is and it's increasing rapidly...
 };
 static assert(s_map_status.sizeof == 0x20, "Incorrect size of s_map_status");
 
 align (1) struct s_console_header {
-    bool gamePause;         //0x00
-    bool allowConsole;      //0x01
-    ushort unknown01;         //0x02 //Nulls
-    bool isNotConsole;      //0x04
-    ubyte unknown02;         //0x05
-    ubyte unknown03;         //0x06
-    ubyte keyPress;          //0x07
-    ushort unknown04;         //0x08
-    ushort unknown05;         //0x0A
-    ushort unknown06;         //0x0C
-    ushort[61] unknown07;     //0x10 //Nulls
-    uint unknown08;        //0x88
-    uint unknown09;        //0x8C
-    uint unknown10;        //0x90
-    uint unknown11;        //0x94
-    char[32] inputName;     //0x98
-    char[255] input;        //0xB8
+    bool        gamePause;      //0x00
+    bool        allowConsole;   //0x01
+    ushort      unknown01;      //0x02 //Nulls
+    bool        isNotConsole;   //0x04
+    ubyte       unknown02;      //0x05
+    ubyte       unknown03;      //0x06
+    ubyte       keyPress;       //0x07
+    ushort      unknown04;      //0x08
+    ushort      unknown05;      //0x0A
+    ushort      unknown06;      //0x0C
+    ushort[61]  unknown07;      //0x10 //Nulls
+    uint        unknown08;      //0x88
+    uint        unknown09;      //0x8C
+    uint        unknown10;      //0x90
+    uint        unknown11;      //0x94
+    char[32]    inputName;      //0x98
+    char[255]   input;          //0xB8
 };
 static assert(s_console_header.sizeof == 0x1B7, "Incorrect size of s_console_header");
 
 align (1) struct s_ban_check {
-    wchar password[9];                //0x00
-    char cdKeyHash[32];                 //0x12
-    char unknown0[40];                  //0x32
-    char unknown1[4];                   //0x5A
-    wchar requestPlayerName[12];      //0x5E
+    wchar   password[9];            //0x00
+    char    cdKeyHash[32];          //0x12
+    char    unknown0[40];           //0x32
+    char    unknown1[4];            //0x5A
+    wchar   requestPlayerName[12];  //0x5E
 }; // Size - 100 (0x64) bytes
 static assert(s_ban_check.sizeof == 0x76, "Incorrect size of s_ban_check");
 
@@ -880,12 +880,12 @@ struct SoundVars {
     uint UNKNOWN3;                 //0x14    Unknown 1/0 value, constantly changing.
     uint UNKNOWN4;                 //0x18    Always 1?
     float UNKNOWN5;                 //0x1C    Always 1?
-    vect3 Vector0;                  //0x20
-    vect3 Vector1;                  //0x2C
-    vect3 Vector2;                  //0x38
-    vect3 World;                    //0x44
-    vect3 UNKNOWN6;                 //0x50    0 and 0x80000000 per float (not sure why)
-    vect3 Vector4[6];               //0x5C
+    real_vector3d Vector0;                  //0x20
+    real_vector3d Vector1;                  //0x2C
+    real_vector3d Vector2;                  //0x38
+    real_vector3d World;                    //0x44
+    real_vector3d UNKNOWN6;                 //0x50    0 and 0x80000000 per float (not sure why)
+    real_vector3d Vector4[6];               //0x5C
     float vol_slider;               //0xA4
     float vol_Music;                //0xA8
     float vol_Master;               //0xAC
@@ -900,12 +900,6 @@ struct SoundVars {
     SoundPlay sPlay[38];            //0xE4
 };
 static assert(SoundVars.sizeof == 0x17C, "Incorrect size of SoundVars");
-
-enum GAME_MODE: ushort {
-    GAME_SINGLE,
-    GAME_MULTI,
-    GAME_HOSTING
-};
 
 struct validationCheck {
     uint UniqueID;

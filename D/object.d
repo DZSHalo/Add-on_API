@@ -106,7 +106,7 @@ static if(__traits(compiles, EXT_IOBJECT)) {
          * tag = Name of an asset tag.
          * Returns: Return pointer of tag header of an asset tag.
          */
-        hTagHeader* function(const e_tag_group group_tag, const(char) * tag_name) m_lookup_tag_type_name;
+        hTagHeader* function(e_tag_group group_tag, const(char) * tag_name) m_lookup_tag_type_name;
         /*
          * To destroy an existing object.
          * Params:
@@ -121,7 +121,7 @@ static if(__traits(compiles, EXT_IOBJECT)) {
          * plI = PlayerInfo
          * Returns: Return true or false if unable to copy.
          */
-        bool function(s_ident* model_Tag, PlayerInfo plI) m_copy;
+        bool function(s_ident model_Tag, PlayerInfo plI) m_copy;
         /*
          * Eject object, usually bipeds, from enterable object. (NOTE: This does not instant eject object if there's an eject animation involved.)
          * Params:
@@ -142,7 +142,7 @@ static if(__traits(compiles, EXT_IOBJECT)) {
          * obj_id = Unique s_ident of an object created.
          * Returns: Does not return any value.
          */
-        void function(s_ident biped_id) m_kill;
+        void function(s_ident obj_id) m_kill;
         /*
          * To create an object.
          * Params:
@@ -153,7 +153,7 @@ static if(__traits(compiles, EXT_IOBJECT)) {
          * location = Location to spawn at.
          * Returns: Return true or false if unable to create an object.
          */
-        bool function(s_ident model_Tag, s_ident parentId, int idlingTime, ref s_ident  out_objId, vect3* location) m_create;
+        bool function(s_ident model_Tag, s_ident parentId, int idlingTime, ref s_ident out_objId, const(vect3)* location) m_create;
         /*
          * Assign equipment to biped.
          * Params:
@@ -184,7 +184,7 @@ static if(__traits(compiles, EXT_IOBJECT)) {
          * location = Location to move at.
          * Returns: Does not return any value.
          */
-        void function(s_ident obj_id, vect3* location) m_move_and_reset;
+        void function(s_ident obj_id, const(vect3)* location) m_move_and_reset;
         /*
          * Set object, usually cheats, to specific player. NOTE: Make sure you set it back to zero after you're done using it!
          * Params:
@@ -192,7 +192,14 @@ static if(__traits(compiles, EXT_IOBJECT)) {
          * Returns: Does not return any value.
          */
         void function(playerindex pl_ind) m_set_object_spawn_player_x;
-        bool function(const e_tag_group group_tag, objTagGroupList* tag_list) m_get_lookup_group_tag_list;
+        /*
+         * Obtain list of specific object tags.
+         * Params:
+         * tag_group = Find specific object tag group.
+         * tag_list = Output list of specifi object tags.
+         * Returns: Return true or false if unable to find tag group.
+         */
+        bool function(const e_tag_group tag_group, objTagGroupList* tag_list) m_get_lookup_group_tag_list;
     };
     export extern(C) IObject* getIObject(uint hash);
 }

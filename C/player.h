@@ -176,21 +176,21 @@ typedef struct IPlayer {
     /// <param name="ID">ID</param>
     /// <param name="fullName">Full name</param>
     /// <returns>Does not return any value.</returns>
-    bool (*m_get_full_name_id)(int ID, wchar_t* fullName);
+    bool (*m_get_full_name_id)(unsigned int ID, wchar_t* fullName);
     /// <summary>
     /// Get IP Address, excluded port number, from ID.
     /// </summary>
     /// <param name="ID">ID</param>
     /// <param name="ipAddress">IP Address, excluded port number</param>
     /// <returns>Does not return any value.</returns>
-    bool (*m_get_ip_address_id)(int ID, wchar_t* ipAddress);
+    bool (*m_get_ip_address_id)(unsigned int ID, wchar_t* ipAddress);
     /// <summary>
     /// Get port number, excluded IP Address, from ID.
     /// </summary>
     /// <param name="ID">ID</param>
     /// <param name="port">Port number, excluded IP Address</param>
     /// <returns>Does not return any value.</returns>
-    bool (*m_get_port_id)(int ID, wchar_t* port);
+    bool (*m_get_port_id)(unsigned int ID, wchar_t* port);
     /// <summary>
     /// Update PlayerInfo from database.
     /// </summary>
@@ -251,7 +251,7 @@ typedef struct IPlayer {
     /// <param name="new_team">New team to assign.</param>
     /// <param name="forcekill">Force kill player if needed.</param>
     /// <returns>Does not return any value.</returns>
-    void (*m_change_team)(PlayerInfo* playerInfo, const e_color_team_index new_team, bool forcekill);
+    void (*m_change_team)(PlayerInfo* playerInfo, e_color_team_index new_team, bool forcekill);
     /// <summary>
     /// To apply camouflage duration, in second(s), on specific player.
     /// </summary>
@@ -273,26 +273,26 @@ typedef struct IPlayer {
     /// <param name="CDHash">CD hash key to ban. (Must have 33 characters allocate to copy, 33th is to null termate.)</param>
     /// <param name="gmtm">Time/date to expire ban.</param>
     /// <returns>Return true or false unable to ban CD hash key, -1 for invalid argument.</returns>
-    ext_boolean (*m_ban_CD_key)(wchar_t* CDHash, tm* gmtm);
+    ext_boolean (*m_ban_CD_key)(const wchar_t* CDHash, tm* gmtm);
     /// <summary>
     /// Ban IP Address from host server.
     /// </summary>
     /// <param name="IP_Address">IP Address to ban.. (Must have 16 characters allocate to copy.)</param>
     /// <param name="gmtm">Time/date to expire ban.</param>
     /// <returns>Return true or false unable to ban IP Address, -1 for invalid argument.</returns>
-    ext_boolean (*m_ban_ip)(wchar_t* IP_Address, tm* gmtm);
+    ext_boolean (*m_ban_ip)(const wchar_t* IP_Address, tm* gmtm);
     /// <summary>
     /// Get ID from banned IP Address.
     /// </summary>
     /// <param name="IP_Address">Banned IP Address. (Maximum is 16 characters long.)</param>
     /// <returns>Return ID of banned IP Address.</returns>
-    unsigned int(*m_ban_ip_get_id)(wchar_t* IP_Address);
+    unsigned int(*m_ban_ip_get_id)(const wchar_t* IP_Address);
     /// <summary>
     /// Get ID from banned CD hash key.
     /// </summary>
     /// <param name="CDHash">Banned CD hash key. (Must have 33 characters, 33th is to null termate.)</param>
     /// <returns>Return ID of banned IP Address.</returns>
-    unsigned int(*m_ban_CD_key_get_id)(wchar_t* CDHash);
+    unsigned int(*m_ban_CD_key_get_id)(const wchar_t* CDHash);
     /// <summary>
     /// To expire a ban from banned list.
     /// </summary>
@@ -305,21 +305,21 @@ typedef struct IPlayer {
     /// <param name="mS">machine slot</param>
     /// <param name="m_ip">IP address, excluded port number</param>
     /// <returns>Return true or false if unable get IP address.</returns>
-    bool (*m_get_ip)(s_machine_slot* mS, IN_ADDR* m_ip);
+    bool (*m_get_ip)(const s_machine_slot* mS, IN_ADDR* m_ip);
     /// <summary>
     /// Get port number, excluded IP address, from machine slot.
     /// </summary>
     /// <param name="mS">machine slot</param>
-    /// <param name=m_port"">Port number, excluded IP address</param>
+    /// <param name="m_port">Port number, excluded IP address</param>
     /// <returns>Return true or false if unable get port.</returns>
-    bool (*m_get_port)(s_machine_slot* mS, unsigned short* m_port);
+    bool (*m_get_port)(const s_machine_slot* mS, unsigned short* m_port);
     /// <summary>
     /// Get CD hash from machine slot.
     /// </summary>
     /// <param name="mS">machine slot</param>
-    /// <param name="CDHash">CD hash key. (Must have 33 characters allocate to copy, 33th is to null termate.)</param>
+    /// <param name="CDHash">CD hash key. (Must have 33 characters allocated to copy, 33th is a null termated.)</param>
     /// <returns>Does not return any value.</returns>
-    bool (*m_get_CD_hash)(s_machine_slot* mS, char* CDHash);
+    bool (*m_get_CD_hash)(const s_machine_slot* mS, char* CDHash);
     /// <summary>
     /// Find a match of player(s) from regex expression search.
     /// </summary>

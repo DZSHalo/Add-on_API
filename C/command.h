@@ -27,6 +27,7 @@ CNATIVE {
         /// <summary>
         /// To delete a <paramref name="command"/> which is binded to <paramref name="func"/> and return true or false.
         /// </summary>
+        /// <param name="hash">Authorized add-on usage only. Can be obtained from EXTOnEAOLoad's parameter.</param>
         /// <param name="func">A function currently binded to a command.</param>
         /// <param name="command">A command currently binded to a function.</param>
         /// <returns>Only return true or false.</returns>
@@ -61,7 +62,7 @@ CNATIVE {
         /// <returns>Only return true or false.</returns>
         bool (*m_load_from_file)(unsigned int hash, const wchar_t* fileName, PlayerInfo plI, MSG_PROTOCOL protocolMsg);
     } ICommand;
-    CNATIVE dllport ICommand* getICommand(unsigned int hash);
+    CNATIVE dllport ICommand* getICommand(const unsigned int hash);
 #ifdef __cplusplus
 }
 #endif

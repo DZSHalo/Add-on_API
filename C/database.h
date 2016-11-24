@@ -38,7 +38,7 @@ CNATIVE {
         /// <param name="Pass">Password if required to connect.</param>
         /// <param name="Exclusive">True to restrict access to database or false to share database.</param>
         /// <returns>Return true or false.</returns>
-        bool (*m_connect_mdb)(SQLWCHAR* MDBPath, SQLWCHAR* User, SQLWCHAR* Pass, bool Exclusive);
+        bool (*m_connect_mdb)(const SQLWCHAR* MDBPath, const SQLWCHAR* User, const SQLWCHAR* Pass, bool Exclusive);
         /// <summary>
         /// To disconnect current active database.
         /// </summary>
@@ -116,9 +116,8 @@ CNATIVE {
         /// <param name="self">Must include pointer of existing IDBStmt variable.</param>
         /// <returns>Return true or false.</returns>
         bool (*m_fetch_next)(IDBStmt* self);
-        //Default: ULONG nRow, bool Absolute = 1
         /// <summary>
-        /// Fetch data from specific queried absolute row.
+        /// Fetch data from specific queried absolute row. //Default: ULONG nRow, bool Absolute = 1
         /// </summary>
         /// <param name="self">Must include pointer of existing IDBStmt variable.</param>
         /// <param name="nRow">Row number to get data from.</param>
@@ -143,10 +142,8 @@ CNATIVE {
         /// <param name="self">Must include pointer of existing IDBStmt variable.</param>
         /// <returns>Return true or false.</returns>
         bool (*m_cancel)(IDBStmt* self);
-
-        //Default: unsigned short Column, LPVOID pBuffer, ULONG pBufferSize, LONG* pReturnedBufferSize = NULL, unsigned short nType = SQL_C_TCHAR
         /// <summary>
-        /// To bind column's data.
+        /// To bind column's data. //Default: unsigned short Column, LPVOID pBuffer, ULONG pBufferSize, LONG* pReturnedBufferSize = NULL, unsigned short nType = SQL_C_TCHAR
         /// </summary>
         /// <param name="self">Must include pointer of existing IDBStmt variable.</param>
         /// <param name="Column">Column's number.</param>
@@ -163,9 +160,8 @@ CNATIVE {
         /// <param name="Column">Column's name to find.</param>
         /// <returns>Return 0 if cannot find column's name or colum's number.</returns>
         SQLUSMALLINT (*m_get_column_by_name)(IDBStmt* self, SQLWCHAR* Column);
-        //Default unsigned short Column; LPVOID pBuffer; ULONG pBufLen; LONG* dataLen = NULL; int Type = SQL_C_DEFAULT;
         /// <summary>
-        /// To get data from fetched query statement.
+        /// To get data from fetched query statement. //Default: unsigned short Column; LPVOID pBuffer; ULONG pBufLen; LONG* dataLen = NULL; int Type = SQL_C_DEFAULT;
         /// </summary>
         /// <param name="self">Must include pointer of existing IDBStmt variable.</param>
         /// <param name="Column">Column's number.</param>

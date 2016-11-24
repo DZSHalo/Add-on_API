@@ -2,7 +2,20 @@ using System;
 using System.Runtime.InteropServices;
 
 public class HEXT {
-[StructLayout(LayoutKind.Sequential)]
+    public static char colon = ':';
+    public static char newline = '\n';
+    public static char pipe = '|';
+    public static char comma = ',';
+    public static string me = "me";
+    public static char backslash = '\\';
+    public static char dot = '.';
+
+    public enum GAME_MODE : ushort {
+        SINGLE = 0,
+        MULTI,
+        HOSTING
+    }
+    [StructLayout(LayoutKind.Sequential)]
     public struct GAME_MODE_S {
         [MarshalAs(UnmanagedType.I1)]
         public bool SINGLE;
@@ -27,5 +40,12 @@ public class HEXT {
     public static GAME_MODE_S modeMulti = new GAME_MODE_S(false, true, false, false);
     public static GAME_MODE_S modeMultiHost = new GAME_MODE_S(false, true, true, false);
     public static GAME_MODE_S modeHost = new GAME_MODE_S(false, false, true, false);
-    public readonly double PI = 3.141592653589793f;
+    public readonly double PI = 3.14159265358979323846;
+
+    public enum PLAYER_VALIDATE {
+        DEFAULT = 0,
+        BYPASS,
+        BANNED,
+        PASS_REJECT
+    }
 }

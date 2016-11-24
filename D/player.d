@@ -50,7 +50,7 @@ struct PlayerInfo {
     s_machine_slot* mS;
     s_player_reserved_slot* plR;
     s_player_slot* plS;
-    this(ref PlayerInfo  plI) {
+    this(ref PlayerInfo plI) {
         this.plEx = plI.plEx;
         this.mS = plI.mS;
         this.plR = plI.plR;
@@ -70,7 +70,7 @@ extern(C) struct IPlayer {
      * playerInfo = PlayerInfo
      * Returns: Return true or false if not found.
      */
-    bool function(machineindex m_ind, ref PlayerInfo  playerInfo) m_get_m_index;
+    bool function(machineindex m_ind, ref PlayerInfo playerInfo) m_get_m_index;
     /*
      * Get PlayerInfo from player index if in used.
      * Params:
@@ -78,7 +78,7 @@ extern(C) struct IPlayer {
      * playerInfo = PlayerInfo
      * Returns: Return true or false if not found.
      */
-    bool function(uint playerId, ref PlayerInfo  playerInfo) m_get_id;
+    bool function(uint playerId, ref PlayerInfo playerInfo) m_get_id;
     /*
      * Get PlayerInfo from unique player s_ident.
      * Params:
@@ -86,7 +86,7 @@ extern(C) struct IPlayer {
      * playerInfo = PlayerInfo
      * Returns: Return true or false if not found.
      */
-    bool function(s_ident pl_Tag, ref PlayerInfo  playerInfo) m_get_ident;
+    bool function(s_ident pl_Tag, ref PlayerInfo playerInfo) m_get_ident;
     /*
      * Get PlayerInfo from existing nickname.
      * Params:
@@ -94,7 +94,7 @@ extern(C) struct IPlayer {
      * playerInfo = PlayerInfo
      * Returns: Return true or false if not found.
      */
-    bool function(const wchar* nickname, ref PlayerInfo  playerInfo) m_get_by_nickname;
+    bool function(const wchar* nickname, ref PlayerInfo playerInfo) m_get_by_nickname;
     /*
      * Get PlayerInfo from existing username.
      * Params:
@@ -102,7 +102,7 @@ extern(C) struct IPlayer {
      * playerInfo = PlayerInfo
      * Returns: Return true or false if not found.
      */
-    bool function(const wchar* username, ref PlayerInfo  playerInfo) m_get_by_username;
+    bool function(const wchar* username, ref PlayerInfo playerInfo) m_get_by_username;
     /*
      * Get PlayerInfo from uniqueID from s_machine_slot.
      * Params:
@@ -110,28 +110,28 @@ extern(C) struct IPlayer {
      * playerInfo = PlayerInfo
      * Returns: Return true or false if not found.
      */
-    bool function(int uniqueID, ref PlayerInfo  playerInfo) m_get_by_unique_id;
+    bool function(int uniqueID, ref PlayerInfo playerInfo) m_get_by_unique_id;
     /*
      * Get ID from joined player's name.
      * Params:
      * fullName = Player's full name.
      * Returns: Return ID of full name from database.
      */
-    int function(wchar* fullName) m_get_id_full_name;
+    uint function(wchar* fullName) m_get_id_full_name;
     /*
      * Get ID from IP Address, excluded port number.
      * Params:
      * ipAddress = Player's IP Address, excluded port number.
      * Returns: Return ID  from database.
      */
-    int function(wchar* ipAddress) m_get_id_ip_address;
+    uint function(wchar* ipAddress) m_get_id_ip_address;
     /*
      * Get ID from port, excluded IP Address.
      * Params:
      * port = Port number, excluded IP Address.
      * Returns: Return ID of port from database.
      */
-    int function(wchar* port) m_get_id_port;
+    uint function(wchar* port) m_get_id_port;
     /*
      * Get full name from ID.
      * Params:
@@ -139,7 +139,7 @@ extern(C) struct IPlayer {
      * fullName = Full name
      * Returns: Does not return any value.
      */
-    void function(int ID, wchar* fullName) m_get_full_name_id;
+    void function(uint ID, wchar* fullName) m_get_full_name_id;
     /*
      * Get IP Address, excluded port number, from ID.
      * Params:
@@ -147,7 +147,7 @@ extern(C) struct IPlayer {
      * ipAddress = IP Address, excluded port number
      * Returns: Does not return any value.
      */
-    void function(int ID, wchar* ipAddress) m_get_ip_address_id;
+    void function(uint ID, wchar* ipAddress) m_get_ip_address_id;
     /*
      * Get port number, excluded IP Address, from ID.
      * Params:
@@ -155,14 +155,14 @@ extern(C) struct IPlayer {
      * port = Port number, excluded IP Address
      * Returns: Does not return any value.
      */
-    void function(int ID, wchar* port) m_get_port_id;
+    void function(uint ID, wchar* port) m_get_port_id;
     /*
      * Update PlayerInfo from database.
      * Params:
      * plI = PlayerInfo
      * Returns: Return true or false if unable to update.
      */
-    bool function(ref PlayerInfo  plI) m_update;
+    bool function(ref PlayerInfo plI) m_update;
     /*
      * Set Player's nickname.
      * Params:
@@ -170,7 +170,7 @@ extern(C) struct IPlayer {
      * nickname = Nickname
      * Returns: Return true or false if unable to set nickname.
      */
-    bool function(ref PlayerInfo  plI, wchar* nickname) m_set_nickname;
+    bool function(ref PlayerInfo plI, wchar* nickname) m_set_nickname;
     /*
      * To send a message through chat, rcon, or remote protocol to a specific player.
      * Params:
@@ -182,7 +182,7 @@ extern(C) struct IPlayer {
      * argList = To fill in the blank in a pre-defined message.
      * Returns: Return true or false if unable to send a message.
      */
-    bool function(MSG_FORMAT formatMsg, toggle chatRconRemote, ref PlayerInfo  plI, const wchar* Msg, uint argTotal, VARIANT* argList) m_send_custom_message;
+    bool function(MSG_FORMAT formatMsg, MSG_PROTOCOL protocolMsg, ref PlayerInfo plI, const wchar* Msg, uint argTotal, VARIANT* argList) m_send_custom_message;
     /*
      * To verify if a player is an admin.
      * Params:
@@ -197,7 +197,7 @@ extern(C) struct IPlayer {
      * playerInfo = PlayerInfo
      * Returns: Return true or false if unable to find player using given current biped.
      */
-    bool function(s_ident bipedTag, ref PlayerInfo  playerInfo) m_get_by_biped_tag_current;
+    bool function(s_ident bipedTag, ref PlayerInfo playerInfo) m_get_by_biped_tag_current;
     /*
      * Find player from previous unique biped s_ident.
      * Params:
@@ -205,7 +205,7 @@ extern(C) struct IPlayer {
      * playerInfo = PlayerInfo
      * Returns: Return true or false if unable to find player using given previous biped.
      */
-    bool function(s_ident bipedTag, ref PlayerInfo  playerInfo) m_get_by_biped_tag_previous;
+    bool function(s_ident bipedTag, ref PlayerInfo playerInfo) m_get_by_biped_tag_previous;
     /*
      * To send a message through chat procotol to all players.
      * Params:
@@ -225,7 +225,7 @@ extern(C) struct IPlayer {
      * forcekill = Force kill player if needed.
      * Returns: Does not return any value.
      */
-    void function(ref PlayerInfo  plI, const(e_color_team_index) new_team, bool forcekill) m_change_team;
+    void function(ref PlayerInfo plI, e_color_team_index new_team, bool forcekill) m_change_team;
     /*
      * To apply camouflage duration on specific player.
      * Params:
@@ -233,7 +233,7 @@ extern(C) struct IPlayer {
      * duration = In seconds format.
      * Returns: Does not return any value. (This may will be change in future.)
      */
-    void function(ref PlayerInfo  plI, uint duration) m_apply_camo;
+    void function(ref PlayerInfo plI, uint duration) m_apply_camo;
 
     /*
      * Ban player from host server.
@@ -250,7 +250,7 @@ extern(C) struct IPlayer {
      * gmtm = Time/date to expire ban.
      * Returns: Return true or false unable to ban CD hash key.
      */
-    bool function(wchar* CDHash, ref tm gmtm) m_ban_CD_key;
+    bool function(const wchar* CDHash, ref tm gmtm) m_ban_CD_key;
     /*
      * Ban IP Address from host server.
      * Params:
@@ -258,28 +258,28 @@ extern(C) struct IPlayer {
      * gmtm = Time/date to expire ban.
      * Returns: Return true or false unable to ban IP Address.
      */
-    bool function(wchar* IP_Addr, ref tm gmtm) m_ban_ip;
+    bool function(const wchar* IP_Addr, ref tm gmtm) m_ban_ip;
     /*
      * Get ID from banned IP Address.
      * Params:
      * IP_Address = Banned IP Address. (Maximum is 16 characters long.)
      * Returns: Return ID of banned IP Address.
      */
-    int function(wchar* IP_Addr) m_ban_ip_get_id;
+    uint function(const wchar* IP_Addr) m_ban_ip_get_id;
     /*
      * Get ID from banned CD hash key.
      * Params:
      * CDHash = Banned CD hash key. (Must have 33 characters, 33th is to null termate.)
      * Returns: Return ID of banned IP Address.
      */
-    int function(wchar* CDHash) m_ban_CD_key_get_id;
+    uint function(const wchar* CDHash) m_ban_CD_key_get_id;
     /*
      * To expire a ban from banned list.
      * Params:
      * ID = Obtained ID from either banned IP Address or CD hash key.
      * Returns: Return true or false if unable to unban ID.
      */
-    bool function(int ID) m_unban_id;
+    bool function(uint ID) m_unban_id;
     /*
      * Get IP address, excluded port number, from machine slot.
      * Params:
@@ -287,23 +287,23 @@ extern(C) struct IPlayer {
      * m_ip = IP address, excluded port number
      * Returns: Return true or false if unable get IP address.
      */
-    bool function(ref s_machine_slot mH, ref uint m_ip) m_get_ip;
+    bool function(const ref s_machine_slot mH, ref uint m_ip) m_get_ip;
     /*
      * Get port number, excluded IP address, from machine slot.
      * Params:
      * mS = machine slot
-     * <param name=m_port"">Port number, excluded IP address
+     * m_port = Port number, excluded IP address
      * Returns: Return true or false if unable get port.
      */
-    bool function(ref s_machine_slot mH, ref ushort m_port) m_get_port;
+    bool function(const ref s_machine_slot mH, ref ushort m_port) m_get_port;
     /*
      * Get CD hash from machine slot.
      * Params:
      * mS = machine slot
-     * CDHash = CD hash key. (Must have 33 characters allocate to copy, 33th is to null termate.)
+     * CDHash = CD hash key. (Must have 33 characters allocated to copy, 33th is a null termated.)
      * Returns: Does not return any value.
      */
-    void function(ref s_machine_slot mH, char* hashKey) m_get_CD_hash;
+    void function(const ref s_machine_slot mH, char* hashKey) m_get_CD_hash;
 
     /*
      * Find a match of player(s) from regex expression search.
