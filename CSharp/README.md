@@ -12,7 +12,7 @@ Instruction of how to setup your first C Sharp Add-on with Visual Studio IDE.
 2. Unload your project.
 3. Edit _Your_Project_Name_.csproj
 4. Scroll down to where `<Compile Include="_Your_Project_Name_.cs">` is located then go one line up or down for insertion to include the following code.
-```
+  ```
     <Compile Include="..\Add-on API\Add-on API.cs">
       <Link>Add-on API\Add-on API.cs</Link>
     </Compile>
@@ -26,6 +26,7 @@ Instruction of how to setup your first C Sharp Add-on with Visual Studio IDE.
       <Link>Add-on API\tags\%(RecursiveDir)%(Filename)%(Extension).cs</Link>
     </Compile>
 ```
+
 5. Load your project.
 6. Install `UnmanagedExports` from nuget package in order to use DLLExport ability.
 7. Delcare first 2 `EXTOnEAOLoad` and `EXTOnEAOUnload` function to initialize your first Add-on in C Sharp language.
