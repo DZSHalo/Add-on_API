@@ -148,6 +148,9 @@ namespace Addon_API {
             }
         }
     }
+    public class PlayerInfoPtr {
+        public PlayerInfo playerInfoPtr;
+    }
 
     [StructLayout(LayoutKind.Sequential)]
     public struct PlayerInfoList {
@@ -188,14 +191,14 @@ namespace Addon_API {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate uint d_get_id_port([In, MarshalAs(UnmanagedType.LPWStr)] string port);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate void d_get_full_name_id([In] uint ID, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder fullName);
+        public delegate bool d_get_full_name_id([In] uint ID, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder fullName);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate void d_get_ip_address_id([In] uint ID, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder ipAddress);
+        public delegate bool d_get_ip_address_id([In] uint ID, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder ipAddress);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate void d_get_port_id([In] uint ID, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder port);
+        public delegate bool d_get_port_id([In] uint ID, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder port);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public delegate bool d_update([In] ref PlayerInfo plI);
+        public delegate bool d_update([In, Out] ref PlayerInfo plI);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_set_nickname([In] ref PlayerInfo plI, [In, MarshalAs(UnmanagedType.LPWStr)] string nickname);
@@ -215,18 +218,18 @@ namespace Addon_API {
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_send_custom_message_broadcast(MSG_FORMAT formatMsg, [In, MarshalAs(UnmanagedType.LPWStr)] string Msg, uint argTotal, [In, MarshalAs(UnmanagedType.LPArray)] params object[] argList);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate void d_change_team([In] ref PlayerInfo plI, [In] e_color_team_index new_team, [In, MarshalAs(UnmanagedType.I1)] bool forceKill);
+        public delegate void d_change_team([In, Out] ref PlayerInfo plI, [In] e_color_team_index new_team, [In, MarshalAs(UnmanagedType.I1)] bool forceKill);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void d_apply_camo([In] ref PlayerInfo plI, [In] uint duration);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public delegate ext_boolean d_ban_player([In] ref PlayerExtended plEx, [In] ref tm gmtm);
+        public delegate e_boolean d_ban_player([In] ref PlayerExtended plEx, [In] ref tm gmtm);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public delegate ext_boolean d_ban_CD_key([In, MarshalAs(UnmanagedType.LPWStr)] string CDHash, [In] ref tm gmtm);
+        public delegate e_boolean d_ban_CD_key([In, MarshalAs(UnmanagedType.LPWStr)] string CDHash, [In] ref tm gmtm);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public delegate ext_boolean d_ban_ip([In, MarshalAs(UnmanagedType.LPWStr)] string IP_Address, [In] ref tm gmtm);
+        public delegate e_boolean d_ban_ip([In, MarshalAs(UnmanagedType.LPWStr)] string IP_Address, [In] ref tm gmtm);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate uint d_ban_ip_get_id([In, MarshalAs(UnmanagedType.LPWStr)] string IP_Address);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -241,9 +244,9 @@ namespace Addon_API {
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_get_port([In] ref s_machine_slot mS, [In, Out] ref ushort m_port);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate void d_get_CD_hash([In] ref s_machine_slot mS, [In, Out, MarshalAs(UnmanagedType.LPStr)] StringBuilder CDHash);
+        public delegate bool d_get_CD_hash([In] ref s_machine_slot mS, [In, Out, MarshalAs(UnmanagedType.LPStr)] StringBuilder CDHash);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate short d_get_str_to_player_list([In, MarshalAs(UnmanagedType.LPWStr)] string regexSearch, [In, Out] ref PlayerInfoList plMatch, [In] ref PlayerInfo plOwner);
+        public delegate short d_get_str_to_player_list([In, MarshalAs(UnmanagedType.LPWStr)] string regexSearch, [In, Out] ref PlayerInfoList plMatch, [In] PlayerInfoPtr plOwner);
         /// <summary>
         /// Get PlayerInfo from machine index if in used.
         /// </summary>

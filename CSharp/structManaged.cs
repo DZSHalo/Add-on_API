@@ -259,6 +259,29 @@ public struct s_object_managed {
     }
 }
 
+public struct s_biped_managed {
+    private s_objectPtr gPtr;
+    public s_biped s_object_n;
+    public s_objectPtr getPtr() { return gPtr; }
+    public s_biped_managed(s_objectPtr data) {
+        gPtr = data;
+        if (data.ptr != IntPtr.Zero)
+            s_object_n = (s_biped)Marshal.PtrToStructure(data.ptr, typeof(s_biped));
+        else
+            s_object_n = new s_biped();
+    }
+    static public implicit operator s_biped_managed(s_objectPtr data) {
+        return new s_biped_managed(data);
+    }
+    public void save() {
+        if (gPtr.ptr != IntPtr.Zero)
+            Marshal.StructureToPtr(s_object_n, gPtr.ptr, false);
+    }
+    public void refresh() {
+        if (gPtr.ptr != IntPtr.Zero)
+            s_object_n = (s_biped)Marshal.PtrToStructure(gPtr.ptr, typeof(s_biped));
+    }
+}
 //TODO: Need to put s_biped, s_weapon, and s_vehicle in here before production release
 
 public struct s_map_header_managed {

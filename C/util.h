@@ -33,7 +33,10 @@ typedef struct VARIANTconvert {
     }
     VARIANTconvert(const bool val) {
         variant.vt = VT_BOOL;
-        variant.boolVal = val;
+        if (val)
+            variant.boolVal = -1;
+        else
+            variant.boolVal = 0;
     }
     VARIANTconvert(const short val) {
         variant.vt = VT_I2;
@@ -79,7 +82,10 @@ inline void VARIANTwstr(VARIANT* var, wchar_t* val) {
 }
 inline void VARIANTbool(VARIANT* var, const bool val) {
     var->vt = VT_BOOL;
-    var->boolVal = val;
+    if (val)
+        var->boolVal = -1;
+    else
+        var->boolVal = 0;
 }
 inline void VARIANTshort(VARIANT* var, const short val) {
     var->vt = VT_I2;

@@ -14,13 +14,13 @@ namespace Addon_API {
     [StructLayoutAttribute(LayoutKind.Sequential)]
     public struct IAdmin {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate ext_boolean d_is_authorized(ref PlayerInfo player, [In, MarshalAs(UnmanagedType.LPWStr)] string command, [In, Out] ref ArgContainerVars arg, [In, Out] ref CmdFunc func);
+        public delegate e_boolean d_is_authorized(ref PlayerInfo player, [In, MarshalAs(UnmanagedType.LPWStr)] string command, [In, Out] ref ArgContainerVars arg, [In, Out] ref CmdFunc func);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate ext_boolean d_is_username_exist([In, MarshalAs(UnmanagedType.LPWStr)] string username);
+        public delegate e_boolean d_is_username_exist([In, MarshalAs(UnmanagedType.LPWStr)] string username);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate ext_boolean d_add([In, MarshalAs(UnmanagedType.LPWStr)] string hashW, [In, MarshalAs(UnmanagedType.LPWStr)] string IP_Addr, [In, MarshalAs(UnmanagedType.LPWStr)] string IP_Port, [In, MarshalAs(UnmanagedType.LPWStr)] string username, [In, MarshalAs(UnmanagedType.LPWStr)] string password, [In] short level, [In, MarshalAs(UnmanagedType.I1)] bool remote, [In, MarshalAs(UnmanagedType.I1)] bool pass_force);
+        public delegate e_boolean d_add([In, MarshalAs(UnmanagedType.LPWStr)] string hashW, [In, MarshalAs(UnmanagedType.LPWStr)] string IP_Addr, [In, MarshalAs(UnmanagedType.LPWStr)] string IP_Port, [In, MarshalAs(UnmanagedType.LPWStr)] string username, [In, MarshalAs(UnmanagedType.LPWStr)] string password, [In] short level, [In, MarshalAs(UnmanagedType.I1)] bool remote, [In, MarshalAs(UnmanagedType.I1)] bool pass_force);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate ext_boolean d_delete([In, MarshalAs(UnmanagedType.LPWStr)] string username);
+        public delegate e_boolean d_delete([In, MarshalAs(UnmanagedType.LPWStr)] string username);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate LOGIN_VALIDATION d_login(ref PlayerInfo player, [In] MSG_PROTOCOL protocolMsg, [In, MarshalAs(UnmanagedType.LPWStr)] string username, [In, MarshalAs(UnmanagedType.LPWStr)] string password);
         /// <summary>

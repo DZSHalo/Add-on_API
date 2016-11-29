@@ -180,11 +180,11 @@ namespace Addon_API {
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_isDoubleW([In, MarshalAs(UnmanagedType.LPWStr)] string str);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate uint d_strcatW([In, MarshalAs(UnmanagedType.LPWStr)] StringBuilder dest, uint len, [In, MarshalAs(UnmanagedType.LPWStr)] string src);
+        public delegate uint d_strcatW([In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder dest, uint len, [In, MarshalAs(UnmanagedType.LPWStr)] string src);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate uint d_strcatA([In, MarshalAs(UnmanagedType.LPStr)] StringBuilder dest, uint len, [In, MarshalAs(UnmanagedType.LPStr)] string src);
+        public delegate uint d_strcatA([In, Out, MarshalAs(UnmanagedType.LPStr)] StringBuilder dest, uint len, [In, MarshalAs(UnmanagedType.LPStr)] string src);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate void d_str_to_wstr([In, MarshalAs(UnmanagedType.LPStr)] string dest, [In, MarshalAs(UnmanagedType.LPWStr)] StringBuilder src);
+        public delegate void d_str_to_wstr([In, MarshalAs(UnmanagedType.LPStr)] string str, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder wstr);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_strcmpW([In, MarshalAs(UnmanagedType.LPWStr)] string str1, [In, MarshalAs(UnmanagedType.LPWStr)] string str2);
@@ -483,14 +483,14 @@ namespace Addon_API {
         /// <param name="pathStr">Must have directory name.</param>
         /// <param name="errorCode">Given error code if failed.</param>
         /// <returns>Return true if directory exist, false with given errorCode.</returns>
-        public d_isDirExist m_isDirExistW;
+        public d_isDirExist m_isDirExist;
         /// <summary>
         /// Check if a file exist.
         /// </summary>
         /// <param name="pathStr">Must have directory (optional) and file name.</param>
         /// <param name="errorCode">Given error code if failed.</param>
         /// <returns>Return true if file exist, false with given errorCode.</returns>
-        public d_isFileExist m_isFileExistW;
+        public d_isFileExist m_isFileExist;
         /// <summary>
         /// (DO NOT USE!) Format variable arguments into given prefix string.
         /// </summary>
@@ -529,7 +529,7 @@ namespace Addon_API {
             return new IUtil(data);
         }
         public bool isNotNull() {
-            return AllocMem != null;
+            return m_allocMem != null;
         }
     }
 

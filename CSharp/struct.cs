@@ -73,13 +73,13 @@ public struct bone {
 [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Unicode)]
 public struct s_player_reserved_slot {
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 12)]
-    public string PlayerName;   //0x00
-    public short  ColorIndex;   //0x18      // See defined color indexes above.
-    public short  Unknown1;     //0x1A      // 0xFFFF
-    public sbyte  MachineIndex; //0x1C      // Index to the Machine List (which has their CURRENT cdhash and IP. (it also has the LAST player's name))
-    public byte   Unknown2;     //0x1D      //something. But, if these 4 chars are FF's, then the player isn't on.
-    public sbyte  Team;         //0x1E
-    public sbyte  PlayerIndex;  //0x1F      // Index to their StaticPlayer
+    public string               PlayerName;     //0x00
+    public short                ColorIndex;     //0x18      // See defined color indexes above.
+    public short                Unknown1;       //0x1A      // 0xFFFF
+    public sbyte                MachineIndex;   //0x1C      // Index to the Machine List (which has their CURRENT cdhash and IP. (it also has the LAST player's name))
+    public byte                 Unknown2;       //0x1D      //something. But, if these 4 chars are FF's, then the player isn't on.
+    public e_color_team_index   Team;           //0x1E
+    public sbyte                PlayerIndex;    //0x1F      // Index to their StaticPlayer
 }
 public struct s_player_reserved_slot_ptr {
     public IntPtr ptr;
@@ -173,7 +173,7 @@ public struct s_machine_slot {
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 8)]
     public string           SessionKey;                     //0x0052 // This is used to accept the incoming player PLUS validate with gamespy server.
     public short            Unknown4;                       //0x005A
-    public int              UniqueID;                       //0x005C // increase every time a player join (notice: it is not focus on specific machine struct, it applies to all.)
+    public uint             UniqueID;                       //0x005C // increase every time a player join (notice: it is not focus on specific machine struct, it applies to all.)
 }
 public struct s_machine_slot_ptr {
     public IntPtr ptr;
@@ -715,7 +715,7 @@ public struct s_biped {
     public bone             LeftHand;                       //0x0890
     public bone             RightHand;                      //0x08C4
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1216)]
-    public byte[]           Unknown8;                       //0x08F8
+    public byte[]           Unknown5;                       //0x08F8
 };
 
 //TODO: Need to put s_biped, s_weapon, and s_vehicle in here before production release

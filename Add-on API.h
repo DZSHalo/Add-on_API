@@ -45,7 +45,6 @@ typedef _Bool bool;
 #endif
 
 #define toggle char
-#define ext_boolean int
 
 typedef enum EAO_RETURN {
     EAO_ONE_TIME_UPDATE = 2,
@@ -62,7 +61,8 @@ typedef enum CMD_RETURN {
 } CMD_RETURN;
 
 typedef enum e_boolean {
-    BOOL_FAIL = (unsigned char)-1,
+    BOOL_INVALID = -2,
+    BOOL_FAIL = -1,
     BOOL_FALSE = 0,
     BOOL_TRUE = 1
 } e_boolean;

@@ -9,7 +9,7 @@ public class boolOption {
 
 namespace Addon_API {
 
-    public enum CMD: int {
+    public enum CMD_RETURN: int {
         FAIL = -1,
         NOMATCH = 0,
         SUCC = 1,
@@ -22,15 +22,16 @@ namespace Addon_API {
         //ONETIMEUPDATE = 2 //This is not compatiable with unmanaged application.
     }
 
-    public enum e_boolean : sbyte {
-        BOOL_FAIL = -1,
-        BOOL_FALSE = 0,
-        BOOL_TRUE = 1
+    public enum e_boolean : int {
+        INVALID = -2,
+        FAIL = -1,
+        FALSE = 0,
+        TRUE = 1
     }
 
 #if EXT_IUTIL
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate CMD CmdFunc([In] PlayerInfo plI, [In, Out] ref ArgContainerVars arg, [In] MSG_PROTOCOL protocolMsg, [In] uint idTimer, [In] boolOption showChat);
+    public delegate CMD_RETURN CmdFunc([In] PlayerInfo plI, [In, Out] ref ArgContainerVars arg, [In] MSG_PROTOCOL protocolMsg, [In] uint idTimer, [In] boolOption showChat);
 #endif
     [StructLayout(LayoutKind.Sequential, CharSet =CharSet.Unicode, Pack = 1)]
     public struct addon_section_names {
@@ -87,7 +88,7 @@ namespace Addon_API {
     [StructLayout(LayoutKind.Sequential)]
     public struct ITimer {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl), System.Security.SuppressUnmanagedCodeSecurity]
-        public delegate uint d_add([In] uint uniqueHash, [In] ref PlayerInfo plI, [In] uint execTime);
+        public delegate uint d_add([In] uint uniqueHash, [In] PlayerInfoPtr plI, [In] uint execTime);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl), System.Security.SuppressUnmanagedCodeSecurity]
         public delegate void d_delete([In] uint uniqueHash, [In] uint id);
         /// <summary>

@@ -132,7 +132,7 @@ namespace Addon_API {
         protected void Dispose(bool disposing) {
 #if EXT_IUTIL
             if (tag_list != IntPtr.Zero) {
-                Addon_API.Global.pIUtil.FreeMem(tag_list);
+                Addon_API.Global.pIUtil.m_freeMem(tag_list);
                 tag_list = IntPtr.Zero;
             }
 #else

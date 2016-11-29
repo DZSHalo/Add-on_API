@@ -266,21 +266,21 @@ typedef struct IPlayer {
     /// <param name="plEx">Player to ban.</param>
     /// <param name="gmtm">Time/date to expire ban.</param>
     /// <returns>Return true or false unable to ban player, -1 for invalid argument.</returns>
-    ext_boolean (*m_ban_player)(PlayerExtended* plEx, tm* gmtm);
+    e_boolean (*m_ban_player)(PlayerExtended* plEx, tm* gmtm);
     /// <summary>
     /// Ban CD hash key from host server.
     /// </summary>
     /// <param name="CDHash">CD hash key to ban. (Must have 33 characters allocate to copy, 33th is to null termate.)</param>
     /// <param name="gmtm">Time/date to expire ban.</param>
     /// <returns>Return true or false unable to ban CD hash key, -1 for invalid argument.</returns>
-    ext_boolean (*m_ban_CD_key)(const wchar_t* CDHash, tm* gmtm);
+    e_boolean (*m_ban_CD_key)(const wchar_t* CDHash, tm* gmtm);
     /// <summary>
     /// Ban IP Address from host server.
     /// </summary>
     /// <param name="IP_Address">IP Address to ban.. (Must have 16 characters allocate to copy.)</param>
     /// <param name="gmtm">Time/date to expire ban.</param>
     /// <returns>Return true or false unable to ban IP Address, -1 for invalid argument.</returns>
-    ext_boolean (*m_ban_ip)(const wchar_t* IP_Address, tm* gmtm);
+    e_boolean (*m_ban_ip)(const wchar_t* IP_Address, tm* gmtm);
     /// <summary>
     /// Get ID from banned IP Address.
     /// </summary>

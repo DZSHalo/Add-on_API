@@ -53,8 +53,8 @@ namespace Addon_API {
         public delegate bool d_load(IntPtr self);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void d_clear(IntPtr self);
-        public delegate bool d_key_delete(IntPtr self, [In, MarshalAs(UnmanagedType.LPWStr)] string keyName, [In, MarshalAs(UnmanagedType.LPWStr)] string sectionName);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate bool d_key_delete(IntPtr self, [In, MarshalAs(UnmanagedType.LPWStr)] string keyName, [In, MarshalAs(UnmanagedType.LPWStr)] string sectionName);
 
         /// <summary>
         /// To release ICIniFile, cannot be re-used after release.
