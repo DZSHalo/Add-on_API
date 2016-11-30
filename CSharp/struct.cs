@@ -549,15 +549,15 @@ public struct s_object {
     public s_ident          ModelTag;               // 0x0000
     public int              Zero;                   // 0x0004
     [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 4)]
-    public byte[]           Flags;               // 0x0008
+    public byte[]           Flags;                  // 0x0008
     public int              Timer;                  // 0x000C
     //public byte            Flags2[4];              // 0x0010
     public s_object_flags   Flags1;                 //0x0010
     [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 3)]
-    public byte[]             unkBytes1;           // 0x0011
+    public byte[]           unkBytes1;              // 0x0011
     public int              Timer2;                 // 0x0014
     [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 17)]
-    public int[]              Zero2;              // 0x0018
+    public int[]            Zero2;                  // 0x0018
     public real_vector3d    World;                  // 0x005C
     public real_vector3d    Velocity;               // 0x0068
     public real_vector3d    Rotation;               // 0x0074
@@ -567,51 +567,51 @@ public struct s_object {
     public int              Unknown1;               // 0x009C
     public real_vector3d    UnknownVector2d;        // 0x00A0
     [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 2)]
-    public float[]           Unknown2;            // 0x00AC
-    public int             Unknown3;               // 0x00B4
-    public short           GameObject;             // 0x00B8    // 0 >= is game object, -1 = is NOT game object
-    public short           Unknown4;               // 0x00BA
-    public int             Unknown5;               // 0x00BD
-    public s_ident         Player;                 // 0x00C0
+    public float[]          Unknown2;               // 0x00AC
+    public int              Unknown3;               // 0x00B4
+    public short            GameObject;             // 0x00B8    // 0 >= is game object, -1 = is NOT game object
+    public short            Unknown4;               // 0x00BA
+    public int              Unknown5;               // 0x00BD
+    public s_ident          Player;                 // 0x00C0
     [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 2)]
-    public int[]             Unknown6;            // 0x00C4
-    public s_ident         AntrMeta;               // 0x00CC
+    public int[]            Unknown6;               // 0x00C4
+    public s_ident          AntrMeta;               // 0x00CC
     [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 2)]
-    public int[]             Unknown7;            // 0x00D0
-    public float           HealthMax;              // 0x00D8
-    public float           ShieldMax;              // 0x00DC
-    public float           Health;                 // 0x00E0
-    public float           Shield1;                // 0x00E4
+    public int[]            Unknown7;               // 0x00D0
+    public float            HealthMax;              // 0x00D8
+    public float            ShieldMax;              // 0x00DC
+    public float            Health;                 // 0x00E0
+    public float            Shield1;                // 0x00E4
     [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 7)]
-    public int[]             Unknown8;            // 0x00E8
-    public short           Unknown9;               // 0x0104
-    public damageFlags     damageFlag;             // 0x0106
-    public short           Unknown10;              // 0x0108
-    public short           Unknown11;              // 0x010A
+    public int[]            Unknown8;               // 0x00E8
+    public short            Unknown9;               // 0x0104
+    public damageFlags      damageFlag;             // 0x0106
+    public short            Unknown10;              // 0x0108
+    public short            Unknown11;              // 0x010A
     [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 2)]
-    public int[]             Unknown12;           // 0x010C
-    public s_ident         VehicleWeapon;          // 0x0114
-    public s_ident         Weapon;                 // 0x0118
-    public s_ident         Vehicle;                // 0x011C
-    public short           SeatType;               // 0x0120
-    public short           Unknown13;              // 0x0122
-    public int             Unknown14;              // 0x0124
-    public float           Shield2;                // 0x0128
-    public float           Flashlight1;            // 0x012C
-    public float           Unknown15;              // 0x0130
-    public float           Flashlight2;            // 0x0134
+    public int[]            Unknown12;              // 0x010C
+    public s_ident          VehicleWeapon;          // 0x0114
+    public s_ident          Weapon;                 // 0x0118
+    public s_ident          Vehicle;                // 0x011C
+    public short            SeatType;               // 0x0120
+    public short            Unknown13;              // 0x0122
+    public int              Unknown14;              // 0x0124
+    public float            Shield2;                // 0x0128
+    public float            Flashlight1;            // 0x012C
+    public float            Unknown15;              // 0x0130
+    public float            Flashlight2;            // 0x0134
     [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 5)]
-    public int[]             Unknown16;           // 0x0138
-    public s_ident         UnknownIdent1;          // 0x014C
-    public s_ident         UnknownIdent2;          // 0x0150
+    public int[]            Unknown16;              // 0x0138
+    public s_ident          UnknownIdent1;          // 0x014C
+    public s_ident          UnknownIdent2;          // 0x0150
     [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 6)]
-    public int[]             Zero3;               // 0x0154
-    public s_ident         UnknownIdent3;          // 0x016C
-    public s_ident         UnknownIdent4;          // 0x0170
+    public int[]            Zero3;                  // 0x0154
+    public s_ident          UnknownIdent3;          // 0x016C
+    public s_ident          UnknownIdent4;          // 0x0170
     [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 16)]
-    public int[]             UnknownMatrix0;     //D3DXMATRIX UnknownMatrix;     // 0x0174
+    public int[]            UnknownMatrix0;         //D3DXMATRIX UnknownMatrix;     // 0x0174
     [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 16)]
-    public int[]             UnknownMatrix1;     //D3DXMATRIX UnknownMatrix1;    // 0x01B4
+    public int[]            UnknownMatrix1;         //D3DXMATRIX UnknownMatrix1;    // 0x01B4
     //Everything after this is 0x01F4
 };
 public struct s_objectPtr {
@@ -655,7 +655,7 @@ public struct s_biped {
     public int[]            UnknownLongs1;                  //0x0210
     public s_ident          PlayerOwner;                    //0x0218
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-    public int              UnknownLongs3;                  //0x021C
+    public int[]            UnknownLongs3;                  //0x021C
     public real_vector3d    RightVect;                      //0x0224
     public real_vector3d    UpVect;                         //0x0230
     public real_vector3d    LookVect;                       //0x023C

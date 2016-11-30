@@ -6,6 +6,12 @@ typedef enum LOGIN_VALIDATION {
     LOGIN_FAIL = 0,
     LOGIN_OK = 1
 } LOGIN_VALIDATION;
+typedef enum CMD_AUTH {
+    AUTH_NOT_FOUND = -2,
+    AUTH_OUT_OF_RANGE = -1,
+    AUTH_DENIED = 0,
+    AUTH_AUTHORIZED = 1
+} CMD_AUTH;
 #ifdef __cplusplus
 CNATIVE {
 #endif
@@ -18,7 +24,7 @@ CNATIVE {
         /// <param name="arg">Output the argument from command.</param>
         /// <param name="func">Output a function link to the command.</param>
         /// <returns>Only return true, false, and -1 if input is invalid.</returns>
-        e_boolean (*m_is_authorized)(const PlayerInfo* player, const wchar_t* command, ArgContainer* arg, CmdFunc* func);
+        CMD_AUTH (*m_is_authorized)(const PlayerInfo* player, const wchar_t* command, ArgContainer* arg, CmdFunc* func);
         /// <summary>
         /// To verify if <paramref name="username"/> exist in database and return true, false, or -1 for database is offline.
         /// </summary>

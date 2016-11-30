@@ -204,7 +204,7 @@ namespace Addon_API {
         public delegate bool d_set_nickname([In] ref PlayerInfo plI, [In, MarshalAs(UnmanagedType.LPWStr)] string nickname);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public delegate bool d_send_custom_message([In] MSG_FORMAT formatMsg, [In] MSG_PROTOCOL protocolMsg, [In] ref PlayerInfo plI, [In, MarshalAs(UnmanagedType.LPWStr)] string Msg, uint argTotal, [In, MarshalAs(UnmanagedType.LPArray)] params object[] argList);
+        public delegate bool d_send_custom_message([In] MSG_FORMAT formatMsg, [In] MSG_PROTOCOL protocolMsg, [In] ref PlayerInfo plI, [In, MarshalAs(UnmanagedType.LPWStr)] string Msg, uint argTotal, [In] params object[] argList);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_is_admin([In] byte m_ind);
@@ -216,19 +216,16 @@ namespace Addon_API {
         public delegate bool d_get_by_biped_tag_previous([Out] s_ident bipedTag, [In] ref PlayerInfo plI);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public delegate bool d_send_custom_message_broadcast(MSG_FORMAT formatMsg, [In, MarshalAs(UnmanagedType.LPWStr)] string Msg, uint argTotal, [In, MarshalAs(UnmanagedType.LPArray)] params object[] argList);
+        public delegate bool d_send_custom_message_broadcast(MSG_FORMAT formatMsg, [In, MarshalAs(UnmanagedType.LPWStr)] string Msg, uint argTotal, [In] params object[] argList);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void d_change_team([In, Out] ref PlayerInfo plI, [In] e_color_team_index new_team, [In, MarshalAs(UnmanagedType.I1)] bool forceKill);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void d_apply_camo([In] ref PlayerInfo plI, [In] uint duration);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.I1)]
         public delegate e_boolean d_ban_player([In] ref PlayerExtended plEx, [In] ref tm gmtm);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.I1)]
         public delegate e_boolean d_ban_CD_key([In, MarshalAs(UnmanagedType.LPWStr)] string CDHash, [In] ref tm gmtm);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.I1)]
         public delegate e_boolean d_ban_ip([In, MarshalAs(UnmanagedType.LPWStr)] string IP_Address, [In] ref tm gmtm);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate uint d_ban_ip_get_id([In, MarshalAs(UnmanagedType.LPWStr)] string IP_Address);

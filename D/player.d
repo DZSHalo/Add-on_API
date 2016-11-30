@@ -242,7 +242,7 @@ extern(C) struct IPlayer {
      * gmtm = Time/date to expire ban.
      * Returns: Return true or false unable to ban player.
      */
-    bool function(ref PlayerExtended plEx, ref tm gmtm) m_ban_player;
+    e_boolean function(ref PlayerExtended plEx, ref tm gmtm) m_ban_player;
     /*
      * Ban CD hash key from host server.
      * Params:
@@ -250,7 +250,7 @@ extern(C) struct IPlayer {
      * gmtm = Time/date to expire ban.
      * Returns: Return true or false unable to ban CD hash key.
      */
-    bool function(const wchar* CDHash, ref tm gmtm) m_ban_CD_key;
+    e_boolean function(const wchar* CDHash, ref tm gmtm) m_ban_CD_key;
     /*
      * Ban IP Address from host server.
      * Params:
@@ -258,7 +258,7 @@ extern(C) struct IPlayer {
      * gmtm = Time/date to expire ban.
      * Returns: Return true or false unable to ban IP Address.
      */
-    bool function(const wchar* IP_Addr, ref tm gmtm) m_ban_ip;
+    e_boolean function(const wchar* IP_Addr, ref tm gmtm) m_ban_ip;
     /*
      * Get ID from banned IP Address.
      * Params:

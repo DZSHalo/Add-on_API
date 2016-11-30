@@ -8,13 +8,19 @@ namespace Addon_API {
         FAIL = 0,
         OK = 1
     }
+    public enum CMD_AUTH: int {
+        NOT_FOUND = -2,
+        OUT_OF_RANGE = -1,
+        DENIED = 0,
+        AUTHORIZED = 1
+    }
     public struct IAdminPtr {
         public IntPtr ptr;
     }
     [StructLayoutAttribute(LayoutKind.Sequential)]
     public struct IAdmin {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate e_boolean d_is_authorized(ref PlayerInfo player, [In, MarshalAs(UnmanagedType.LPWStr)] string command, [In, Out] ref ArgContainerVars arg, [In, Out] ref CmdFunc func);
+        public delegate CMD_AUTH d_is_authorized(ref PlayerInfo player, [In, MarshalAs(UnmanagedType.LPWStr)] string command, [In, Out] ref ArgContainerVars arg, [In, Out] ref CmdFunc func);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate e_boolean d_is_username_exist([In, MarshalAs(UnmanagedType.LPWStr)] string username);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]

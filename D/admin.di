@@ -9,6 +9,12 @@ static if (__traits(compiles, EXT_IADMIN)) {
         FAIL = 0,
         OK = 1
     }
+    enum CMD_AUTH: int {
+        NOT_FOUND = -2,
+        OUT_OF_RANGE = -1,
+        DENIED = 0,
+        AUTHORIZED = 1
+    }
 
     extern(C) struct IAdmin {
         /**
@@ -20,14 +26,14 @@ static if (__traits(compiles, EXT_IADMIN)) {
          * func = Output a function link to the command.
          * Returns: Only return true, false, and -1 if input is invalid.
          */
-        ext_boolean function(const PlayerInfo* player, const wchar* command, ArgContainer* arg, CmdFunc* func) m_is_player_authorized;
+        CMD_AUTH function(const PlayerInfo* player, const wchar* command, ArgContainer* arg, CmdFunc* func) m_is_player_authorized;
         /**
          * To verify if username exist in database and return true, false, or -1 for database is offline.
          * Params:
          * username= Take unicode username to verify.
          * Returns: Only return true, false, and -1 if database is offline.
          */
-        ext_boolean function(const wchar* username) m_is_username_exist;
+        e_boolean function(const wchar* username) m_is_username_exist;
         /**
          * To add an admin to the database and return true, false, or -1 for database is offline.
          * Params:
@@ -41,14 +47,14 @@ static if (__traits(compiles, EXT_IADMIN)) {
          * pass_force = Force administrator to change their password.
          * Returns: Only return true, false, and -1 if database is offline.
          */
-        ext_boolean function(const wchar* hashW, const wchar* IP_Addr, const wchar* IP_Port, const wchar* username, const wchar* password, short level, bool remote, bool pass_force) m_add;
+        e_boolean function(const wchar* hashW, const wchar* IP_Addr, const wchar* IP_Port, const wchar* username, const wchar* password, short level, bool remote, bool pass_force) m_add;
         /**
          * To remove username from database and return true, false, or -1 for database is offline.
          * Params:
          * username = Maximum permitted is 24 characters.
          * Returns: Only return true, false, and -1 if database is offline.
          */
-        ext_boolean function(const wchar* username) m_delete;
+        e_boolean function(const wchar* username) m_delete;
         /**
          * To login a player as administrator from database verfication and return true, false, or -1 for database is offline.
          * Params:

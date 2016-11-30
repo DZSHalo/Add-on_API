@@ -9,19 +9,18 @@ public class boolOption {
 
 namespace Addon_API {
 
+    public enum EAO_RETURN: int {
+        //ONETIMEUPDATE = 2 //This is not compatiable with unmanaged application.
+        OVERRIDE = 1, //This is the only compatiable with unmanaged application.
+        //CONTINUE = 0, //This is not compatiable with unmanaged application.
+        FAIL = -1, //This is not compatiable with unmanaged application. However it will create an exception when attempt to unload it.
+    }
     public enum CMD_RETURN: int {
         FAIL = -1,
         NOMATCH = 0,
         SUCC = 1,
         SUCCDELAY = 2
     }
-    public enum EAO: int {
-        FAIL = -1, //This is not compatiable with unmanaged application. However it will create an exception when attempt to unload it.
-        //CONTINUE = 0, //This is not compatiable with unmanaged application.
-        OVERRIDE = 1, //This is the only compatiable with unmanaged application.
-        //ONETIMEUPDATE = 2 //This is not compatiable with unmanaged application.
-    }
-
     public enum e_boolean : int {
         INVALID = -2,
         FAIL = -1,
@@ -65,19 +64,31 @@ namespace Addon_API {
         ushort size;            //Used by sizeof(versionEAO);
         ushort requiredAPI;     //API requirement revision (Including command functions)
         ushort general;         //General revision specifically for events in Halo.
-        ushort pICIniFile;      //CiniFile interface revision
-        ushort pIDatabase;      //Database interface revision
-        ushort external;        //External account revision
+        ushort version;         //addon_version revision
         ushort pIHaloEngine;    //Halo Engine interface revision
         ushort pIObject;        //Object interface revision
         ushort pIPlayer;        //Player interface revision
-        ushort pICommand;       //Command interface revision
-        ushort pITimer;         //Timer interface revision
         ushort pIAdmin;         //Admin interface revision
+        ushort pICommand;       //Command interface revision
+        ushort pIDatabase;      //Database interface revision
+        ushort pIDBStmt;        //Database Statement interface revision
+        ushort pICIniFile;      //CiniFile interface revision
+        ushort pITimer;         //Timer interface revision
         ushort pIUtil;          //Util interface revision
+        ushort pINetwork;       //Network interface revision - reserved (DO NOT USE!)
+        ushort pISound;         //Sound interface revision - reserved (DO NOT USE!)
+        ushort pIDirectX9;      //DirectX9 interface revision - reserved (DO NOT USE!)
+        ushort reserved1;       //reserved
+        ushort reserved2;       //reserved
         ushort reserved3;       //reserved
+        ushort hkDatabase;      //Database hook revision
+        ushort hkTimer;         //Timer hook revision
+        ushort hkExternal;      //External account revision - reserved (DO NOT USE!)
         ushort reserved4;       //reserved
         ushort reserved5;       //reserved
+        ushort reserved6;       //reserved
+        ushort reserved7;       //reserved
+        ushort reserved8;       //reserved
     };
 
 #if EXT_ITIMER
