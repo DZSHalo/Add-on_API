@@ -16,8 +16,15 @@ public struct tm {
     public int tm_yday;    /* days since January 1 - [0,365] */
     public int tm_isdst;   /* daylight savings time flag */
 }
-
-
+//Necessary for easier management.
+public struct IntPtrValue {
+    public IntPtr ptr;
+    public int value { get { return Marshal.ReadInt32(ptr); } set { Marshal.WriteInt32(ptr, value); } }
+}
+public struct UIntPtrValue {
+    public IntPtr ptr;
+    public uint value { get { return (uint)Marshal.ReadInt32(ptr); } set { Marshal.WriteInt32(ptr, (int)value); } }
+}
 
 namespace Addon_API {
     [StructLayoutAttribute(LayoutKind.Sequential, CharSet=CharSet.Unicode)]

@@ -33,26 +33,25 @@ public enum e_color_index {
 };
 //Color Indexes End
 
+public enum chatType {
+    GLOBAL = 0,
+    TEAM,
+    VEHICLE,
+    SERVER
+}
+
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 public struct chatData    {
-    public uint type;   //range of 0 - 3, sort from Global, Team, Vehicle, and Server (CE only)
-    public uint player; //range of 0 - 15
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst=255)]
-    public string msg;  //range of 0 - TBA
+    public chatType type;       //range of 0 - 3, sort from Global, Team, Vehicle, and Server (CE only)
+    public uint     player;     //range of 0 - 15
+    public IntPtr   msg_ptr;    //range of 0 - TBA
 };
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 public struct rconData {
     public IntPtr msg_ptr;
     public uint unk; // always 0
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x50)]
+    [MarshalAs(UnmanagedType.LPStr, SizeConst = 0x50)]
     public string msg;
-
-    public rconData([MarshalAs(UnmanagedType.LPStr, SizeConst=0x50)] string text) {
-        msg = text;
-        unk = 0;
-        msg_ptr = Marshal.StringToBSTR(msg);
-        //TODO: Need find a place to put Marshal.FreeBSTR function on destroy.
-    }
 };
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
@@ -486,24 +485,24 @@ public struct map_name_ansi {
 }
 [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Unicode)]
 public struct s_server_header {
-    public IntPtr Unknown0;         //0x000 // at least I _think_ it's a pointer since there _is_ something if i follow it.
-    public ushort state;            //0x004
-    public ushort Unknown2;         //0x006
+    public IntPtr           Unknown0;       //0x000 // at least I _think_ it's a pointer since there _is_ something if i follow it.
+    public ushort           state;          //0x004
+    public ushort           Unknown2;       //0x006
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 66)]
-    public string server_name;      //0x008
-    public map_name_ansi map_name;  //0x08C
+    public string           server_name;    //0x008
+    public map_name_ansi    map_name;       //0x08C
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 24)]
-    public string gametype_name;    //0x10C
-    //Something tells me this below is a Gametype and would not match up right with different version of Halo PC platform.
+    public string           gametype_name;  //0x10C
+    //IMPORTANT: DO NOT USE! Below this does not match with other Halo PC platforms, it is base on Halo CE version.
     [MarshalAs(UnmanagedType.ByValArray, SizeConst=40)]
-    public byte[] Unknown11;        //0x13C // partial of Gametype need to break them down.
-    public byte score_max;          //0x164
+    public byte[]           Unknown11;      //0x13C // partial of Gametype need to break them down.
+    public byte             score_max;      //0x164
     [MarshalAs(UnmanagedType.ByValArray, SizeConst=128)]
-    public byte[] Unknown3;         //0x165
-    public byte player_max;         //0x1E5    // Note: there is another place that also says MaxPlayers - i think it's the ServerInfo socket buffer.
-    public short Unknown09;         //0x1E6
-    public short totalPlayers;      //0x1E8
-    public short Unknown10;         //0x1EA    // i think LastSlotFilled
+    public byte[]           Unknown3;       //0x165
+    public byte             player_max;     //0x1E5    // Note: there is another place that also says MaxPlayers - i think it's the ServerInfo socket buffer.
+    public short            Unknown09;      //0x1E6
+    public short            totalPlayers;   //0x1E8
+    public short            Unknown10;      //0x1EA    // i think LastSlotFilled
 };
 public struct s_server_header_ptr {
     public IntPtr ptr;
@@ -722,8 +721,7 @@ public struct s_biped {
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 public struct s_map_header {
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst=4)]
-    public byte[] head;         //0x00
+    public uint head;           //0x00 //enum 'head' string type
     public uint haloVersion;    //0x04
     public uint length;         //0x08
     [MarshalAs(UnmanagedType.ByValArray, SizeConst=4)]

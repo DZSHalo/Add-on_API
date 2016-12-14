@@ -79,10 +79,17 @@ enum e_color_index {
 #define UNKNOWN(size) char STR_CAT_DELAYED(_unused_,__COUNTER__)[size]
 #define UNKNOWN_BITFIELD(size) char STR_CAT_DELAYED(_unusedbf_, __COUNTER__) : size
 
+typedef enum chatType {
+    CHAT_GLOBAL = 0,
+    CHAT_TEAM,
+    CHAT_VEHICLE,
+    CHAT_SERVER
+} chatType;
+
 typedef struct chatData {
-    unsigned int type;      //range of 0 - 3, sort from Global, Team, Vehicle, and Server (CE only)
-    unsigned int player;    //range of 0 - 15
-    wchar_t* msg;           //range of 0 - TBA
+    chatType        type;       //range of 0 - 3, sort from Global, Team, Vehicle, and Server (CE only)
+    unsigned int    player;     //range of 0 - 15
+    wchar_t*        msg_ptr;    //range of 0 - TBA
 } chatData;
 typedef struct rconDecode {
     char pass[9];
@@ -134,139 +141,139 @@ typedef struct MachineSP1 {
 } MachineSP1; //At the moment do not know complete size...
 
 typedef struct s_machine_slot {
-    MachineSP1*    data1;                   //0x0000 // Following this, i found a pointer next to other useless stuff. Then, another pointer, then i found some stuff that looked like it /MIGHT/ very well be strings related to a hash. *shrug*
-    int     Unknown0[2];                    //0x0004
-    short   machineIndex;                   //0x000C
-    short   Unknown9;                       //0x000E // First is 1, then 3, then 7 and back to 0 if not in used (1 is found during the CD Hash Check, 7 if currently playing the game)
-    int     isAvailable;                    //0x0010
-    int     Unknown10[2];                   //0x0014
-    int     Unknown11;                      //0x001C    // most of the time 1, but sometimes changes to 2 for a moment.
-    int     Unknown12;                      //0x0020
+    MachineSP1*     data1;                          //0x0000 // Following this, i found a pointer next to other useless stuff. Then, another pointer, then i found some stuff that looked like it /MIGHT/ very well be strings related to a hash. *shrug*
+    int             Unknown0[2];                    //0x0004
+    short           machineIndex;                   //0x000C
+    short           Unknown9;                       //0x000E // First is 1, then 3, then 7 and back to 0 if not in used (1 is found during the CD Hash Check, 7 if currently playing the game)
+    int             isAvailable;                    //0x0010
+    int             Unknown10[2];                   //0x0014
+    int             Unknown11;                      //0x001C    // most of the time 1, but sometimes changes to 2 for a moment.
+    int             Unknown12;                      //0x0020
     // 16 bit bitfield for action keys:
-    char    Crouch      :1;                 //0x0024
-    char    Jump        :1;
-    char    Flashlight  :1;
-    char    Unknownbit0 :1;
-    char    Unknownbit1 :1;
-    char    Unknownbit2 :1;
-    char    Unknownbit3 :1;
-    char    Unknownbit4 :1;
-    char    Reload      :1;                 //0x0025
-    char    Fire        :1;
-    char    Swap        :1;
-    char    Grenade     :1;
-    char    Unknownbit5 :1;
-    char    Unknownbit6 :1;
-    char    Unknownbit7 :1;
-    char    Unknownbit8 :1;
+    char            Crouch      :1;                 //0x0024
+    char            Jump        :1;
+    char            Flashlight  :1;
+    char            Unknownbit0 :1;
+    char            Unknownbit1 :1;
+    char            Unknownbit2 :1;
+    char            Unknownbit3 :1;
+    char            Unknownbit4 :1;
+    char            Reload      :1;                 //0x0025
+    char            Fire        :1;
+    char            Swap        :1;
+    char            Grenade     :1;
+    char            Unknownbit5 :1;
+    char            Unknownbit6 :1;
+    char            Unknownbit7 :1;
+    char            Unknownbit8 :1;
 
-    short   Unknown13;                      //0x0026
-    float   Yaw;                            //0x0028 // player's rotation - in radians, from 0 to 2*pi, (AKA heading)
-    float   Pitch;                          //0x002C // Player's pitch - in radians, from -pi/2 to +pi/2, down to up.
-    float   Roll;                           //0x0030 // roll - unless walk-on-walls is enabled, this will always be 0.
-    unsigned char    Unknown1[8];           //0x0034
-    float   ForwardVelocityMultiplier;      //0x003C
-    float   HorizontalVelocityMultiplier;   //0x0040
-    float   ROFVelocityMultiplier;          //0x0044
-    short   WeaponIndex;                    //0x0048
-    short   GrenadeIndex;                   //0x004A
-    short   UnknownIndex;                   //0x004C // The index is -1 if no choices are even available.
-    short   Unknown2;                       //0x004E
-    short   Unknown3;                       //0x0050 // 1
-    char    SessionKey[8];                  //0x0052 // This is used to accept the incoming player PLUS validate with gamespy server.
-    short   Unknown4;                       //0x005A
-    unsigned int     UniqueID;              //0x005C // increase every time a player join (notice: it is not focus on specific machine struct, it applies to all.)
+    short           Unknown13;                      //0x0026
+    float           Yaw;                            //0x0028 // player's rotation - in radians, from 0 to 2*pi, (AKA heading)
+    float           Pitch;                          //0x002C // Player's pitch - in radians, from -pi/2 to +pi/2, down to up.
+    float           Roll;                           //0x0030 // roll - unless walk-on-walls is enabled, this will always be 0.
+    unsigned char   Unknown1[8];                    //0x0034
+    float           ForwardVelocityMultiplier;      //0x003C
+    float           HorizontalVelocityMultiplier;   //0x0040
+    float           ROFVelocityMultiplier;          //0x0044
+    short           WeaponIndex;                    //0x0048
+    short           GrenadeIndex;                   //0x004A
+    short           UnknownIndex;                   //0x004C // The index is -1 if no choices are even available.
+    short           Unknown2;                       //0x004E
+    short           Unknown3;                       //0x0050 // 1
+    char            SessionKey[8];                  //0x0052 // This is used to accept the incoming player PLUS validate with gamespy server.
+    short           Unknown4;                       //0x005A
+    unsigned int    UniqueID;                       //0x005C // increase every time a player join (notice: it is not focus on specific machine struct, it applies to all.)
     //Below is used for Halo CE and Trial?, Halo PC doesn't have this extra data.
     //NOTICE: This below is disabled as it is no longer needed.
-    //wchar_t    LastPlayersName[12];       //0x0060 // Odd.. this isnt the name of the player who's on, but i thinkn it's the Previous player's name.
-    //int    Unknown6;                      //0x0078 // these two were -1.
-    //int    Unknown7;                      //0x007C // but sometimes become 0.
-    //char    IP[32];                       //0x0080
-    //char    CDhash[32];                            // a solid block array, so it's not necessarily a c_str i think, but there's still usually just 0's afterwards anyways.
-    //unsigned char    UnknownZeros[44];             // zeros..
+    //wchar_t         LastPlayersName[12];            //0x0060 // Odd.. this isnt the name of the player who's on, but i thinkn it's the Previous player's name.
+    //int             Unknown6;                       //0x0078 // these two were -1.
+    //int             Unknown7;                       //0x007C // but sometimes become 0.
+    //char            IP[32];                         //0x0080
+    //char            CDhash[32];                     // a solid block array, so it's not necessarily a c_str i think, but there's still usually just 0's afterwards anyways.
+    //unsigned char   UnknownZeros[44];               // zeros..
 } s_machine_slot; // Size: 0xEC = Halo CE & Trial, 0x60 = Halo PC
 static_assert_check(sizeof(s_machine_slot) == 0x60, "Incorrect size of s_machine_slot");
 
 typedef struct s_player_slot {//Verified offsets.
-    short    PlayerID;                      //0x000
-    short    IsLocal;                       //0x002            // 0=Local(no bits set), -1=Other Client(All bits set)
-    wchar_t Name[12];                       //0x004            // Unicode
-    s_ident    UnknownIdent;                //0x01C
-    int    Team;                            //0x020            // 0=Red, 1=Blue; if do client host, you will see hud's team changed instant.
-    s_ident    SwapObject;                  //0x024
-    short    SwapType;                      //0x028            // Vehicle=8, Weapon=6
-    short    SwapSeat;                      //0x02A            // Warthog-Driver=0, Passenger=1, Gunner=2, Weapon=-1
-    int    RespawnTimer;                    //0x02C            // Counts down when dead, Alive=0
-    int    Unknown;                         //0x02F
-    s_ident    CurrentBiped;                //0x034
-    s_ident    PreviousBiped;               //0x038
+    short               PlayerID;                       //0x000
+    short               IsLocal;                        //0x002            // 0=Local(no bits set), -1=Other Client(All bits set)
+    wchar_t             Name[12];                       //0x004            // Unicode
+    s_ident             UnknownIdent;                   //0x01C
+    int                 Team;                           //0x020            // 0=Red, 1=Blue; if do client host, you will see hud's team changed instant.
+    s_ident             SwapObject;                     //0x024
+    short               SwapType;                       //0x028            // Vehicle=8, Weapon=6
+    short               SwapSeat;                       //0x02A            // Warthog-Driver=0, Passenger=1, Gunner=2, Weapon=-1
+    int                 RespawnTimer;                   //0x02C            // Counts down when dead, Alive=0
+    int                 Unknown;                        //0x02F
+    s_ident             CurrentBiped;                   //0x034
+    s_ident             PreviousBiped;                  //0x038
     //IMPORTANT: need to verify this.
     //   uint LocationID;                   // This is very, very interesting. BG is split into 25 location ID's. 1 - 19
-    short    LocationID;                    //0x03C            //Should be uint?
+    short               LocationID;                     //0x03C            //Should be uint?
     //short    ClusterIndex;                //0x03C
-    char    Swap : 1;                       //0x03E.0
-    char    UnknownBits4 :7;                //0x03E.1-7
-    char    UnknownByte;                    //0x03F
-    s_ident    UnknownIdent1;               //0x040            //BulletCount?
-    int    LastBulletShotTime;              //0x044            // since game start(0)
-    wchar_t Name1[12];                      //0x048
-    short    ColorIndex;                    //0x060            // See defined color indexes above.
-    short    Unknown00;                     //0x062
-    playerindex    MachineIndex;            //0x064            // Index to the Machine List (which has their CURRENT cdhash and IP. (it also has the LAST player's name))
-    char    Unknown0;                       //0x065            //something. But, if these 4 chars are FF's, then the player isn't on.
-    e_color_team_index    iTeam;            //0x066
-    playerindex    PlayerIndex;             //0x067            // Index to their StaticPlayer
-    int    Unknown1;                        //0x068
-    float    VelocityMultiplier;            //0x06C <--- and below are correct!
-    s_ident    UnknownIdent3[4];            //0x070
-    int    Unknown2;                        //0x080
-    int    LastDeathTime;                   //0x084        // since game start(0)
-    unsigned short    killInOrderObjective;           //0x088
-    char    Unknown3[18];                   //0x08A
-    short    KillsCount;                    //0x09C
-    char    Unknown4[6];                    //0x09E
-    short    AssistsCount;                  //0x0A4
-    char    Unknown5[6];                    //0x0A6
-    short    BetrayedCount;                 //0x0AC
-    short    DeathsCount;                   //0x0AE
-    short    SuicideCount;                  //0x0B0
-    char    Unknown6[18];                   //0x0B2
-    short    FlagStealCount;                //0x0C4
-    short    FlagReturnCount;               //0x0C6
-    short    FlagCaptureCount;              //0x0C8
-    char    Unknown7[6];                    //0x0CA
-    s_ident    UnknownIdent4;               //0x0D0
-    char    Unknown8;                       //0x0D4
-    bool    HasQuit;                        //0x0D5
-    char    Unknown81[6];                   //0x0D6
-    short    Ping;                          //0x0DC
-    char    Unknown9[14];                   //0x0DE
-    s_ident    UnknownIdent5;               //0x0EC
-    int    Unknown10;                       //0x0F0
-    int    SomeTime;                        //0x0F4
-    real_vector3d    World;                 //0x0F8
-    s_ident    UnknownIdent6;               //0x104
-    char    Unknown11[20];                  //0x108
-    char    Melee       :   1;              //0x11C.0
-    char    Action      :   1;              //0x11C.1
-    char    UnknownBit  :   1;              //0x11C.2
-    char    Flashlight  :   1;              //0x11C.3
-    char    UnknownBit1 :   4;              //0x11C.4
-    char    UnknownBit2 :   5;              //0x11D.0
-    char    Reload      :   1;              //0x11D.5
-    char    UnknownBit3 :   2;              //0x11D.6
-    char    Unknown12[26];                  //0x11E
-    real_vector2d    Rotation;              //0x138        // Yaw, Pitch (again, in radians.
-    float    ForwardVelocityMultiplier;     //0x140
-    float    HorizontalVelocityMultiplier;  //0x144
-    float    RateOfFireVelocityMultiplier;  //0x148
-    short    HeldWeaponIndex;               //0x14C
-    short    GrenadeIndex;                  //0x14E
-    char    Unknown13[4];                   //0x150
-    real_vector3d    LookVect;              //0x154
-    char    Unknown14[16];                  //0x160
-    real_vector3d    WorldDelayed;          //0x170    // Oddly enough... it matches the world vect, but seems to lag behind (Possibly what the client reports is _its_ world coord?)
-    char    Unknown15[132];                 //0x17C
+    char                Swap            : 1;            //0x03E.0
+    char                UnknownBits4    : 7;            //0x03E.1-7
+    char                UnknownByte;                    //0x03F
+    s_ident             UnknownIdent1;                  //0x040            //BulletCount?
+    int                 LastBulletShotTime;             //0x044            // since game start(0)
+    wchar_t             Name1[12];                      //0x048
+    short               ColorIndex;                     //0x060            // See defined color indexes above.
+    short               Unknown00;                      //0x062
+    playerindex         MachineIndex;                   //0x064            // Index to the Machine List (which has their CURRENT cdhash and IP. (it also has the LAST player's name))
+    char                Unknown0;                       //0x065            //something. But, if these 4 chars are FF's, then the player isn't on.
+    e_color_team_index  iTeam;                          //0x066
+    playerindex         PlayerIndex;                    //0x067            // Index to their StaticPlayer
+    int                 Unknown1;                       //0x068
+    float               VelocityMultiplier;             //0x06C <--- and below are correct!
+    s_ident             UnknownIdent3[4];               //0x070
+    int                 Unknown2;                       //0x080
+    int                 LastDeathTime;                  //0x084        // since game start(0)
+    unsigned short      killInOrderObjective;           //0x088
+    char                Unknown3[18];                   //0x08A
+    short               KillsCount;                     //0x09C
+    char                Unknown4[6];                    //0x09E
+    short               AssistsCount;                   //0x0A4
+    char                Unknown5[6];                    //0x0A6
+    short               BetrayedCount;                  //0x0AC
+    short               DeathsCount;                    //0x0AE
+    short               SuicideCount;                   //0x0B0
+    char                Unknown6[18];                   //0x0B2
+    short               FlagStealCount;                 //0x0C4
+    short               FlagReturnCount;                //0x0C6
+    short               FlagCaptureCount;               //0x0C8
+    char                Unknown7[6];                    //0x0CA
+    s_ident             UnknownIdent4;                  //0x0D0
+    char                Unknown8;                       //0x0D4
+    bool                HasQuit;                        //0x0D5
+    char                Unknown81[6];                   //0x0D6
+    short               Ping;                           //0x0DC
+    char                Unknown9[14];                   //0x0DE
+    s_ident             UnknownIdent5;                  //0x0EC
+    int                 Unknown10;                      //0x0F0
+    int                 SomeTime;                       //0x0F4
+    real_vector3d       World;                          //0x0F8
+    s_ident             UnknownIdent6;                  //0x104
+    char                Unknown11[20];                  //0x108
+    char                Melee       :   1;              //0x11C.0
+    char                Action      :   1;              //0x11C.1
+    char                UnknownBit  :   1;              //0x11C.2
+    char                Flashlight  :   1;              //0x11C.3
+    char                UnknownBit1 :   4;              //0x11C.4
+    char                UnknownBit2 :   5;              //0x11D.0
+    char                Reload      :   1;              //0x11D.5
+    char                UnknownBit3 :   2;              //0x11D.6
+    char                Unknown12[26];                  //0x11E
+    real_vector2d       Rotation;                       //0x138        // Yaw, Pitch (again, in radians.
+    float               ForwardVelocityMultiplier;      //0x140
+    float               HorizontalVelocityMultiplier;   //0x144
+    float               RateOfFireVelocityMultiplier;   //0x148
+    short               HeldWeaponIndex;                //0x14C
+    short               GrenadeIndex;                   //0x14E
+    char                Unknown13[4];                   //0x150
+    real_vector3d       LookVect;                       //0x154
+    char                Unknown14[16];                  //0x160
+    real_vector3d       WorldDelayed;                   //0x170    // Oddly enough... it matches the world vect, but seems to lag behind (Possibly what the client reports is _its_ world coord?)
+    char                Unknown15[132];                 //0x17C
 } s_player_slot;
 static_assert_check(sizeof(s_player_slot) == 0x200, "Incorrect size of s_player_slot");
 
@@ -403,29 +410,29 @@ typedef struct GameTypeSLAYERg {            //size = 0x80
     unsigned int playerScore2[16];  //0x0040        //Duplicated and appear useless...                                                  //0x0590
 } GameTypeSLAYERg;
 typedef struct GameTypeGlobals {
-    GameTypeCTFg ctfGlobal;
-    GameTypeKOTHg kothGlobal;
-    GameTypeODDBALLg oddballGlobal;
-    GameTypeRACEg raceGlobal;
-    GameTypeSLAYERg slayerGlobal;
+    GameTypeCTFg        ctfGlobal;
+    GameTypeKOTHg       kothGlobal;
+    GameTypeODDBALLg    oddballGlobal;
+    GameTypeRACEg       raceGlobal;
+    GameTypeSLAYERg     slayerGlobal;
 } GameTypeGlobals;
 static_assert_check(sizeof(GameTypeGlobals) == 0x5D0, "Incorrect size of GameTypeGlobals");
 
 typedef struct s_server_header {
-    unsigned int* Unknown0;        //0x000 // at least I _think_ it's a pointer since there _is_ something if i follow it.
-    unsigned short state;           //0x004
-    unsigned short Unknown2;        //0x006
-    wchar_t server_name[66];        //0x008
-    char map_name[128];             //0x08C
-    wchar_t gametype_name[24];      //0x10C
-    //Something tells me this below is a Gametype and would not match up right with different version of Halo PC platform.
-    unsigned char Unknown11[40];    //0x13C // partial of Gametype need to break them down.
-    unsigned char score_max;        //0x164
-    unsigned char Unknown3[128];    //0x165
-    unsigned char player_max;       //0x1E5    // Note: there is another place that also says MaxPlayers - i think it's the ServerInfo socket buffer.
-    short Unknown09;                //0x1E6
-    short totalPlayers;             //0x1E8
-    short Unknown10;                //0x1EA    // i think LastSlotFilled
+    unsigned int*   Unknown0;           //0x000 // at least I _think_ it's a pointer since there _is_ something if i follow it.
+    unsigned short  state;              //0x004
+    unsigned short  Unknown2;           //0x006
+    wchar_t         server_name[66];    //0x008
+    char            map_name[128];      //0x08C
+    wchar_t         gametype_name[24];  //0x10C
+    //IMPORTANT: DO NOT USE! Below this does not match with other Halo PC platforms, it is base on Halo CE version.
+    unsigned char   Unknown11[40];      //0x13C // partial of Gametype need to break them down.
+    unsigned char   score_max;          //0x164
+    unsigned char   Unknown3[128];      //0x165
+    unsigned char   player_max;         //0x1E5    // Note: there is another place that also says MaxPlayers - i think it's the ServerInfo socket buffer.
+    short           Unknown09;          //0x1E6
+    short           totalPlayers;       //0x1E8
+    short           Unknown10;          //0x1EA    // i think LastSlotFilled
 } s_server_header;
 
 typedef struct damageFlags {
@@ -695,7 +702,7 @@ typedef struct s_vehicle {
 
 //TODO: Variable of offset seems to have some sort of data usage base from SDMHaloMapLoader.c/h Need to do some research.
 typedef struct s_map_header {
-    char            head[4];        //0x00
+    unsigned int    head;           //0x00 //enum 'head' string type
     unsigned int    haloVersion;    //0x04
     unsigned int    length;         //0x08
     PADDING(4);                     //0x0C //Nulls

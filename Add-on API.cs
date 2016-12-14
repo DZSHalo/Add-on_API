@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.InteropServices;
 
 
@@ -9,19 +8,19 @@ public class boolOption {
 
 namespace Addon_API {
 
-    public enum EAO_RETURN: int {
+    public enum EAO_RETURN {
         //ONETIMEUPDATE = 2 //This is not compatiable with unmanaged application.
         OVERRIDE = 1, //This is the only compatiable with unmanaged application.
         //CONTINUE = 0, //This is not compatiable with unmanaged application.
         FAIL = -1, //This is not compatiable with unmanaged application. However it will create an exception when attempt to unload it.
     }
-    public enum CMD_RETURN: int {
+    public enum CMD_RETURN {
         FAIL = -1,
         NOMATCH = 0,
         SUCC = 1,
         SUCCDELAY = 2
     }
-    public enum e_boolean : int {
+    public enum e_boolean {
         INVALID = -2,
         FAIL = -1,
         FALSE = 0,

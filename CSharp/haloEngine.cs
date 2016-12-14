@@ -48,10 +48,10 @@ using System.Text;
         public s_cheat_header_ptr cheatHeader;
         public s_map_header_ptr mapCurrent;
         public s_console_header_ptr console;
-        public UIntPtr gameUpTimeLive; //1 sec = 60 ticks
-        public UIntPtr mapUpTimeLive; //1 sec = 30 ticks
-        public UIntPtr mapTimeLimitLive;
-        public UIntPtr mapTimeLimitPermament;
+        public UIntPtrValue gameUpTimeLive; //1 sec = 60 ticks
+        public UIntPtrValue mapUpTimeLive; //1 sec = 30 ticks
+        public UIntPtrValue mapTimeLimitLive;
+        public UIntPtrValue mapTimeLimitPermament;
         public s_console_color_list_ptr consoleColor;
         //TODO: Need to remove these 3 pointers for client will be support later on.
         [Obsolete("Do not use DirectX9 function, will be remove any time soon.")]
@@ -67,15 +67,12 @@ using System.Text;
 
         //Functions
 
-        //TODO: Need to verify packet_data & data_pointer are passed down correctly. May need gc setup for it?
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate uint d_build_packet([MarshalAs(UnmanagedType.LPArray)] byte[] packet_data, [In] uint arg1, [In] uint packettype, [In] uint arg3, [MarshalAs(UnmanagedType.LPArray)] byte[] data_pointer, [In] uint arg4, [In] uint arg5, [In] uint arg6);
-        //TODO: Need to verify packet is a pointer from data_pointer or something alike.
+        public delegate uint d_build_packet([In, Out] byte[] packet_data, [In] uint arg1, [In] uint packettype, [In] uint arg3, [In] ref IntPtr data_pointer, [In] uint arg4, [In] uint arg5, [In] uint arg6);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate void d_add_packet_to_player_queue([In] uint machine_index, [MarshalAs(UnmanagedType.LPArray)] byte[] packet, [In] uint packetCode, [In] uint arg1, [In] uint arg2, [In] uint arg3, [In] uint arg4, [In] uint arg5);
-        //TODO: Need to verify packet is a pointer from data_pointer or something alike.
+        public delegate void d_add_packet_to_player_queue([In] uint machine_index, [In, MarshalAs(UnmanagedType.LPArray)] byte[] packet, [In] uint packetCode, [In] uint arg1, [In] uint arg2, [In] uint arg3, [In] uint arg4, [In] uint arg5);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate void d_add_packet_to_global_queue([In] uint machine_index, [MarshalAs(UnmanagedType.LPArray)] byte[] packet_data, [In] uint packetCode, [In] uint arg1, [In] uint arg2, [In] uint arg3, [In] uint arg4, [In] uint arg5);
+        public delegate void d_add_packet_to_global_queue([In, MarshalAs(UnmanagedType.LPArray)] byte[] packet_data, [In] uint packetCode, [In] uint arg1, [In] uint arg2, [In] uint arg3, [In] uint arg4, [In] uint arg5);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void d_dispatch_rcon(ref rconData data, ref PlayerInfo plI);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -84,7 +81,7 @@ using System.Text;
         public delegate void d_dispatch_global(ref chatData data, [In] uint len);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public delegate bool d_send_reject_code(ref s_machine_slot player, REJECT_CODE code);
+        public delegate bool d_send_reject_code(s_machine_slot_ptr player, REJECT_CODE code);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_set_idling();
@@ -266,9 +263,10 @@ using System.Text;
 
         //Simple & easier user-defined conversion + checker for null.
         public IHaloEngine(IHaloEnginePtr data) {
-            if (data.ptr != IntPtr.Zero)
+            if (data.ptr != IntPtr.Zero) {
                 this = (IHaloEngine)Marshal.PtrToStructure(data.ptr, typeof(IHaloEngine));
-            else
+                Global.s_machine_slot_size = this.machineHeaderSize;
+            } else
                 this = new IHaloEngine();
         }
         public static implicit operator IHaloEngine(IHaloEnginePtr data) {

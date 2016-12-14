@@ -4,7 +4,7 @@ import Add_on_API.Add_on_API;
 
 static if(__traits(compiles, EXT_IHALOENGINE)) {
 
-    enum REJECT_CODE:ubyte {
+    enum REJECT_CODE {
         CANT_JOIN_SERVER = 0,       //0
         INVALID_CONNECTION_REQUEST, //1
         PASSWORD_REJECTED,          //2
@@ -83,7 +83,7 @@ static if(__traits(compiles, EXT_IHALOENGINE)) {
          * arg5 = Unknown, usually 1 (Use at your risk!)
          * arg6 = Unknown, usually 0 (Use at your risk!)
          * Returns: Return unique ID to be used to add in a queue functions.*/
-        uint function(ubyte* output, uint arg1, uint packettype, uint arg3, ubyte* dataPtr, uint arg4, uint arg5, uint arg6) m_build_packet;
+        uint function(ubyte* output, uint arg1, uint packettype, uint arg3, uint* dataPtr, uint arg4, uint arg5, uint arg6) m_build_packet;
         /*
          * To add a queue send to specific player.
          * Params:

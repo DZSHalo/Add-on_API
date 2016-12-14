@@ -1,6 +1,29 @@
 using System;
 using System.Runtime.InteropServices;
 
+public class chatDataManaged {
+    public chatData data;
+    public chatDataManaged([MarshalAs(UnmanagedType.LPWStr, SizeConst = 0x255)] string text, uint player, chatType type) {
+        data.msg_ptr = Marshal.StringToHGlobalUni(text);
+        data.player = player;
+        data.type = type;
+    }
+    ~chatDataManaged() {
+        Marshal.FreeHGlobal(data.msg_ptr);
+    }
+}
+public class rconDataManaged {
+    public rconData data;
+    public rconDataManaged([MarshalAs(UnmanagedType.LPStr, SizeConst = 0x50)] string text) {
+        data.msg = text;
+        data.unk = 0;
+        data.msg_ptr = Marshal.StringToHGlobalAnsi(data.msg);
+    }
+    ~rconDataManaged() {
+        Marshal.FreeHGlobal(data.msg_ptr);
+    }
+}
+
 public struct s_player_reserved_slot_managed {
     private s_player_reserved_slot_ptr gPtr;
     private IntPtr slotPtr;
@@ -47,6 +70,9 @@ public struct s_player_reserved_slot_managed {
 
 }
 
+public partial struct Global {
+    public static byte s_machine_slot_size = 0;
+}
 public struct s_machine_slot_managed {
     private s_machine_slot_ptr gPtr;
     private IntPtr slotPtr;
@@ -78,8 +104,10 @@ public struct s_machine_slot_managed {
     public void setSlot(uint slotIndex) {
         if (slotIndex > 15)
             throw new IndexOutOfRangeException("slotIndex is out of range.");
+        if (Global.s_machine_slot_size == 0)
+            throw new InvalidOperationException("Global.s_machine_slot_size cannot be zero, call getIHaloEngine first before attempt to use this operation.");
         slot = slotIndex;
-        slotPtr = new IntPtr(gPtr.ptr.ToInt32() + slotIndex * Marshal.SizeOf(typeof(s_machine_slot)));
+        slotPtr = new IntPtr(gPtr.ptr.ToInt32() + slotIndex * Global.s_machine_slot_size);
         refresh();
     }
     public static s_machine_slot_managed operator ++(s_machine_slot_managed mSM) {
