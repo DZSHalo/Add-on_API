@@ -10,8 +10,8 @@ To-Do List
  * [X] UnitTestC (Mostly done anyway)
  * [ ] UnitTestCPP (Undetermined)
  * [ ] UnitTestD
- * [ ] UnitTestCS
- * [ ] UnitTestVB
+ * [X] UnitTestCSharp
+ * [X] UnitTestVisualBasic
 * [ ] Include Tags Support
  * [ ] C (Some)
  * [ ] D (Some)
