@@ -310,7 +310,7 @@ public struct s_biped_managed {
             s_object_n = (s_biped)Marshal.PtrToStructure(gPtr.ptr, typeof(s_biped));
     }
 }
-//TODO: Need to put s_biped, s_weapon, and s_vehicle in here before production release
+//TODO: Need to put s_weapon, and s_vehicle in here before production release
 
 public struct s_map_header_managed {
     private s_map_header_ptr gPtr;

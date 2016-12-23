@@ -51,6 +51,16 @@ namespace Addon_API {
             gPtr = data.gPtr;
             hTagHeader_n = data.hTagHeader_n;
         }
+        public hTagHeader_managed(hTagHeaderPtr dPtr) {
+            gPtr = dPtr;
+            if (dPtr.ptr != IntPtr.Zero)
+                hTagHeader_n = (hTagHeader)Marshal.PtrToStructure(dPtr.ptr, typeof(hTagHeader));
+            else
+                hTagHeader_n = new hTagHeader();
+        }
+        static public implicit operator hTagHeader_managed(hTagHeaderPtr dPtr) {
+            return new hTagHeader_managed(dPtr);
+        }
         public void Save() {
             if (gPtr.ptr != IntPtr.Zero)
                 Marshal.StructureToPtr(hTagHeader_n, gPtr.ptr, false);
@@ -58,6 +68,9 @@ namespace Addon_API {
         public void Refresh() {
             if (gPtr.ptr != IntPtr.Zero)
                 hTagHeader_n = (hTagHeader)Marshal.PtrToStructure(gPtr.ptr, typeof(s_object));
+        }
+        public bool isNull() {
+            return gPtr.ptr == IntPtr.Zero;
         }
     }
 

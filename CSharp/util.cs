@@ -23,7 +23,7 @@ public struct IntPtrValue {
 }
 public struct UIntPtrValue {
     public IntPtr ptr;
-    public uint value { get { return (uint)Marshal.ReadInt32(ptr); } set { Marshal.WriteInt32(ptr, (int)value); } }
+    public uint value { get { return (uint)Marshal.PtrToStructure(ptr, GetType(UInt32)); } set { Marshal.StructureToPtr(ptr, value, true); } }
 }
 
 namespace Addon_API {
@@ -78,6 +78,9 @@ namespace Addon_API {
         }
         public ArgContainer(ArgContainer copy) {
             ArgContainerAPI.ArgContainerVars_Copy(ref vars, ref copy.vars);
+        }
+        public ArgContainer(ArgContainerVars copy) {
+            ArgContainerAPI.ArgContainerVars_Copy(ref vars, ref vars);
         }
         ~ArgContainer() {
             Dispose(false);

@@ -717,7 +717,7 @@ public struct s_biped {
     public byte[]           Unknown5;                       //0x08F8
 };
 
-//TODO: Need to put s_biped, s_weapon, and s_vehicle in here before production release
+//TODO: Need to put s_weapon, and s_vehicle in here before production release
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 public struct s_map_header {

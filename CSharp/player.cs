@@ -241,6 +241,7 @@ namespace Addon_API {
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_get_port([In] ref s_machine_slot mS, [In, Out] ref ushort m_port);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_get_CD_hash([In] ref s_machine_slot mS, [In, Out, MarshalAs(UnmanagedType.LPStr)] StringBuilder CDHash);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate short d_get_str_to_player_list([In, MarshalAs(UnmanagedType.LPWStr)] string regexSearch, [In, Out] ref PlayerInfoList plMatch, [In] PlayerInfoPtr plOwner);
