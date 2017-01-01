@@ -13,7 +13,7 @@ Instruction of how to setup your first C Sharp Add-on with Visual Studio IDE.
 1. Create a "Class Library" project.
 2. Unload your project.
 3. Edit _Your_Project_Name_.csproj
-4. Scroll down to where `<Compile Include="_Your_Project_Name_.cs">` is located then go one line up or down for insertion to include the following code.
+4. Scroll down to where `<Compile Include="_Your_Project_Name_.cs">` is located, then go one line up or down for insertion to include the following code.
   ```
     <Compile Include="..\Add-on API\Add-on API.cs">
       <Link>Add-on API\Add-on API.cs</Link>

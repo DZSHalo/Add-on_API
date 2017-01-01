@@ -263,7 +263,7 @@ Namespace Addon_API
         <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
         Public Delegate Function d_get_CD_hash(<[In]> ByRef mS As s_machine_slot, <[In], Out, MarshalAs(UnmanagedType.LPStr)> CDHash As StringBuilder) As <MarshalAs(UnmanagedType.I1)> Boolean
         <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
-        Public Delegate Function d_get_str_to_player_list(<[In], MarshalAs(UnmanagedType.LPWStr)> regexSearch As String, <[In], Out> ByRef plMatch As PlayerInfoList, <[In]> ByRef plOwner As PlayerInfo) As Short
+        Public Delegate Function d_get_str_to_player_list(<[In], MarshalAs(UnmanagedType.LPWStr)> regexSearch As String, <[In], Out> ByRef plMatch As PlayerInfoList, <[In]> ByRef plOwner As PlayerInfo) As UShort
         ''' <summary>
         ''' Get PlayerInfo from machine index if in used.
         ''' </summary>
@@ -338,7 +338,7 @@ Namespace Addon_API
         ''' </summary>
         ''' <param name="ID">ID</param>
         ''' <param name="fullName">Full name</param>
-        ''' <returns>Does not return any value.</returns>
+        ''' <returns>Return true or false if unable get full name from database.</returns>
         <MarshalAs(UnmanagedType.FunctionPtr)>
         Public m_get_full_name_id As d_get_full_name_id
         ''' <summary>
@@ -346,7 +346,7 @@ Namespace Addon_API
         ''' </summary>
         ''' <param name="ID">ID</param>
         ''' <param name="ipAddress">IP Address, excluded port number</param>
-        ''' <returns>Does not return any value.</returns>
+        ''' <returns>Return true or false if unable get IP Address from database.</returns>
         <MarshalAs(UnmanagedType.FunctionPtr)>
         Public m_get_ip_address_id As d_get_ip_address_id
         ''' <summary>
@@ -354,7 +354,7 @@ Namespace Addon_API
         ''' </summary>
         ''' <param name="ID">ID</param>
         ''' <param name="port">Port number, excluded IP Address</param>
-        ''' <returns>Does not return any value.</returns>
+        ''' <returns>Return true or false if unable get port number from database.</returns>
         <MarshalAs(UnmanagedType.FunctionPtr)>
         Public m_get_port_id As d_get_port_id
         ''' <summary>
@@ -501,7 +501,7 @@ Namespace Addon_API
         ''' </summary>
         ''' <param name="mS">machine slot</param>
         ''' <param name="CDHash">CD hash key. (Must have 33 characters allocated to copy, 33th is a null termated.)</param>
-        ''' <returns>Does not return any value.</returns>
+        ''' <returns>Return true or false if unable get CD hash.</returns>
         <MarshalAs(UnmanagedType.FunctionPtr)>
         Public m_get_CD_hash As d_get_CD_hash
         ''' <summary>

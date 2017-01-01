@@ -244,7 +244,7 @@ namespace Addon_API {
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_get_CD_hash([In] ref s_machine_slot mS, [In, Out, MarshalAs(UnmanagedType.LPStr)] StringBuilder CDHash);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate short d_get_str_to_player_list([In, MarshalAs(UnmanagedType.LPWStr)] string regexSearch, [In, Out] ref PlayerInfoList plMatch, [In] PlayerInfoPtr plOwner);
+        public delegate ushort d_get_str_to_player_list([In, MarshalAs(UnmanagedType.LPWStr)] string regexSearch, [In, Out] ref PlayerInfoList plMatch, [In] PlayerInfoPtr plOwner);
         /// <summary>
         /// Get PlayerInfo from machine index if in used.
         /// </summary>
@@ -319,7 +319,7 @@ namespace Addon_API {
         /// </summary>
         /// <param name="ID">ID</param>
         /// <param name="fullName">Full name</param>
-        /// <returns>Does not return any value.</returns>
+        /// <returns>Return true or false if unable get full name from database.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_get_full_name_id m_get_full_name_id;
         /// <summary>
@@ -327,7 +327,7 @@ namespace Addon_API {
         /// </summary>
         /// <param name="ID">ID</param>
         /// <param name="ipAddress">IP Address, excluded port number</param>
-        /// <returns>Does not return any value.</returns>
+        /// <returns>Return true or false if unable get IP Address from database.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_get_ip_address_id m_get_ip_address_id;
         /// <summary>
@@ -335,7 +335,7 @@ namespace Addon_API {
         /// </summary>
         /// <param name="ID">ID</param>
         /// <param name="port">Port number, excluded IP Address</param>
-        /// <returns>Does not return any value.</returns>
+        /// <returns>Return true or false if unable get port number from database.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_get_port_id m_get_port_id;
         /// <summary>
@@ -482,7 +482,7 @@ namespace Addon_API {
         /// </summary>
         /// <param name="mS">machine slot</param>
         /// <param name="CDHash">CD hash key. (Must have 33 characters allocated to copy, 33th is a null termated.)</param>
-        /// <returns>Does not return any value.</returns>
+        /// <returns>Return true or false if unable get CD hash.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_get_CD_hash m_get_CD_hash;
         /// <summary>

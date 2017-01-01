@@ -175,21 +175,21 @@ typedef struct IPlayer {
     /// </summary>
     /// <param name="ID">ID</param>
     /// <param name="fullName">Full name</param>
-    /// <returns>Does not return any value.</returns>
+    /// <returns>Return true or false if unable get full name from database.</returns>
     bool (*m_get_full_name_id)(unsigned int ID, wchar_t* fullName);
     /// <summary>
     /// Get IP Address, excluded port number, from ID.
     /// </summary>
     /// <param name="ID">ID</param>
     /// <param name="ipAddress">IP Address, excluded port number</param>
-    /// <returns>Does not return any value.</returns>
+    /// <returns>Return true or false if unable get IP Address from database.</returns>
     bool (*m_get_ip_address_id)(unsigned int ID, wchar_t* ipAddress);
     /// <summary>
     /// Get port number, excluded IP Address, from ID.
     /// </summary>
     /// <param name="ID">ID</param>
     /// <param name="port">Port number, excluded IP Address</param>
-    /// <returns>Does not return any value.</returns>
+    /// <returns>Return true or false if unable get port number from database.</returns>
     bool (*m_get_port_id)(unsigned int ID, wchar_t* port);
     /// <summary>
     /// Update PlayerInfo from database.
@@ -318,7 +318,7 @@ typedef struct IPlayer {
     /// </summary>
     /// <param name="mS">machine slot</param>
     /// <param name="CDHash">CD hash key. (Must have 33 characters allocated to copy, 33th is a null termated.)</param>
-    /// <returns>Does not return any value.</returns>
+    /// <returns>Return true or false if unable get CD hash.</returns>
     bool (*m_get_CD_hash)(const s_machine_slot* mS, char* CDHash);
     /// <summary>
     /// Find a match of player(s) from regex expression search.
@@ -327,7 +327,7 @@ typedef struct IPlayer {
     /// <param name="plMatch">List of matched players from search.</param>
     /// <param name="plOwner">Optional, owner of player execution usually.</param>
     /// <returns>Return total count of matched player(s).</returns>
-    short (*m_get_str_to_player_list)(const wchar_t* regexSearch, PlayerInfoList* plMatch, PlayerInfo* plOwner);
+    unsigned short (*m_get_str_to_player_list)(const wchar_t* regexSearch, PlayerInfoList* plMatch, PlayerInfo* plOwner);
 } IPlayer;
 #endif
 
