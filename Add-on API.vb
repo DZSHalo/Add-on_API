@@ -25,7 +25,7 @@ Namespace Addon_API
         [TRUE] = 1
     End Enum
 #If EXT_IUTIL Then
-    <UnmanagedFunctionPointer(CallingConvention.Cdecl)> _
+    <UnmanagedFunctionPointer(CallingConvention.Cdecl)>    
     Public Delegate Function CmdFunc(<[In]> plI As PlayerInfo, <[In], Out> ByRef arg As ArgContainerVars, <[In]> protocolMsg As MSG_PROTOCOL, <[In]> idTimer As UInteger, <[In]> showChat As boolOption) As CMD_RETURN
 #End If
     <StructLayout(LayoutKind.Sequential, CharSet:=CharSet.Unicode, Pack:=1)>
@@ -117,15 +117,12 @@ Namespace Addon_API
         Public m_delete As d_delete
 
         'Simple & easier user-defined conversion + checker for null.
-        Public Sub New(data As ITimerPtr)
-            If data.ptr <> IntPtr.Zero Then
-                Me = CType(Marshal.PtrToStructure(data.ptr, GetType(ITimer)), ITimer)
-            Else
-                Me = New ITimer()
-            End If
-        End Sub
         Public Shared Widening Operator CType(data As ITimerPtr) As ITimer
-            Return New ITimer(data)
+            If data.ptr <> IntPtr.Zero Then
+                Return CType(Marshal.PtrToStructure(data.ptr, GetType(ITimer)), ITimer)
+            Else
+                Return New ITimer
+            End If
         End Operator
         Public Function isNotNull() As Boolean
             Return Me.m_add IsNot Nothing
