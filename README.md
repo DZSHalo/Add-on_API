@@ -8,6 +8,8 @@ Interfaces for Halo Extension for your customize plugin with no reverse engineer
 ###Read the README file in specific coding language for how to setup your Add-on.
 i.e. C# Add-on coding will need to look in CSharp folder to read README file for instruction.
 
+Once you have finish compile your Add-on into Windows' module format, read the README file in Converter folder for final instruction.
+
 ---
 
 All add-ons are required to be in (your halo directory)/extension/plugins directory. Any additional DLL/modules are therefore required to be in (your halo directory)/extension/DLLs in order to load properly.
