@@ -1,12 +1,12 @@
-module Add_on_API.D.hext;
+module D.hext;
 
-import Add_on_API.Add_on_API;
+import Add_on_API;
 
 static const(char) colon = ':';
 static const(char) newline = '\n';
 static const(char) pipe = '|';
 static const wchar commaW = ',';
-static const wchar me[] = "me";
+static const wchar[] me = "me";
 static const wchar backslash = '\\';
 static const wchar dotW =  '.';
 
@@ -14,14 +14,14 @@ enum GAME_MODE: ushort {
     SINGLE = 0,
     MULTI,
     HOSTING
-};
+}
 
 static struct GAME_MODE_S {
     bool SINGLE;
     bool MULTI;
     bool HOSTING;
     bool RESERVE0;
-};
+}
 
 //* //This is not working due to "Symbol Undefined" for any of this variables.
 //Error 42: Symbol Undefined _D1D4hext7modeAllxS1D4hext11GAME_MODE_S (const(D.hext.GAME_MODE_S) D.hext.modeAll)
@@ -40,4 +40,4 @@ enum PLAYER_VALIDATE {
     BYPASS,
     BANNED,
     PASS_REJECT
-} PLAYER_VALIDATE;
+}

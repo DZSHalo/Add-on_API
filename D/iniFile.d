@@ -1,6 +1,6 @@
-module Add_on_API.D.iniFile;
+module D.iniFile;
 
-import Add_on_API.Add_on_API;
+import Add_on_API;
 
 static if(__traits(compiles, EXT_ICINIFILE)) {
 
@@ -8,7 +8,7 @@ static if(__traits(compiles, EXT_ICINIFILE)) {
     enum commentChar: wchar {
         pound = '#',
         semiColon = ';'
-    };
+    }
     extern(C) struct ICIniFile {
         /*
          * To release ICIniFile, cannot be re-used after release.
@@ -56,7 +56,7 @@ static if(__traits(compiles, EXT_ICINIFILE)) {
          * len = Length of the content.
          * Returns: Return true or false.
          */
-        bool function(ICIniFile* self, ref const wchar* content, ref uint len) m_content;
+        bool function(ICIniFile* self, const wchar** content, uint* len) m_content;
         /*
          * To add a section in a file.
          * Params:
@@ -99,7 +99,7 @@ static if(__traits(compiles, EXT_ICINIFILE)) {
          * sectionName = Name of an existing section. Maximum characters is 256 long. (INFO: If a section has not be create, it will create one automatically.)
          * Returns: Return true or false.
          */
-        bool function(ICIniFile* self, const wchar* keyName, wchar* valueName, const wchar* sectionName) m_value_set;
+        bool function(ICIniFile* self, const wchar* keyName, const wchar* valueName, const wchar* sectionName) m_value_set;
         /*
          * To get a value within existing key and section in a file.
          * Params:

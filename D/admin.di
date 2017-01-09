@@ -1,6 +1,6 @@
-module Add_on_API.D.admin;
+module D.admin;
 
-import Add_on_API.Add_on_API;
+import Add_on_API;
 
 static if (__traits(compiles, EXT_IADMIN)) {
 
@@ -26,7 +26,7 @@ static if (__traits(compiles, EXT_IADMIN)) {
          * func = Output a function link to the command.
          * Returns: Only return true, false, and -1 if input is invalid.
          */
-        CMD_AUTH function(const PlayerInfo* player, const wchar* command, ArgContainer* arg, CmdFunc* func) m_is_player_authorized;
+        CMD_AUTH function(const PlayerInfo* player, const wchar* command, ArgContainer* arg, CmdFunc* func) m_is_authorized;
         /**
          * To verify if username exist in database and return true, false, or -1 for database is offline.
          * Params:
@@ -64,7 +64,7 @@ static if (__traits(compiles, EXT_IADMIN)) {
          * password = No limitation on password for now.
          * Returns: Only return LOGIN.INVALID, LOGIN.FAIL, and LOGIN.OK.
          */
-        LOGIN_VALIDATION function(ref PlayerInfo  player, MSG_PROTOCOL protocolMsg, const wchar* username, const wchar* password) m_login;
+        LOGIN_VALIDATION function(PlayerInfo* player, MSG_PROTOCOL protocolMsg, const wchar* username, const wchar* password) m_login;
     };
     export extern(C) IAdmin* getIAdmin(uint hash);
 }

@@ -1,6 +1,7 @@
-module Add_on_API.D.structs;
+module D.structs;
 
-import Add_on_API.Add_on_API;
+import Add_on_API;
+import std.bitmanip;
 
 /********************************************************************************
 This is far as we have gathered into one more reliability locations to keep
@@ -27,10 +28,10 @@ alias machineindex = ubyte;
 
 //Team Color Begin
 enum e_color_team_index:ubyte {
-    COLOR_TEAM_NONE = cast(ubyte)-1,
-    COLOR_TEAM_RED = 0,
-    COLOR_TEAM_BLUE = 1
-};
+    NONE = cast(ubyte)-1,
+    RED = 0,
+    BLUE = 1
+}
 //Team Color End
 
 //Color Indexes Start
@@ -53,7 +54,7 @@ enum e_color_index {
     TAN,        //15
     MAROON,     //16
     SALMON      //17
-};
+}
 //Color Indexes End
 static assert (e_color_index.SALMON==17, "Incorrect size of COLOR_INDEX!");
 
@@ -68,61 +69,19 @@ struct chatData {
     chatType    type;       //range of 0 - 3, sort from Global, Team, Vehicle, and Server (CE only)
     uint        player;     //range of 0 - 15
     wchar*      msg_ptr;    //range of 0 - TBA
-};
+}
 static assert(chatData.sizeof == 0xC, "Incorrect size of chatData");
-
-struct rconData {
-    char* msg_ptr;
-    uint unk; //always 0
-    char[80] msg;
-    this(const char* text) {
-        import core.stdc.string;
-        strncpy(cast(char*)msg, text, 0x50);
-        msg_ptr = cast(char*)msg;
-    }
-};
-static assert(rconData.sizeof == 0x58, "Incorrect size of rconData");
 
 struct rconDecode {
     char[9] pass;
     char[65] cmd;
-};
+}
 static assert(rconDecode.sizeof == 0x4A, "Incorrect size of rconDecode");
-
-struct real_vector3d {
-    float x = cast(float)0xFFFFFFFF;
-    float y = cast(float)0xFFFFFFFF;
-    float z = cast(float)0xFFFFFFFF;
-    this(float x, float y, float z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
-    bool opEquals(ref real_vector3d v3) {
-        if (v3.x == this.x && v3.y == this.y && v3.z == this.z)
-            return 1;
-        return 0;
-    }
-};
-
-struct vect2 {
-    float x = cast(float)0xFFFFFFFF;
-    float y = cast(float)0xFFFFFFFF;
-    this(float x, float y) {
-        this.x = x;
-        this.y = y;
-    }
-    bool opEquals(ref vect2 v2) {
-        if (v2.x == this.x && v2.y== this.y)
-            return 1;
-        return 0;
-    }
-};
 
 struct bone {
     float[10] unknown;
     real_vector3d World;
-};
+}
 static assert(bone.sizeof == 0x34, "Incorrect size of bone");
 
 struct s_player_reserved_slot {
@@ -134,7 +93,7 @@ struct s_player_reserved_slot {
     char Unknown2;              //0x1D        //something. But, if these 4 chars are FF's, then the player isn't on.
     e_color_team_index Team;                  //0x1E
     playerindex PlayerIndex;    //0x1F    // Index to their StaticPlayer
-};
+}
 static assert(s_player_reserved_slot.sizeof == 0x20, "Incorrect size of s_player_reserved_slot");
 
 static if (!__traits(compiles, s_addr)) {
@@ -159,13 +118,13 @@ static if (!__traits(compiles, s_addr)) {
 struct MachineSP3 {
     in_addr IPAddress;
     ushort port;
-}; //At the moment do not know complete size...
+} //At the moment do not know complete size...
 struct MachineSP2 {
     MachineSP3* data3;
-}; //At the moment do not know complete size...
+} //At the moment do not know complete size...
 struct MachineSP1 {
     MachineSP2* data2;
-}; //At the moment do not know complete size...
+} //At the moment do not know complete size...
 
 
 
@@ -223,7 +182,7 @@ struct s_machine_slot {
     //char[32]    IP;                            //0x0080
     //char[32]    CDhash;            // a solid block array, so it's not necessarily a c_str i think, but there's still usually just 0's afterwards anyways.
     //ubyte[44]    UnknownZeros;    // zeros..
-}; // Size: 0xEC = Halo CE & Trial, 0x60 = Halo PC
+} // Size: 0xEC = Halo CE & Trial, 0x60 = Halo PC
 static assert(s_machine_slot.sizeof == 0x60, "Incorrect size of s_machine_slot");
 
 struct s_player_slot {//Verified offsets.
@@ -298,7 +257,7 @@ struct s_player_slot {//Verified offsets.
     char    Reload        :    1;           //0x11D.5
     char    UnknownBit3    :    2;          //0x11D.6*/
     char[26]        Unknown12;                      //0x11E
-    vect2           Rotation;                       //0x138        // Yaw, Pitch (again, in radians.
+    real_vector2d   Rotation;                       //0x138        // Yaw, Pitch (again, in radians.
     float           ForwardVelocityMultiplier;      //0x140
     float           HorizontalVelocityMultiplier;   //0x144
     float           RateOfFireVelocityMultiplier;   //0x148
@@ -309,7 +268,7 @@ struct s_player_slot {//Verified offsets.
     char[16]        Unknown14;                      //0x160
     real_vector3d   WorldDelayed;                   //0x170    // Oddly enough... it matches the world vect, but seems to lag behind (Possibly what the client reports is _its_ world coord?)
     char[132]       Unknown15;                      //0x17C
-};
+}
 //pragma(msg, PlayerS.Unknown15.offsetof);
 static assert(s_player_slot.sizeof == 0x200, "Incorrect size of s_player_slot ");
 
@@ -341,7 +300,7 @@ enum GAMETYPE_FLAG {
     ODDBALL,
     KOTH,
     RACE
-};
+}
 
 struct s_gametype {                     //UNDONE GameType Struct is not 100% decoded.
     align(1):
@@ -394,7 +353,7 @@ struct s_gametype {                     //UNDONE GameType Struct is not 100% dec
     bool isKillInOrder_flagMustReset;   // 0x9E    isKillInOrder = Slayer, FlagMustReset = CTF    //CTF and Slayer is sharing this... must be union structure?
     bool isFlagAtHomeToScore;           // 0x9F    CTF usage
     uint SingleFlagTimer;               // 0xA0 CTF usage, 0 = off, 1800 = 1 min, and so on.
-};
+}
 static assert(s_gametype.sizeof == 0xA4, "Incorrect size of s_gametype");
 
 struct GametypeGFlag {
@@ -405,7 +364,7 @@ struct GametypeGFlag {
     float           unknown;                    //0x18 Possible float?
     ubyte[8]        UNKNOWN2;                   //0x1C Nulls...
     uint            unknown2;                   //0x24 Always -1
-};
+}
 static assert(GametypeGFlag.sizeof == 0x28, "Incorrect size of GameTypeGFlag");
 
 struct GameTypeCTFg {                       //size = 0x38
@@ -419,7 +378,7 @@ struct GameTypeCTFg {                       //size = 0x38
     //Trial version end for CTF
     uint[2]             flagNotAtBase;          //0x0020        //Timer in ticks; 0 = Red flag, 1 = Blue flag
     ubyte[0x10]         UNKNOWN0;               //0x0028        //Missing some other informations, need to edit more here.
-};
+}
 static assert(GameTypeCTFg.sizeof == 0x38, "Incorrect size of GameTypeCTFg");
 struct GameTypeKOTHg {                          //size = 0x288
     align(1):
@@ -431,7 +390,7 @@ struct GameTypeKOTHg {                          //size = 0x288
     uint Unknown2;                              //0x0194        //Tick goes up when someone is in the hill.                                         //0x01CC
     s_ident player;                             //0x0198        //Shows the player id.                                                              //0x01D0
     ubyte[0xEC] UNKNOWN3;                       //0x019C        //Dunno what the rest are.                                                          //0x01D4
-};
+}
 struct GameTypeODDBALLg {                       //size = 0x148
     uint scoreLimit;                            //0x0000        //Total ticks to win.                                                               //0x02C0
     uint[16] scoreTicks;                        //0x0004                                                                                            //0x02C4
@@ -440,7 +399,7 @@ struct GameTypeODDBALLg {                       //size = 0x148
     s_ident[16] holder;                         //0x00C4        //This is base on oddball #, not player. Also using player id                       //0x0384
     uint[16] relocateTicks;                     //0x0104        //This is base on oddball #, not player. Also using player id                       //0x03C4
     uint Unknown5;                              //0x0144        //Null                                                                              //0x0404
-};
+}
 struct GameTypeRACEg {                          //size = 0x148
     uint        checkpointTotal;                //0x0000        //Total navpoints around the map to score per lap.                                  //0x0408
     uint[16]    Unknown6;                       //0x0004        //Nulls                                                                             //0x040C
@@ -449,18 +408,18 @@ struct GameTypeRACEg {                          //size = 0x148
     uint[16]    raceLaps;                       //0x0088        //Total laps completed                                                              //0x0490
     uint[16]    Unknown8;                       //0x00C8        //So far just nulls...                                                              //0x04D0
     uint[16]    Unknown9;                       //0x0108        //Don't know what these are and not relative to players.                            //0x0510
-};
+}
 struct GameTypeSLAYERg {                        //size = 0x80
     uint[16] playerScore;                       //0x0000                                                                                            //0x0550
     uint[16] playerScore2;                      //0x0040        //Duplicated and appear useless...                                                  //0x0590
-};
+}
 struct GameTypeGlobals {
     GameTypeCTFg        ctfGlobal;
     GameTypeKOTHg       kothGlobal;
     GameTypeODDBALLg    oddballGlobal;
     GameTypeRACEg       raceGlobal;
     GameTypeSLAYERg     slayerGlobal;
-};
+}
 static assert(GameTypeGlobals.sizeof == 0x5D0, "Incorrect size of GameTypeGlobals");
 
 struct s_server_header {
@@ -479,7 +438,7 @@ struct s_server_header {
     short       Unknown09;      //0x1E6
     short       totalPlayers;   //0x1E8
     short       Unknown10;      //0x1EA     // i think LastSlotFilled
-};
+}
 
 
 struct damageFlags {
@@ -493,7 +452,7 @@ struct damageFlags {
     bool unknown4:3;            //1.0-1.2
     bool cannotTakeDamage:1;    //1.3
     bool unknown5:4;            //1.4 - 1.9*/
-};
+}
 static assert(damageFlags.sizeof == 0x02, "Incorrect size of damageFlags");
 
 
@@ -558,7 +517,7 @@ struct s_object {
     int[16]         UnknownMatrix0;         //D3DXMATRIX UnknownMatrix;     // 0x0174
     int[16]         UnknownMatrix1;         //D3DXMATRIX UnknownMatrix1;    // 0x01B4
     //Everything after this is 0x01F4
-};
+}
 static assert(s_object.sizeof == 0x1F4, "Incorrect size of s_object");
 
 struct actionFlags {    // these are action flags, basically client button presses and these don't actually control whether or not an event occurs
@@ -576,23 +535,22 @@ struct actionFlags {    // these are action flags, basically client button press
     bool secondaryWeaponFire : 1;   // 12 left mouse
     bool secondaryWeaponFire1 : 1;  // 13
     bool actionHold : 1;            // 14 holding action button
-    char UnknownBit4 : 1;           // 15
-};
+    char UnknownBit4 : 1;           // 15*/
+}
 static assert(actionFlags.sizeof == 0x02, "Incorrect size of actionFlags");
 
 struct s_biped {
-    align (1):
     s_object        sObject;                    // 0x0000
-    uint[4]         Unknown;                    // 0x01F4
-    short           IsInvisible;                // 0x0204    normal = 0x41 invis = 0x51 (bitfield) Offset 0x422 is set zero for camo to start.
+    int[4]          Unknown;                    // 0x01F4
+    short           isInvisible;                // 0x0204    normal = 0x41 invis = 0x51 (bitfield) Offset 0x422 is set zero for camo to start.
     char            Flashlight;                 // 0x0206
     char            Frozen;                     // 0x0207
     actionFlags     actionBits;                 // 0x0208 & 0x0209
     char[2]         Unknown1;                   // 0x020A
-    uint            UnknownCounter1;            // 0x020C
-    uint[2]         UnknownLongs1;              // 0x0210
+    int             UnknownCounter1;            // 0x020C
+    int[2]          UnknownLongs1;              // 0x0210
     s_ident         PlayerOwner;                // 0x0218
-    uint[2]         UnknownLongs3;              // 0x021C
+    int[2]          UnknownLongs3;              // 0x021C
     real_vector3d   RightVect;                  // 0x0224
     real_vector3d   UpVect;                     // 0x0230
     real_vector3d   LookVect;                   // 0x023C
@@ -613,7 +571,7 @@ struct s_biped {
     uint            SecondaryWeaponLastUse;     // 0x030C
     uint            ThirdWeaponLastUse;         // 0x0310
     uint            FourthWeaponLastUse;        // 0x0314
-    uint            UnknownLongs2;              // 0x031C <-- INCORRECT OFFSET?
+    int             UnknownLongs2;              // 0x031C <-- INCORRECT OFFSET?
     char            grenadeIndex;               // 0x031C <-- INCORRECT OFFSET?
     char            grenadeIndex1;              // 0x031D
     char            grenade0;                   // 0x031E
@@ -627,7 +585,7 @@ struct s_biped {
     ubyte           Unknown7;                   // 0x0500    Relative to swap biped, not sure what else uses this.
     ushort          inAirticks;                 // 0x0501    Amount of time in the air?
     ubyte           isWalking;                  // 0x0503    0 = else, 1 = While on ground & is walking, 2 = rarely seen + seems to be using bit values
-    char[76]        Unknown8;                   // 0x0328    0x422 (ushort) is set zero for camo to start.
+    char[76]        Unknown8;                   // 0x0504    0x422 (ushort) is set zero for camo to start.
     bone            LeftThigh;                  // 0x0550
     bone            RightThigh;                 // 0x0584
     bone            Pelvis;                     // 0x05B8
@@ -647,59 +605,59 @@ struct s_biped {
     bone            LeftHand;                   // 0x0890
     bone            RightHand;                  // 0x08C4
     char[1216]      Unknown5;                   // 0x08F8 //Missing 0x092C?
-}; // Size - 3564(0x0DEC) bytes
-
+}
 
 //Major WIP Halo Structure Begin
-align (1) struct s_weapon {
+struct s_weapon {
     s_object            sObject;
-    char[12]            Unknown;                        //0x01F4
-    s_ident             UnknownIdent;                   //0x0200  //Relative to assigne biped being dropped from.
-    uint                NetworkTime;                    //0x0204
-    char[36]            Unknown1;                       //0x0208
-    ubyte               bitFieldFlag0;
-    /*bool Unknown16:4;                             //0x022C.0-3
-    bool Unknown17:1;                               //0x022C.4
-    bool isPickedup:1;                              //0x022C.4-5
-    bool isNotReturned:1;                           //0x022C.6
-    bool Unknown18:1;                               //0x022C.7*/
-    char[3]             Unknown19;                      //0x022D
-    ubyte               bitFieldFlag1;
-    /*bool Unknown20:1;                             //0x0230.0
-    bool Melee:1;                                   //0x0230.1
-    bool Unknown21:2;                               //0x0230.2-3
-    bool Unknown22:4;                               //0x0230.4-7*/
-    char[3]             Unknown23;                      //0x0231
+    char[12]            Unknown;                            //0x01F4
+    s_ident             UnknownIdent;                       //0x0200  //Relative to assigne biped being dropped from.
+    uint                NetworkTime;                        //0x0204
+    char[36]            Unknown1;                           //0x0208
 
-    uint                Unknown24;                      //0x0234
+    mixin(bitfields!(
+        uint, "Unknown16",      4,                          //0x022C.0-3
+        bool, "Unknown17",      1,                          //0x022C.4
+        bool, "isPickedup",     1,                          //0x022C.4-5
+        bool, "isNotReturned",  1,                          //0x022C.6
+        bool, "Unknown18",      1));                        //0x022C.7
+    char[3]             Unknown19;                          //0x022D
+    mixin(bitfields!(
+        bool, "Unknown20",  1,                              //0x0230.0
+        bool, "Melee",      1,                              //0x0230.1
+        uint, "Unknown21",  2,                              //0x0230.2-3
+        uint, "Unknown22",  4,));                           //0x0230.4-7
+    char[3]             Unknown23;                          //0x0231
 
-    bool                IsFiring;                       //0x0238
-    char                Unknown3;                       //0x0239
-    ushort              WeaponReadyWaitTime;            //0x023A
-    char[36]            Unknown4;                       //0x023C
-    uint                SomeCounter;                    //0x0260
-    uint                IsNotFiring;                    //0x0264
-    uint[5]             Unknown5;                       //0x0268
-    float               Unknown6;                       //0x027C
-    uint                Unknown7;                       //0x0280
-    float[2]            Unknown8;                       //0x0284
-    s_ident             UnknownIdent1;                  //0x028C
-    uint                AutoReloadCounter;              //0x0290
-    ubyte[28]           Unknown9;                       //0x0294
-    ushort              ReloadFlags;                    //0x02B0 // 0=NotReloading,1=Reloading, 2=???, 3=???  //is correct
-    ushort              ReloadCountdown;                //0x02B2    //can set to 0 to finish reload countdown
-    ushort              Unknown10;                      //0x02B4
-    ushort              BulletCountInRemainingClips;    //0x02B6
-    ushort              BulletCountInCurrentClip;       //0x02B8
-    char[18]            Unknown11;                      //0x02BA
-    s_ident             UnknownIdent2;                  //0x02CC
-    uint                LastBulletFiredTime;            //0x02DO
-    char[16]            Unknown12;                      //0x02D4
-    real_vector3d[2]    Unknown13;                      //0x02E4
+    uint                Unknown24;                          //0x0234
+
+    bool                IsFiring;                           //0x0238
+    char                Unknown3;                           //0x0239
+    ushort              WeaponReadyWaitTime;                //0x023A
+    char[36]            Unknown4;                           //0x023C
+    uint                SomeCounter;                        //0x0260
+    uint                IsNotFiring;                        //0x0264
+    uint[5]             Unknown5;                           //0x0268
+    float               Unknown6;                           //0x027C
+    uint                Unknown7;                           //0x0280
+    float[2]            Unknown8;                           //0x0284
+    s_ident             UnknownIdent1;                      //0x028C
+    uint                AutoReloadCounter;                  //0x0290
+    ubyte[28]           Unknown9;                           //0x0294
+    ushort              ReloadFlags;                        //0x02B0 // 0=NotReloading,1=Reloading, 2=???, 3=???  //is correct
+    ushort              ReloadCountdown;                    //0x02B2    //can set to 0 to finish reload countdown
+    ushort              Unknown10;                          //0x02B4
+    ushort              BulletCountInRemainingClips;        //0x02B6
+    ushort              BulletCountInCurrentClip;           //0x02B8
+    char[18]            Unknown11;                          //0x02BA
+    s_ident             UnknownIdent2;                      //0x02CC
+    uint                LastBulletFiredTime;                //0x02DO
+    char[16]            Unknown12;                          //0x02D4
+    real_vector3d[2]    Unknown13;                          //0x02E4
     char[12]            Unknown14;
     uint                BulletCountInRemainingClips1;
     char[52]            Unknown15;
-}; // Size - 1644(0x066C)
+} // Size - 1644(0x066C)
 
 align (1) struct s_vehicle {
     s_ident         ModelTag;               // 0x0000
@@ -745,12 +703,12 @@ align (1) struct s_vehicle {
     real_vector3d   UnknownMatrix;          // 0x0174
     real_vector3d   UnknownMatrix1;         // 0x0180
     //** END OBJECT part
-    char            UnknownVeh0[0x7A];      // 0x018C
+    char[0x7A]      UnknownVeh0;            // 0x018C
     bool            isNotAllowPlayerEntry;  // 0x206
-    char            UnknownVeh1[0x11D];     // 0x18C
+    char[0x11D]     UnknownVeh1;            // 0x18C
     s_ident         SlaveController;        // 0x324
     //Anything goes after this?
-}; // Size - 3580(0xDFC)
+} // Size - 3580(0xDFC)
 //Major WIP Halo Structure End
 
 //TODO: Variable of offset seems to have some sort of data usage base from SDMHaloMapLoader.c/h Need to do some research.
@@ -766,7 +724,7 @@ align (1) struct s_map_header {
     char[32]    builddate;      //0x40
     uint        type;           //0x060 // 0 = Campaign, 1 = Multi-player, 2 = Menu
     uint        unknown07;      //0x064
-};
+}
 static assert(s_map_header.sizeof == 0x68, "Incorrect size of s_map_header");
 
 align (1) struct s_map_status {
@@ -780,7 +738,7 @@ align (1) struct s_map_status {
     uint   upTime1;     //0x14 1 sec = 30 ticks
     float  Unknown7;    //0x18
     uint   Unknown8;    //0x1C Don't know what this is and it's increasing rapidly...
-};
+}
 static assert(s_map_status.sizeof == 0x20, "Incorrect size of s_map_status");
 
 align (1) struct s_console_header {
@@ -801,7 +759,7 @@ align (1) struct s_console_header {
     uint        unknown11;      //0x94
     char[32]    inputName;      //0x98
     char[255]   input;          //0xB8
-};
+}
 static assert(s_console_header.sizeof == 0x1B7, "Incorrect size of s_console_header");
 
 align (1) struct s_ban_check {
@@ -810,7 +768,7 @@ align (1) struct s_ban_check {
     char[40]   unknown0;            //0x32
     char[4]    unknown1;            //0x5A
     wchar[12]  requestPlayerName;   //0x5E
-}; // Size - 100 (0x64) bytes
+} // Size - 100 (0x64) bytes
 static assert(s_ban_check.sizeof == 0x76, "Incorrect size of s_ban_check");
 
 //Extras for Add-on API usage.
@@ -827,7 +785,7 @@ struct s_cheat_header {
     bool omnipotent;            //0x07
     bool controller;            //0x08
     bool bottomlessClip;        //0x09
-};
+}
 static assert(s_cheat_header.sizeof == 0xA, "Incorrect size of s_cheat_header");
 
 struct D3DCOLOR_COLORVALUE_ARGB {
@@ -835,7 +793,7 @@ struct D3DCOLOR_COLORVALUE_ARGB {
     float r = 1.0f;
     float g = 1.0f;
     float b = 1.0f;
-};
+}
 struct s_console_color_list {
     D3DCOLOR_COLORVALUE_ARGB* x0_Black;         //0x00
     D3DCOLOR_COLORVALUE_ARGB* x1_DodgerBlue;    //0x04
@@ -852,28 +810,28 @@ struct s_console_color_list {
     D3DCOLOR_COLORVALUE_ARGB* x12_Orange;       //0x30
     D3DCOLOR_COLORVALUE_ARGB* x13_Gray;         //0x34
 
-};
+}
 static assert(s_console_color_list.sizeof == 0x38, "Incorrect size of s_console_color_list");
 
 struct GlobalVars {
-    uint ptrAcceptableASCIICharsArray;         //Unknown if this is correct.
-    uint ptrExceptionHandlerFunc;              //Halo CE 0x006207AC
-    s_console_color_list consoleColorStruct;   //Halo CE 0x006207B0 - 0x006207E4
-    uint ptrStrAsleep;                         //Halo CE 0x006207E8
-    uint ptrStrAlert;                          //Halo CE 0x006207EC
-    uint ptrStrCombat;                         //Halo CE 0x006207F0
-    uint UnknownNull;
-    uint ptrStrFlood_Carrier;                  //Halo CE 0x006207F8,  A pointer plus seems to be a structure for it.
-    uint ptrFlood_Carrier_Parms0[4];           //Part 1 - Parameters?
-    uint ptrFlood_CarrierFunc;                 //Part 2 - Is a pointer for a Flood Carrier Func?
-    uint ptrFlood_Carrier_Parms1[4];           //Part 3 - Parameters?
+    uint                    ptrAcceptableASCIICharsArray;   //Unknown if this is correct.
+    uint                    ptrExceptionHandlerFunc;        //Halo CE 0x006207AC
+    s_console_color_list    consoleColorStruct;             //Halo CE 0x006207B0 - 0x006207E4
+    uint                    ptrStrAsleep;                   //Halo CE 0x006207E8
+    uint                    ptrStrAlert;                    //Halo CE 0x006207EC
+    uint                    ptrStrCombat;                   //Halo CE 0x006207F0
+    uint                    UnknownNull;
+    uint                    ptrStrFlood_Carrier;            //Halo CE 0x006207F8,  A pointer plus seems to be a structure for it.
+    uint[4]                 ptrFlood_Carrier_Parms0;        //Part 1 - Parameters?
+    uint                    ptrFlood_CarrierFunc;           //Part 2 - Is a pointer for a Flood Carrier Func?
+    uint[4]                 ptrFlood_Carrier_Parms1;        //Part 3 - Parameters?
     //Etc, etc, etc. Don't have time to figure out the rest.
-};
+}
 
 struct SoundPlay {
     short inUsed;       //0x00 //If is -1, then not in used. If is 0 or above, then in used.
     short Priority;     //0x02 //0 = general action, 1 = Unknown, 2 = UI sounds, 3 = possible loop or background sounds.
-};
+}
 struct SoundVars {
     align (1):
     bool soundEnabled;              //0x00    //Not entirely sure...
@@ -905,12 +863,12 @@ struct SoundVars {
     short UNKNOWN10;                //0xE0
     short UNKNOWN11;                //0xE2
     SoundPlay[38] sPlay;            //0xE4
-};
+}
 static assert(SoundVars.sizeof == 0x17C, "Incorrect size of SoundVars");
 
 struct validationCheck {
     uint UniqueID;
     uint isValid;
     char *message;
-};
+}
 static assert(validationCheck.sizeof == 0xC, "Incorrect size of validationCheck");

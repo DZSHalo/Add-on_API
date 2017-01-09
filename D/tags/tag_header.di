@@ -1,17 +1,6 @@
-module Add_on_API.D.tags.tag_header;
+module D.tags.tag_header;
 
-import Add_on_API.Add_on_API;
-
-
-union tagType {
-    uint tagTypeU;
-    char[4] tagTypeC;
-    //@disable this();
-    this(uint Uint) {
-        tagTypeU = Uint;
-    }
-}
-
+import Add_on_API;
 
 struct s_tag_header {
     char[0x24]  PADDING0;
@@ -22,7 +11,7 @@ struct s_tag_header {
     ushort      tag_version;
     short       engine_version;
     uint        engine_name;
-};
+}
 static assert(s_tag_header.sizeof == 0x40, "Incorrect size of s_tag_header");
 
 struct s_tag_reference {
@@ -30,18 +19,19 @@ struct s_tag_reference {
     tag_name_reference name;
     tag_name_length name_length; //Excluding null terminate (Is not in used ingame)
     s_ident tag_index; //Always -1 in Guerilla, is used ingame.
-};
+}
 static assert(s_tag_reference.sizeof == 0x10, "Incorrect size of s_tag_reference");
 
 struct s_tag_block_definition{
 
-};
+}
 
 struct s_tag_block {
-    int    count;
+    int     count;
     void*   address;
     const   s_tag_block_definition* definition;
-};
+}
+/*
 struct s_tag_group {
-
-};
+    //TODO: Is this needed?
+}*/

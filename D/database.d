@@ -1,6 +1,6 @@
-module Add_on_API.D.database;
+module D.database;
 
-import Add_on_API.Add_on_API;
+import Add_on_API;
 
 static if (__traits(compiles, EXT_IDATABASE) || __traits(compiles, EXT_IDATABASESTATEMENT)) {
 
@@ -17,11 +17,10 @@ static if (!__traits(compiles, SQLConfigDataSourceW)) {
     enum  ODBC_ADD_DSN     = 1;               // Add data source
     enum  ODBC_CONFIG_DSN  = 2;               // Configure (edit) data source
     enum  ODBC_REMOVE_DSN  = 3;               // Remove data source
-    extern (Windows)
-        int SQLConfigDataSourceW(void*       hwndParent,
-                                                        ushort       fRequest,
-                                                        wchar*     lpszDriver,
-                                                        wchar*     lpszAttributes);
+    extern (Windows) int SQLConfigDataSourceW(void*       hwndParent,
+                                                ushort       fRequest,
+                                                wchar*     lpszDriver,
+                                                wchar*     lpszAttributes);
 }
 
     auto IS_SQL_OK(  ARG1 )(ARG1 res) { return (res==SQL_SUCCESS_WITH_INFO || res==SQL_SUCCESS); }
@@ -168,7 +167,7 @@ static if (__traits(compiles, EXT_IDATABASESTATEMENT)) {
          */
         bool function(IDBStmt* self) m_cancel;
         /*
-         * To bind column's data. //Default: unsigned short Column, LPVOID pBuffer, ULONG pBufferSize, LONG* pReturnedBufferSize = NULL, unsigned short nType = SQL_C_TCHAR
+         * To bind column's data. //Default: unsigned short Column, LPVOID pBuffer, ULONG pBufferSize, LONG* pReturnedBufferSize = null, unsigned short nType = SQL_C_TCHAR
          * Params:
          * self = Must include pointer of existing IDBStmt variable.
          * Column = Column's number.
@@ -188,7 +187,7 @@ static if (__traits(compiles, EXT_IDATABASESTATEMENT)) {
          */
         SQLUSMALLINT function(IDBStmt* self, SQLWCHAR* Column) m_get_column_by_name;
         /*
-         * To get data from fetched query statement. //Default unsigned short Column; LPVOID pBuffer; ULONG pBufLen; LONG* dataLen = NULL; int Type = SQL_C_DEFAULT;
+         * To get data from fetched query statement. //Default unsigned short Column; LPVOID pBuffer; ULONG pBufLen; LONG* dataLen = null; int Type = SQL_C_DEFAULT;
          * Params:
          * self = Must include pointer of existing IDBStmt variable.
          * Column = Column's number.

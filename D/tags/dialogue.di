@@ -1,5 +1,5 @@
 //APPROVED
-import Add_on_API.D.tags.tag_include;
+import D.tags.tag_include;
 
 struct s_dialogue_meta {
     char[0x10] PADDING0;

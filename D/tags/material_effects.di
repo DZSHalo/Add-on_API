@@ -34,7 +34,7 @@
  * ice,
  * hunter_energy_shield
 */
-import Add_on_API.D.tags.tag_include;
+import D.tags.tag_include;
 
 struct s_matrials_block {
     s_tag_reference effect; //effe

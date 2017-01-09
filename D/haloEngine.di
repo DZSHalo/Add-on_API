@@ -1,6 +1,6 @@
-module Add_on_API.D.haloEngine;
+module D.haloEngine;
 
-import Add_on_API.Add_on_API;
+import Add_on_API;
 
 static if(__traits(compiles, EXT_IHALOENGINE)) {
 
@@ -115,7 +115,7 @@ static if(__traits(compiles, EXT_IHALOENGINE)) {
          * data = A message you would like to send.
          * plI = Specific player to receive this rcon message.
          * Returns: Does not return a value. (May will be changed later on.)*/
-        void function(ref rconData data, ref PlayerInfo  plI) m_dispatch_rcon;
+        void function(rconData* data, PlayerInfo* plI) m_dispatch_rcon;
         /*
          * Dispatch a chat message to specific player.
          * Params:
@@ -123,14 +123,14 @@ static if(__traits(compiles, EXT_IHALOENGINE)) {
          * len = Length of characters from data, maximum is 80 (0x50).
          * plI = Specific player to receive this chat message.
          * Returns: Does not return a value. (May will be changed later on.)*/
-        void function(ref chatData data, int len, ref PlayerInfo  plI) m_dispatch_player;
+        void function(chatData* data, int len, PlayerInfo* plI) m_dispatch_player;
         /*
          * Dispatch a chat message to all players.
          * Params:
          * data = A message you would like to send.
          * len = Length of characters from data, maximum is 80 (0x50).
          * Returns: Does not return a value. (May will be changed later on.)*/
-        void function(ref chatData data, int len) m_dispatch_global;
+        void function(chatData* data, int len) m_dispatch_global;
         /*
          * To send a rejection code reason to player and disconnect player from host.
          * Params:
@@ -183,21 +183,20 @@ static if(__traits(compiles, EXT_IHALOENGINE)) {
          * index = Input an Add-on index slot number.
          * getInfo = Output a matched Add-on or not.
          * Returns: Return true or false if unable find a match.*/
-        bool function(uint index, ref addon_info getInfo) m_ext_add_on_get_info_index;
+        bool function(uint index, addon_info* getInfo) m_ext_add_on_get_info_index;
         /*
          * Obtain an Add-on information if able to find a match.
          * Params:
          * name = Input name of an Add-on. (Maximum permitted is 128 characters long.)
          * getInfo = Output a matched Add-on or not.
          * Returns: Return true or false if unable find a match.*/
-        bool function(wchar* name, ref addon_info getInfo) m_ext_add_on_get_info_by_name;
+        bool function(wchar* name, addon_info* getInfo) m_ext_add_on_get_info_by_name;
         /*
          * Reload an Add-on while still running Halo.
          * Params:
          * name = Input name of an Add-on. (Maximum permitted is 128 characters long.)
          * Returns: Return true or false if unable to reload Add-on.*/
         bool function(const wchar* name) m_ext_add_on_reload;
-    };
+    }
     export extern(C) IHaloEngine* getIHaloEngine(uint hash);
-
 }

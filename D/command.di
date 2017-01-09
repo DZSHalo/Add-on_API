@@ -1,13 +1,13 @@
-module Add_on_API.D.command;
+module D.command;
 
-import Add_on_API.Add_on_API;
+import Add_on_API;
 
 static if(__traits(compiles, EXT_ICOMMAND)) {
 // #define commandH
 
 // #pragma pack(push,1)
     struct helpInfo {
-        wchar info[4][255];
+        wchar[4][255] info;
     };
 // #pragma pack(pop)
     extern(C) struct ICommand {

@@ -1,6 +1,6 @@
 //APPROVED
-import Add_on_API.D.cseries.cseries;
-import Add_on_API.D.tags.tag_include;
+import D.cseries.cseries;
+import D.tags.tag_include;
 
 struct s_control_point_block {
     real_vector3d position;

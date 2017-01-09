@@ -1,5 +1,5 @@
 //APPROVED
-import Add_on_API.D.cseries.cseries;
+import D.cseries.cseries;
 
 struct s_sound_environment_meta {
     short   priority;

@@ -1,6 +1,6 @@
 //APPROVED
-import Add_on_API.D.cseries.cseries;
-import Add_on_API.D.tags.tag_include;
+import D.cseries.cseries;
+import D.tags.tag_include;
 
 import std.bitmanip;
 

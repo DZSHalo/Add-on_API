@@ -1,6 +1,6 @@
-module Add_on_API.D.cseries.cseries;
+module D.cseries.cseries;
 
-import Add_on_API.Add_on_API;
+import Add_on_API;
 
 //TODO: Need to check how to detect big/little endian order to fix this.
 template MAKE_ID(char[4] s) {
@@ -29,17 +29,36 @@ struct real_color_alpha {
     _real blue;
 }
 struct real_vector2d {
-    _real x;
-    _real y;
+    _real x = _real.nan;
+    _real y = _real.nan;
+    this(_real x, _real y) {
+        this.x = x;
+        this.y = y;
+    }
+    bool opEquals(ref real_vector2d v2) {
+        if (v2.x == this.x && v2.y== this.y)
+            return 1;
+        return 0;
+    }
 }
 struct real_rotation2d {
     _real yaw;
     _real pitch;
 }
 struct real_vector3d {
-    _real x;
-    _real y;
-    _real z;
+    _real x = _real.nan;
+    _real y = _real.nan;
+    _real z = _real.nan;
+    this(_real x, _real y, _real z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+    bool opEquals(ref real_vector3d v3) {
+        if (v3.x == this.x && v3.y == this.y && v3.z == this.z)
+            return 1;
+        return 0;
+    }
 }
 struct real_offset3d {
     // X-Component
@@ -66,7 +85,7 @@ struct byte_color {
     ubyte red;
     ubyte green;
     ubyte blue;
-};
+}
 struct short_range {
     short min;
     short max;
@@ -77,6 +96,6 @@ union s_ident {
     struct {
         short index;
         short salt;
-    };
-};
+    }
+}
 static assert(s_ident.sizeof == 0x4, "Incorrect size of s_ident");

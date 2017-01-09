@@ -1,9 +1,9 @@
-module Add_on_API.Add_on_API;
+module Add_on_API;
 
 
 //NOTE: This is required in order to function correctly for enums requirement to compile
 //what's neccessary and ensure developer of Add-on include specific functionality.
-public import globals;
+public import global;
 
 //#define dllport __declspec(dllimport)
 //#define dllAPI __declspec(dllexport)
@@ -47,43 +47,43 @@ enum e_boolean : byte {
     FAIL = -1,
     FALSE = 0,
     TRUE = 1
-};
+}
 
 //#define CALL_MEMBER_FN(self, FUNC, ...) self->FUNC(self, ## __VA_ARGS__)
 
 //This works
 //pragma(msg, __traits(compiles, EXT_IHALOENGINE));
 
-public import Add_on_API.D.cseries.cseries;
-public import Add_on_API.D.tags.tag_include;
+public import D.cseries.cseries;
+public import D.tags.tag_include;
 
-public import Add_on_API.D.util;
-public import Add_on_API.D.hext;
-public import Add_on_API.D.structs;
-//public import Add_on_API.D.struct_tags;
+public import D.util;
+public import D.hext;
+public import D.structs;
+//public import D.struct_tags;
 
 static if (__traits(compiles, EXT_ICINIFILE)) {
-public import Add_on_API.D.iniFile;
+public import D.iniFile;
 }
 
 static if (__traits(compiles, EXT_IDATABASE)) {
-public import Add_on_API.D.database;
+public import D.database;
 }
 
-public import Add_on_API.D.object;
+public import D.object;
 
-public import Add_on_API.D.player;
+public import D.player;
 static if (__traits(compiles, EXT_IUTIL)) {
-alias CmdFunc = extern (C) CMD_RETURN function(PlayerInfo plI, ref ArgContainer arg,MSG_PROTOCOL chatRconRemote, uint idTimer, bool* showChat);
+alias CmdFunc = extern (C) CMD_RETURN function(PlayerInfo plI, ArgContainer* arg,MSG_PROTOCOL chatRconRemote, uint idTimer, bool* showChat);
 }
 //alias CmdFunc = extern (C) toggle function();
 
 static if (__traits(compiles, EXT_IADMIN)) {
-public import Add_on_API.D.admin;
+public import D.admin;
 }
 
 static if (__traits(compiles, EXT_ICOMMAND)) {
-public import Add_on_API.D.command;
+public import D.command;
 }
 //extern(C) void haloOutput(int r, const(char) *text,...);
 
@@ -96,11 +96,11 @@ public import Add_on_API.D.command;
     wchar[24] sect_name5;
 }
 struct addon_info {
-    wchar[128]    name;
-    wchar[15]    ver;
-    wchar[128]    author;
-    wchar[255]    description;
-    wchar[24]    config_folder;
+    wchar[128]  name;
+    wchar[15]   ver;
+    wchar[128]  author;
+    wchar[255]  description;
+    wchar[24]   config_folder;
     addon_section_names  sectors;
 }
 struct addon_version {
@@ -160,7 +160,7 @@ struct addon_version {
     ushort reserved3 = 0;       //reserved
     ushort reserved4 = 0;       //reserved
     ushort reserved5 = 0;       //reserved
-};
+}
 // #pragma pack(pop)
 
 static if (__traits(compiles, EXT_ITIMER)) {
@@ -189,5 +189,5 @@ static addon_version EAOversion;
 //static_assert_check(sizeof(addon_version)==32, "Error, incorrect size of addon_version struct");
 
 static if (__traits(compiles, EXT_IHALOENGINE)) {
-public import Add_on_API.D.haloEngine;
+public import D.haloEngine;
 }

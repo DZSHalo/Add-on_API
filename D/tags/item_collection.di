@@ -1,6 +1,6 @@
 //APPROVED
-import Add_on_API.D.cseries.cseries;
-import Add_on_API.D.tags.tag_include;
+import D.cseries.cseries;
+import D.tags.tag_include;
 
 struct s_item_permutation_block {
     char[0x20] PADDING0;
