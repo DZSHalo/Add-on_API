@@ -6,17 +6,22 @@ To-Do List
 
 ===
 
-* [ ] Unit Test Add-ons
- * [X] UnitTestC (Mostly done anyway)
+* [X] Unit Test Add-ons
+ * [X] UnitTestC
  * [ ] UnitTestCPP (Undetermined)
- * [ ] UnitTestD
+ * [X] UnitTestD
  * [X] UnitTestCSharp
  * [X] UnitTestVisualBasic
-* [ ] Include Tags Support
- * [ ] C (Some)
- * [ ] D (Some)
- * [ ] C# (None, need to add and verify)
- * [ ] VB (None, need to add and verify)
+* [ ] Unit Test Hook Add-ons
+ * [ ] UnitTestHookC
+ * [ ] UnitTestHookD
+ * [ ] UnitTestHookCSharp
+ * [ ] UnitTestHookVisualBasic
+* [ ] ODBC Database Add-ons
+ * [ ] ODBCDatabaseC
+ * [ ] ODBCDatabaseD
+ * [ ] ODBCDatabaseCSharp (Undetermined)
+ * [ ] ODBCDatabaseVisualBasic (Undetermined)
 * [ ] Add Network hook (0.5.4 or later)
 
 ---
@@ -30,3 +35,8 @@ To-Do List
 * [ ] DirectSound hook/API
 * [ ] Input (Mouse/Keyboard/Controller?)
 * [ ] Replace ansii rcon to unicode (while keep ansii rcon compatible)
+* [ ] Include Tags Support (0.6 or 0.6.1 or later)
+ * [ ] C (Some)
+ * [ ] D (Some)
+ * [ ] C# (None, need to add and verify)
+ * [ ] VB (None, need to add and verify)
