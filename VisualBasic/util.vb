@@ -45,6 +45,9 @@ End Structure
 Namespace Addon_API
     <StructLayoutAttribute(LayoutKind.Sequential, CharSet:=CharSet.Unicode)>
     Public Structure ArgContainerVars
+        <MarshalAs(UnmanagedType.LPWStr, SizeConst:=256)>
+        Public arg As String
+        Public arg_len As UInteger
         <MarshalAs(UnmanagedType.ByValArray, SizeConst:=10)>
         Public args As String()
         Public argc As UInteger

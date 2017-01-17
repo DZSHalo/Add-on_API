@@ -72,6 +72,8 @@ pragma(inline) void VARIANTdouble(VARIANT* var, const double val) {
 }
 
 struct ArgContainerVars {
+    wchar[256] arg;
+    uint arg_len;
     wchar*[10] args;
     uint argc;
 }

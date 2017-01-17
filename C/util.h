@@ -72,13 +72,13 @@ typedef struct VARIANTconvert {
     }
 } VARIANTconvert;
 #else
-inline void VARIANTstr(VARIANT* var, char* val) {
+inline void VARIANTstr(VARIANT* var, const char* val) {
     var->vt = VT_LPSTR;
-    var->pcVal = val;
+    var->pcVal = (char*)val;
 }
-inline void VARIANTwstr(VARIANT* var, wchar_t* val) {
+inline void VARIANTwstr(VARIANT* var, const wchar_t* val) {
     var->vt = VT_LPWSTR;
-    var->bstrVal = val;
+    var->bstrVal = (wchar_t*)val;
 }
 inline void VARIANTbool(VARIANT* var, const bool val) {
     var->vt = VT_BOOL;
@@ -86,6 +86,14 @@ inline void VARIANTbool(VARIANT* var, const bool val) {
         var->boolVal = -1;
     else
         var->boolVal = 0;
+}
+inline void VARIANTchar(VARIANT* var, const char val) {
+    var->vt = VT_I1;
+    var->cVal = val;
+}
+inline void VARIANTuchar(VARIANT* var, const unsigned char val) {
+    var->vt = VT_UI1;
+    var->bVal = val;
 }
 inline void VARIANTshort(VARIANT* var, const short val) {
     var->vt = VT_I2;
@@ -150,8 +158,10 @@ CNATIVE {
         ~ArgContainer();
     } ArgContainer;*/
     typedef struct ArgContainerVars {
+        wchar_t arg[256];
+        unsigned int arg_len;
         wchar_t* args[10];
-        size_t argc;
+        unsigned int argc;
     } ArgContainerVars;
     dllport void ArgContainerVars_Constructor(ArgContainerVars* vars);
     dllport void ArgContainerVars_Deconstructor(ArgContainerVars* vars);
