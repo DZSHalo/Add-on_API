@@ -69,9 +69,10 @@ public struct s_player_reserved_slot_managed {
     }
 
 }
-
-public partial struct Global {
-    public static byte s_machine_slot_size = 0;
+namespace Addon_API {
+    public partial struct Global {
+        public static byte s_machine_slot_size = 0;
+    }
 }
 public struct s_machine_slot_managed {
     private s_machine_slot_ptr gPtr;
@@ -104,10 +105,10 @@ public struct s_machine_slot_managed {
     public void setSlot(uint slotIndex) {
         if (slotIndex > 15)
             throw new IndexOutOfRangeException("slotIndex is out of range.");
-        if (Global.s_machine_slot_size == 0)
+        if (Addon_API.Global.s_machine_slot_size == 0)
             throw new InvalidOperationException("Global.s_machine_slot_size cannot be zero, call getIHaloEngine first before attempt to use this operation.");
         slot = slotIndex;
-        slotPtr = new IntPtr(gPtr.ptr.ToInt32() + slotIndex * Global.s_machine_slot_size);
+        slotPtr = new IntPtr(gPtr.ptr.ToInt32() + slotIndex * Addon_API.Global.s_machine_slot_size);
         refresh();
     }
     public static s_machine_slot_managed operator ++(s_machine_slot_managed mSM) {

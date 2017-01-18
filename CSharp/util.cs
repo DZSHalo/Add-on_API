@@ -23,7 +23,7 @@ public struct IntPtrValue {
 }
 public struct UIntPtrValue {
     public IntPtr ptr;
-    public uint value { get { return (uint)Marshal.PtrToStructure(ptr, GetType(UInt32)); } set { Marshal.StructureToPtr(ptr, value, true); } }
+    public uint value { get { return (uint)Marshal.PtrToStructure(ptr, typeof(uint)); } set { Marshal.StructureToPtr(value, ptr, true); } }
 }
 
 namespace Addon_API {

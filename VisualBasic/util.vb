@@ -33,10 +33,8 @@ Public Structure UIntPtrValue
     Public Property value() As UInteger
         Get
             Return CUInt(Marshal.PtrToStructure(ptr, GetType(UInt32)))
-            'Return DirectCast(Marshal.ReadInt32(ptr), UInteger)
         End Get
         Set
-            'Marshal.WriteInt32(ptr, CInt(Value))
             Marshal.StructureToPtr(Value, ptr, True)
         End Set
     End Property
