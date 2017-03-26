@@ -87,9 +87,10 @@ static if(__traits(compiles, EXT_IPLAYER)) {
          * Params:
          * m_ind = Machine index
          * playerInfo = PlayerInfo
+         * fullRequest = Get full request detail, if partial are found. Then it will reset to null and return false.
          * Returns: Return true or false if not found.
          */
-        bool function(machineindex m_ind, PlayerInfo* playerInfo) m_get_m_index;
+        bool function(machineindex m_ind, PlayerInfo* playerInfo, bool fullRequest) m_get_m_index;
         /*
          * Get PlayerInfo from player index if in used.
          * Params:

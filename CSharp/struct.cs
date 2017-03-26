@@ -236,9 +236,9 @@ public struct s_player_slot {
     public s_ident[]        UnknownIdent3;                  //0x070
     public int              Unknown2;                       //0x080
     public int              LastDeathTime;                  //0x084        // since game start(0)
-    public ushort           killInOrderObjective;           //0x088
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 18)]
-    public byte[]           Unknown3;                       //0x08A
+    public s_ident          killInOrderObjective;           //0x088
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+    public byte[]           Unknown3;                       //0x08C
     public short            KillsCount;                     //0x09C
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
     public byte[]           Unknown4;                       //0x09E
@@ -501,13 +501,58 @@ public struct s_server_header {
     public byte[]           Unknown3;       //0x165
     public byte             player_max;     //0x1E5    // Note: there is another place that also says MaxPlayers - i think it's the ServerInfo socket buffer.
     public short            Unknown09;      //0x1E6
-    public short            totalPlayers;   //0x1E8
+    public ushort           totalPlayers;   //0x1E8
     public short            Unknown10;      //0x1EA    // i think LastSlotFilled
 };
 public struct s_server_header_ptr {
     public IntPtr ptr;
 }
-
+public enum e_action_state : byte {
+    IDLE = 0,
+    GESTURE,
+    TURN_LEFT,
+    TURN_RIGHT,
+    MOVE_FRONT,
+    MOVE_BACK,
+    MOVE_LEFT,
+    MOVE_RIGHT,
+    STUNNED_FRONT,
+    STUNNED_BACK,
+    STUNNED_LEFT,
+    STUNNED_RIGHT,
+    SLIDE_FRONT,
+    SLIDE_BACK,
+    SLIDE_LEFT,
+    SLIDE_RIGHT,
+    READY,
+    PUT_AWAY,
+    AIM_STILL,
+    AIM_MOVE,
+    AIRBORNE,
+    LAND_SOFT,
+    LAND_HARD,
+    UNKNOWN0,
+    AIRBORNE_DEAD,
+    LAND_DEAD,
+    SEAT_ENTER,
+    SEAT_EXIT,
+    CUSTOM_ANIMATION,
+    IMPULSE,
+    MELEE,
+    MELEE_AIRBORNE,
+    MELEE_CONTINUOUS,
+    GRENADE_TOSS,
+    RESURRECT_FRONT,
+    RESURRECT_BACK,
+    FEEDING,
+    SURPRISE_FRONT,
+    SURPRISE_BACK,
+    LEAP_START,
+    LEAP_AIRBORNE,
+    LEAP_MELEE,
+    UNUSED_AFAICT,
+    BERSERK
+}
 
 [Flags]
 public enum s_object_flags : byte {
@@ -567,7 +612,8 @@ public struct s_object {
     public real_vector3d    UnknownVector2d;        // 0x00A0
     [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 2)]
     public float[]          Unknown2;               // 0x00AC
-    public int              Unknown3;               // 0x00B4
+    public short            objType;                // 0x00B4
+    public short            Unknown3;               // 0x00B6
     public short            GameObject;             // 0x00B8    // 0 >= is game object, -1 = is NOT game object
     public short            Unknown4;               // 0x00BA
     public int              Unknown5;               // 0x00BD
@@ -664,19 +710,18 @@ public struct s_biped {
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x34)]
     public byte[]           Unknown2;                       //0x026C
     public byte             actionVehicle_crouch_stand;     //0x02A0
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x51)]
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x02)]
     public byte[]           Unknown9;                       //0x02A1
+    public e_action_state   animation_state;                //0x02A3
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x4E)]
+    public byte[]           Unknown91;                      //0x02A4
     public ushort           CurWeaponIndex0;                //0x02F2    (Do not attempt to edit this, will crash Halo)
     public ushort           CurWeaponIndex1;                //0x02F4    (Read only)
     public ushort           Unknown6;                       //0x02F6
-    public s_ident          PrimaryWeapon;                  //0x02F8
-    public s_ident          SecondaryWeapon;                //0x02FC
-    public s_ident          ThirdWeapon;                    //0x0300
-    public s_ident          FourthWeapon;                   //0x0304
-    public uint             PrimaryWeaponLastUse;           //0x0308
-    public uint             SecondaryWeaponLastUse;         //0x0308
-    public uint             ThirdWeaponLastUse;             //0x0308
-    public uint             FourthWeaponLastUse;            //0x0308
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+    public s_ident[]        Weapons;                        //0x02F8
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+    public uint[]           WeaponsLastUse;                 //0x0308
     public int              UnknownLongs2;                  //0x031C <-- INCORRECT OFFSET?
     public byte             grenadeIndex;                   //0x031C <-- INCORRECT OFFSET?
     public byte             grenadeIndex1;                  //0x031D

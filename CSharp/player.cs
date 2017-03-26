@@ -168,7 +168,7 @@ namespace Addon_API {
     public struct IPlayer {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public delegate bool d_get_m_index([In] byte m_ind, [In,Out] ref PlayerInfo plI);
+        public delegate bool d_get_m_index([In] byte m_ind, [In,Out] ref PlayerInfo plI, [In, MarshalAs(UnmanagedType.I1)] bool fullRequest);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_get_id([In] uint playerId, [In, Out] ref PlayerInfo plI);
@@ -250,6 +250,7 @@ namespace Addon_API {
         /// </summary>
         /// <param name="m_ind">Machine index</param>
         /// <param name="plI">PlayerInfo</param>
+        /// <param name="fullRequest">Get full request detail, if partial are found. Then it will reset to null and return false.</param>
         /// <returns>Return true or false if not found.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_get_m_index m_get_m_index;

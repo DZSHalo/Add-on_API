@@ -5,6 +5,9 @@ import Add_on_API;
 static if(__traits(compiles, EXT_ICINIFILE)) {
 
     enum INIFILELENMAX = 512;
+    enum INIFILESECTIONMAX = 128;
+    enum INIFILEKEYMAX = 128;
+    enum INIFILEVALUEMAX = 128;
     enum commentChar: wchar {
         pound = '#',
         semiColon = ';'

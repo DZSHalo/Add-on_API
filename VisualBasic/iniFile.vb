@@ -188,6 +188,9 @@ Namespace Addon_API
     End Structure
     Public Structure ICIniFileClass
         Public Const INIFILELENMAX As Integer = 512
+        Public Const INIFILESECTIONMAX As Integer = 128
+        Public Const INIFILEKEYMAX As Integer = 128
+        Public Const INIFILEVALUEMAX As Integer = 128
         Public Const pound As Char = "#"c
         Public Const semiColon As Char = ";"c
         Private ptr As IntPtr

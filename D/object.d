@@ -199,7 +199,28 @@ static if(__traits(compiles, EXT_IOBJECT)) {
          * tag_list = Output list of specifi object tags.
          * Returns: Return true or false if unable to find tag group.
          */
-        bool function(const e_tag_group tag_group, objTagGroupList* tag_list) m_get_lookup_group_tag_list;
+        bool function(e_tag_group tag_group, objTagGroupList* tag_list) m_get_lookup_group_tag_list;
+        /*
+        * Obtain list of specific object tags.
+        * Params:
+        * receiver = An object receive the damage.
+        * causer = An object cause the damage.
+        * multiply = Mulitply the damage.
+        * flags = Type of damage flags
+        * Returns: Return true or false if unable to apply generic damage.
+        */
+        bool function(s_ident receiver, s_ident causer, float multiply, objDamageFlags flags) m_apply_damage_generic;
+        /*
+        * Obtain list of specific object tags.
+        * Params:
+        * receiver = An object receive the damage.
+        * causer = An object cause the damage.
+        * tag = Apply type of tag damage to receiver.
+        * multiply = Mulitply the damage.
+        * flags = Type of damage flags
+        * Returns: Return true or false if unable to find tag group.
+        */
+        bool function(s_ident receiver, s_ident causer, const hTagHeader* tag, float multiply, objDamageFlags flags) m_apply_damage_custom;
     }
     export extern(C) IObject* getIObject(uint hash);
 }

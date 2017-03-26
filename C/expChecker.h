@@ -14,9 +14,9 @@ namespace addon {
     typedef void (WINAPIC* LPOnNewGame)(wchar_t*);
     typedef void (WINAPIC* LPOnPlayerJoinQuitEvent)(PlayerInfo);
     typedef void (WINAPIC* LPOnPlayerUpdate)(PlayerInfo);
-    typedef int (WINAPIC* LPOnPlayerJoinDefault)(s_machine_slot* mS, int);
+    typedef e_color_team_index (WINAPIC* LPOnPlayerJoinDefault)(s_machine_slot* mS, e_color_team_index);
     typedef bool (WINAPIC* LPOnVehicleUserEntryEject)(PlayerInfo, bool);
-    typedef bool (WINAPIC* LPOnPlayerChangeTeamAttempt)(PlayerInfo, int, bool);
+    typedef bool (WINAPIC* LPOnPlayerChangeTeamAttempt)(PlayerInfo, e_color_team_index, bool);
     typedef bool (WINAPIC* LPOnPlayerSpawnColor)(PlayerInfo, bool);
     typedef void (WINAPIC* LPOnPlayerDeath)(PlayerInfo, PlayerInfo, int, bool*);
     typedef void (WINAPIC* LPWeaponAssignmentC)(PlayerInfo, s_ident, s_ident, unsigned int, s_ident*);
@@ -64,8 +64,8 @@ namespace addon {
 
         //APIs verification
     __if_exists(EXTOnLoop) {
-        //static_assert_check(is_same<decltype(&EXTOnLoop), LPVoidFunction>::value, "EXTOnLoop is incorrect, please fix this.");
-        #pragma WARNING("EXTOnLoop is not supported in H-Ext 0.5 and newer. Please use ITimer interface instead.");
+        static_assert_check(0, "EXTOnLoop is not supported in H-Ext 0.5 and newer. Please use ITimer interface instead.");
+        //#pragma WARNING("EXTOnLoop is not supported in H-Ext 0.5 and newer. Please use ITimer interface instead.");
     }
 
     __if_exists(EXTOnPlayerJoin) {
@@ -119,7 +119,7 @@ namespace addon {
     __if_exists(EXTOnPlayerDropObject) {
         static_assert_check(0, "EXTOnPlayerDropObject need to be rename to EXTOnPlayerAttemptDropObject.");
     }
-    __if_exists(EXTOnPlayerAttemptDropObject) {
+    __if_exists(EXTOnWeaponDropAttemptMustBeReadied) {
         static_assert_check(is_same<decltype(&EXTOnWeaponDropAttemptMustBeReadied), LPOnWeaponDropAttemptMustBeReadied>::value, "EXTOnPlayerAttemptDropObject is incorrect, please fix this.");
     }
 
@@ -274,7 +274,7 @@ namespace addon {
 
         //Timer API verification
     #ifdef EXT_ITIMER
-        typedef void (WINAPIC* LPOnTimerExecute)(unsigned int);
+        typedef bool (WINAPIC* LPOnTimerExecute)(unsigned int, unsigned int);
         typedef void (WINAPIC* LPOnTimerCancel)(unsigned int);
         static_assert_check(is_same<decltype(&EXTOnTimerExecute), LPOnTimerExecute>::value, "EXTOnTimerExecute is incorrect, please fix this.");
         static_assert_check(is_same<decltype(&EXTOnTimerCancel), LPOnTimerCancel>::value, "EXTOnTimerCancel is incorrect, please fix this.");

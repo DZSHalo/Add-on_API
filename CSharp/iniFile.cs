@@ -203,6 +203,9 @@ namespace Addon_API {
     }
     public struct ICIniFileClass {
         public const int INIFILELENMAX = 512;
+        public const int INIFILESECTIONMAX = 128;
+        public const int INIFILEKEYMAX = 128;
+        public const int INIFILEVALUEMAX = 128;
         public const char pound = '#';
         public const char semiColon = ';';
         private IntPtr ptr;

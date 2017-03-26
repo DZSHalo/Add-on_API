@@ -89,7 +89,7 @@ typedef enum chatType {
 typedef struct chatData {
     chatType        type;       //range of 0 - 3, sort from Global, Team, Vehicle, and Server (CE only)
     unsigned int    player;     //range of 0 - 15
-    wchar_t*        msg_ptr;    //range of 0 - TBA
+    const wchar_t*  msg_ptr;    //range of 0 - TBA
 } chatData;
 typedef struct rconDecode {
     char pass[9];
@@ -228,8 +228,8 @@ typedef struct s_player_slot {//Verified offsets.
     s_ident             UnknownIdent3[4];               //0x070
     int                 Unknown2;                       //0x080
     int                 LastDeathTime;                  //0x084        // since game start(0)
-    unsigned short      killInOrderObjective;           //0x088
-    char                Unknown3[18];                   //0x08A
+    s_ident             killInOrderObjective;           //0x088
+    char                Unknown3[16];                   //0x08C
     short               KillsCount;                     //0x09C
     char                Unknown4[6];                    //0x09E
     short               AssistsCount;                   //0x0A4
@@ -304,54 +304,54 @@ is 48, 92, 24, 00 hex.
 #define GAMETYPE_KOTH 4
 #define GAMETYPE_RACE 5
 typedef struct s_gametype {                        //UNDONE GameType Struct is not 100% decoded.
-    wchar_t name[24];                    // 0x00
+    wchar_t name[24];                           // 0x00
     unsigned int game_stage;                    // 0x30 1=CTF, 2=Slayer, 3=Oddball, 4=KOTH, 5=Race
-    bool    isTeamPlay;                    // 0x34
-    unsigned char NULL0[3];                        // 0x35
-    bool    showEnemyRadar: 1;                // 0x38.0
-    bool    friendlyIndicator: 1;            // 0x38.1
-    bool    infiniteGrenade: 1;            // 0x38.2
-    bool    noShield: 1;                    // 0x38.3
-    bool    invisible: 1;                    // 0x38.4
-    bool    isCustomEquipment: 1;            // 0x38.5
-    bool    showFriendlyRadar: 1;            // 0x38.6
-    bool    unknown: 1;                    // 0x38.7
-    unsigned char Unknown0[3];                    // 0x39        //TODO need to find out what these are and 0x38 as well.
-    unsigned int objective_indicator;          // 0x3C 0=Motion Tracker, 1=Navpoints, 2=None
-    unsigned int is_odd_man_out;                    // 0x40
-    unsigned int respawn_time_growth;            // 0x44
-    unsigned int respawn_time;                    // 0x48
-    unsigned int respawn_suicide_penalty;            // 0x4C
-    unsigned int limit_lives;                    // 0x50
-    float health;                        // 0x54
-    unsigned int score_limit;                    // 0x58
-    unsigned int weapon_type;                    // 0x5C 0 = default, 1 = pistols, 2 = rifles, 3 = plasma rifles, 4 = sniper, 5 = no sniper, 6 = rocket launchers, 7 = shotguns, 8 = short range, 9 = human, 10 = covenant, 11 = classic, 12 = heavy weapons
+    bool    isTeamPlay;                         // 0x34
+    unsigned char NULL0[3];                     // 0x35
+    bool    showEnemyRadar: 1;                  // 0x38.0
+    bool    friendlyIndicator: 1;               // 0x38.1
+    bool    infiniteGrenade: 1;                 // 0x38.2
+    bool    noShield: 1;                        // 0x38.3
+    bool    invisible: 1;                       // 0x38.4
+    bool    isCustomEquipment: 1;               // 0x38.5
+    bool    showFriendlyRadar: 1;               // 0x38.6
+    bool    unknown: 1;                         // 0x38.7
+    unsigned char Unknown0[3];                  // 0x39        //TODO need to find out what these are and 0x38 as well.
+    unsigned int objective_indicator;           // 0x3C 0=Motion Tracker, 1=Navpoints, 2=None
+    unsigned int is_odd_man_out;                // 0x40
+    unsigned int respawn_time_growth;           // 0x44
+    unsigned int respawn_time;                  // 0x48
+    unsigned int respawn_suicide_penalty;       // 0x4C
+    unsigned int limit_lives;                   // 0x50
+    float health;                               // 0x54
+    unsigned int score_limit;                   // 0x58
+    unsigned int weapon_type;                   // 0x5C 0 = default, 1 = pistols, 2 = rifles, 3 = plasma rifles, 4 = sniper, 5 = no sniper, 6 = rocket launchers, 7 = shotguns, 8 = short range, 9 = human, 10 = covenant, 11 = classic, 12 = heavy weapons
 
     //Vehicles section
-    unsigned int vehicle_red;                    // 0x60 Need some work here.
-    unsigned int vehicle_blue;                    // 0x64 Need some work here.
-    unsigned int vehicle_respawn_time;            // 0x68 ticks
+    unsigned int vehicle_red;                   // 0x60 Need some work here.
+    unsigned int vehicle_blue;                  // 0x64 Need some work here.
+    unsigned int vehicle_respawn_time;          // 0x68 ticks
 
-    unsigned int is_friendly_fire;                // 0x6C
-    unsigned int respawn_betrayal_penalty;          // 0x70
-    unsigned int is_team_balance;                // 0x74
+    unsigned int is_friendly_fire;              // 0x6C
+    unsigned int respawn_betrayal_penalty;      // 0x70
+    unsigned int is_team_balance;               // 0x74
     unsigned int time_limit;                    // 0x78
 
     // ball gametype data
     unsigned int MovingHill;                    // 0x7C (KOTH) 0=off, 1=on; (Race) 0=Normal, 1=any order, 2=Rally; (Oddball) 0=off, 1=on;
-    char TeamScoring;                    // 0x80 (Race) 0=minimal, 1=maximum, 2=Sum; (Oddball) 0=Slow, 1=Normal, 2=Fast
-    short Unknown2;                        // 0x81
-    char TraitBallWith;                    // 0x83 0=None, 1=Invisible, 2=Extra Damage, 3=Damage Resistent
-    unsigned int Unknown3;                        // 0x84
-    unsigned int TraitBallWithout;                // 0x88 0=None, 1=Invisible, 2=Extra Damage, 3=Damage Resistent
-    unsigned char Unknown4[14];                    // 0x8C - 0x99 unknown
-    bool    Unknown5;                        // 0x9A
-    bool    Unknown6;                        // 0x9B
-    bool    noDeathBonus;                    // 0x9C
-    bool    noKillPenalty;                    // 0x9D
-    bool    isKillInOrder_flagMustReset;    // 0x9E    isKillInOrder = Slayer, FlagMustReset = CTF    //CTF and Slayer is sharing this... must be union structure?
-    bool    isFlagAtHomeToScore;            // 0x9F    CTF usage
-    unsigned int SingleFlagTimer;                // 0xA0 CTF usage, 0 = off, 1800 = 1 min, and so on.
+    char TeamScoring;                           // 0x80 (Race) 0=minimal, 1=maximum, 2=Sum; (Oddball) 0=Slow, 1=Normal, 2=Fast
+    short Unknown2;                             // 0x81
+    char TraitBallWith;                         // 0x83 0=None, 1=Invisible, 2=Extra Damage, 3=Damage Resistent
+    unsigned int Unknown3;                      // 0x84
+    unsigned int TraitBallWithout;              // 0x88 0=None, 1=Invisible, 2=Extra Damage, 3=Damage Resistent
+    unsigned char Unknown4[14];                 // 0x8C - 0x99 unknown
+    bool    Unknown5;                           // 0x9A
+    bool    Unknown6;                           // 0x9B
+    bool    noDeathBonus;                       // 0x9C
+    bool    noKillPenalty;                      // 0x9D
+    bool    isKillInOrder_flagMustReset;        // 0x9E    isKillInOrder = Slayer, FlagMustReset = CTF    //CTF and Slayer is sharing this... must be union structure?
+    bool    isFlagAtHomeToScore;                // 0x9F    CTF usage
+    unsigned int SingleFlagTimer;               // 0xA0 CTF usage, 0 = off, 1800 = 1 min, and so on.
 } s_gametype;
 static_assert_check(sizeof(s_gametype) == 0xA4, "Incorrect size of s_gametype");
 
@@ -431,9 +431,104 @@ typedef struct s_server_header {
     unsigned char   Unknown3[128];      //0x165
     unsigned char   player_max;         //0x1E5    // Note: there is another place that also says MaxPlayers - i think it's the ServerInfo socket buffer.
     short           Unknown09;          //0x1E6
-    short           totalPlayers;       //0x1E8
+    unsigned short  totalPlayers;       //0x1E8
     short           Unknown10;          //0x1EA    // i think LastSlotFilled
 } s_server_header;
+
+#ifdef __cplusplus
+typedef enum e_action_state : unsigned char {
+    ACTION_IDLE = 0,
+    ACTION_GESTURE,
+    ACTION_TURN_LEFT,
+    ACTION_TURN_RIGHT,
+    ACTION_MOVE_FRONT,
+    ACTION_MOVE_BACK,
+    ACTION_MOVE_LEFT,
+    ACTION_MOVE_RIGHT,
+    ACTION_STUNNED_FRONT,
+    ACTION_STUNNED_BACK,
+    ACTION_STUNNED_LEFT,
+    ACTION_STUNNED_RIGHT,
+    ACTION_SLIDE_FRONT,
+    ACTION_SLIDE_BACK,
+    ACTION_SLIDE_LEFT,
+    ACTION_SLIDE_RIGHT,
+    ACTION_READY,
+    ACTION_PUT_AWAY,
+    ACTION_AIM_STILL,
+    ACTION_AIM_MOVE,
+    ACTION_AIRBORNE,
+    ACTION_LAND_SOFT,
+    ACTION_LAND_HARD,
+    ACTION_UNKNOWN0,
+    ACTION_AIRBORNE_DEAD,
+    ACTION_LAND_DEAD,
+    ACTION_SEAT_ENTER,
+    ACTION_SEAT_EXIT,
+    ACTION_CUSTOM_ANIMATION,
+    ACTION_IMPULSE,
+    ACTION_MELEE,
+    ACTION_MELEE_AIRBORNE,
+    ACTION_MELEE_CONTINUOUS,
+    ACTION_GRENADE_TOSS,
+    ACTION_RESURRECT_FRONT,
+    ACTION_RESURRECT_BACK,
+    ACTION_FEEDING,
+    ACTION_SURPRISE_FRONT,
+    ACTION_SURPRISE_BACK,
+    ACTION_LEAP_START,
+    ACTION_LEAP_AIRBORNE,
+    ACTION_LEAP_MELEE,
+    ACTION_UNUSED_AFAICT,
+    ACTION_BERSERK
+} e_action_state;
+#else
+#define e_action_state signed char
+#define ACTION_IDLE                 0
+#define ACTION_GESTURE              1
+#define ACTION_TURN_LEFT            2
+#define ACTION_TURN_RIGHT           3
+#define ACTION_MOVE_FRONT           4
+#define ACTION_MOVE_BACK            5
+#define ACTION_MOVE_LEFT            6
+#define ACTION_MOVE_RIGHT           7
+#define ACTION_STUNNED_FRONT        8
+#define ACTION_STUNNED_BACK         9
+#define ACTION_STUNNED_LEFT         10
+#define ACTION_STUNNED_RIGHT        11
+#define ACTION_SLIDE_FRONT          12
+#define ACTION_SLIDE_BACK           13
+#define ACTION_SLIDE_LEFT           14
+#define ACTION_SLIDE_RIGHT          15
+#define ACTION_READY                16
+#define ACTION_PUT_AWAY             17
+#define ACTION_AIM_STILL            18
+#define ACTION_AIM_MOVE             19
+#define ACTION_AIRBORNE             20
+#define ACTION_LAND_SOFT            21
+#define ACTION_LAND_HARD            22
+#define ACTION_UNKNOWN0             23
+#define ACTION_AIRBORNE_DEAD        24
+#define ACTION_LAND_DEAD            25
+#define ACTION_SEAT_ENTER           26
+#define ACTION_SEAT_EXIT            27
+#define ACTION_CUSTOM_ANIMATION     28
+#define ACTION_IMPULSE              29
+#define ACTION_MELEE                30
+#define ACTION_MELEE_AIRBORNE       31
+#define ACTION_MELEE_CONTINUOUS     32
+#define ACTION_GRENADE_TOSS         33
+#define ACTION_RESURRECT_FRONT      34
+#define ACTION_RESURRECT_BACK       35
+#define ACTION_FEEDING              36
+#define ACTION_SURPRISE_FRONT       37
+#define ACTION_SURPRISE_BACK        38
+#define ACTION_LEAP_START           39
+#define ACTION_LEAP_AIRBORNE        40
+#define ACTION_LEAP_MELEE           41
+#define ACTION_UNUSED_AFAICT        42
+#define ACTION_BERSERK              43
+#endif
 
 typedef struct damageFlags {
     bool    unknown1:2;            //0.0-0.1
@@ -453,7 +548,7 @@ typedef struct s_object {
     char            Flags[4];               // 0x0008
     int             Timer;                  // 0x000C
     //char            Flags2[4];              // 0x0010
-    char            unkBits : 2;            // 0x0010
+    char            unkBits:2;              // 0x0010
     bool            ignoreGravity:1;
     char            unk1:3;
     bool            unk2:1;
@@ -470,7 +565,8 @@ typedef struct s_object {
     int             Unknown1;               // 0x009C
     real_vector3d   UnknownVector2d;        // 0x00A0
     float           Unknown2[2];            // 0x00AC
-    int             Unknown3;               // 0x00B4
+    short           objType;                // 0x00B4
+    short           Unknown3;               // 0x00B6
     short           GameObject;             // 0x00B8    // 0 >= is game object, -1 = is NOT game object
     short           Unknown4;               // 0x00BA
     int             Unknown5;               // 0x00BD
@@ -548,18 +644,14 @@ typedef struct s_biped {
     real_vector3d   UnknownVect3;               // 0x0260
     char            Unknown2[0x34];             // 0x026C
     unsigned char   actionVehicle_crouch_stand; // 0x02A0 Is this really true? Found this from Wizard's code (Standing = 4) (Crouching = 3) (Vehicle = 0)
-    char            Unknown9[0x51];             // 0x02A1
+    char            Unknown9[0x02];             // 0x02A1
+    e_action_state  animation_state;            // 0x02A3
+    char            Unknown91[0x4E];            // 0x02A4
     unsigned short  CurWeaponIndex0;            // 0x02F2    (Do not attempt to edit this, will crash Halo)
     unsigned short  CurWeaponIndex1;            // 0x02F4    (Read only)
     unsigned short  Unknown6;                   // 0x02F6
-    s_ident         PrimaryWeapon;              // 0x02F8
-    s_ident         SecondaryWeapon;            // 0x02FC
-    s_ident         ThirdWeapon;                // 0x0300
-    s_ident         FourthWeapon;               // 0x0304
-    unsigned int    PrimaryWeaponLastUse;       // 0x0308
-    unsigned int    SecondaryWeaponLastUse;     // 0x030C
-    unsigned int    ThirdWeaponLastUse;         // 0x0310
-    unsigned int    FourthWeaponLastUse;        // 0x0314
+    s_ident         Weapons[4];                 // 0x02F8
+    unsigned int    WeaponsLastUse[4];          // 0x0308
     int             UnknownLongs2;              // 0x031C <-- INCORRECT OFFSET?
     char            grenadeIndex;               // 0x031C <-- INCORRECT OFFSET?
     char            grenadeIndex1;              // 0x031D
@@ -606,7 +698,7 @@ typedef struct s_weapon {
 
     bool            Unknown16:4;                        //0x022C.0-3
     bool            Unknown17:1;                        //0x022C.4
-    bool            isPickedup:1;                       //0x022C.4-5
+    bool            isPickedup:1;                       //0x022C.5
     bool            isNotReturned:1;                    //0x022C.6
     bool            Unknown18:1;                        //0x022C.7
     char            Unknown19[3];                       //0x022D
@@ -621,7 +713,9 @@ typedef struct s_weapon {
     bool            IsFiring;                           //0x0238
     char            Unknown3;                           //0x0239
     unsigned short  WeaponReadyWaitTime;                //0x023A
-    char            Unknown4[36];                       //0x023C
+    char            Unknown4[4];                        //0x023C
+    float           ammoBattery;                        //0x0240
+    char            Unknown30[28];                      //0x023C
     unsigned int    SomeCounter;                        //0x0260
     unsigned int    IsNotFiring;                        //0x0264
     unsigned int    Unknown5[5];                        //0x0268
@@ -829,10 +923,10 @@ typedef struct SoundPlay {
     short Priority;     //0x02 //0 = general action, 1 = Unknown, 2 = UI sounds, 3 = possible loop or background sounds.
 } SoundPlay;
 typedef struct SoundVars {
-    bool    soundEnabled;              //0x00    //Not entirely sure...
-    bool    globalSoundOn;             //0x01
-    bool    muteSoundAsNotInWindow;    //0x02
-    bool    UNKNOWN0;                  //0x03
+    bool soundEnabled;              //0x00    //Not entirely sure...
+    bool globalSoundOn;             //0x01
+    bool muteSoundAsNotInWindow;    //0x02
+    bool UNKNOWN0;                  //0x03
     unsigned int UNKNOWN1;          //0x04    Full of nulls
     unsigned int UNKNOWNPTR0;       //0x08    Some kind of pointer to a struct?
     unsigned int time;              //0x0C    counting up

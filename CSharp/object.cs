@@ -201,6 +201,12 @@ namespace Addon_API {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_get_lookup_group_tag_list([In] e_tag_group tag_group, [In, Out] objTagGroupList tag_list);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public delegate bool d_apply_damage_generic([In] s_ident receiver, [In] s_ident causer, [In] float multiply, [In] objDamageFlags flags);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public delegate bool d_apply_damage_custom([In] s_ident receiver, [In] s_ident causer, [In, Out] hTagHeaderPtr tag, [In] float multiply, [In] objDamageFlags flags);
 
         /// <summary>
         /// Get pointer of object's active structure.
@@ -310,8 +316,35 @@ namespace Addon_API {
         /// <returns>Return true or false if unable to find tag group.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_set_object_spawn_player_x m_set_object_spawn_player_x;
+        /// <summary>
+        /// Obtain list of specific object tags.
+        /// </summary>
+        /// <param name="tag_group">Find specific object tag group.</param>
+        /// <param name="tag_list">Output list of specific object tags.</param>
+        /// <returns>Return true or false if unable to find tag group.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_get_lookup_group_tag_list m_get_lookup_group_tag_list;
+        /// <summary>
+        /// Apply damage to specific object. (WARNING: May not be safe to use on certain custom maps.)
+        /// </summary>
+        /// <param name="receiver">An object receive the damage.</param>
+        /// <param name="causer">An object cause the damage.</param>
+        /// <param name="multiply">Mulitply the damage.</param>
+        /// <param name="flags">Type of damage flags</param>
+        /// <returns>Return true or false if unable to apply generic damage.</returns>
+        [MarshalAs(UnmanagedType.FunctionPtr)]
+        public d_apply_damage_generic m_apply_damage_generic;
+        /// <summary>
+        /// Apply damage to specific object.
+        /// </summary>
+        /// <param name="receiver">An object receive the damage.</param>
+        /// <param name="causer">An object cause the damage.</param>
+        /// <param name="tag">Apply type of tag damage to receiver.</param>
+        /// <param name="multiply">Mulitply the damage.</param>
+        /// <param name="flags">Type of damage flags</param>
+        /// <returns>Return true or false if unable to apply generic damage.</returns>
+        [MarshalAs(UnmanagedType.FunctionPtr)]
+        public d_apply_damage_custom m_apply_damage_custom;
 
 
         //Simple & easier user-defined conversion + checker for null.

@@ -241,9 +241,9 @@ Public Structure s_player_slot
     Public UnknownIdent3 As s_ident() '0x070
     Public Unknown2 As Integer '0x080
     Public LastDeathTime As Integer '0x084        ' since game start(0)
-    Public killInOrderObjective As UShort '0x088
-    <MarshalAs(UnmanagedType.ByValArray, SizeConst:=18)>
-    Public Unknown3 As Byte() '0x08A
+    Public killInOrderObjective As s_ident '0x088
+    <MarshalAs(UnmanagedType.ByValArray, SizeConst:=16)>
+    Public Unknown3 As Byte() '0x08C
     Public KillsCount As Short '0x09C
     <MarshalAs(UnmanagedType.ByValArray, SizeConst:=6)>
     Public Unknown4 As Byte() '0x09E
@@ -500,13 +500,59 @@ Public Structure s_server_header
     Public Unknown3 As Byte()           '0x165
     Public player_max As Byte           '0x1E5    ' Note: there is another place that also says MaxPlayers - i think it's the ServerInfo socket buffer.
     Public Unknown09 As Short           '0x1E6
-    Public totalPlayers As Short        '0x1E8
+    Public totalPlayers As UShort       '0x1E8
     Public Unknown10 As Short           '0x1EA    ' i think LastSlotFilled
 End Structure
 Public Structure s_server_header_ptr
     Public ptr As IntPtr
 End Structure
 
+Public Enum e_action_state As Byte
+    IDLE = 0
+    GESTURE
+    TURN_LEFT
+    TURN_RIGHT
+    MOVE_FRONT
+    MOVE_BACK
+    MOVE_LEFT
+    MOVE_RIGHT
+    STUNNED_FRONT
+    STUNNED_BACK
+    STUNNED_LEFT
+    STUNNED_RIGHT
+    SLIDE_FRONT
+    SLIDE_BACK
+    SLIDE_LEFT
+    SLIDE_RIGHT
+    READY
+    PUT_AWAY
+    AIM_STILL
+    AIM_MOVE
+    AIRBORNE
+    LAND_SOFT
+    LAND_HARD
+    UNKNOWN0
+    AIRBORNE_DEAD
+    LAND_DEAD
+    SEAT_ENTER
+    SEAT_EXIT
+    CUSTOM_ANIMATION
+    IMPULSE
+    MELEE
+    MELEE_AIRBORNE
+    MELEE_CONTINUOUS
+    GRENADE_TOSS
+    RESURRECT_FRONT
+    RESURRECT_BACK
+    FEEDING
+    SURPRISE_FRONT
+    SURPRISE_BACK
+    LEAP_START
+    LEAP_AIRBORNE
+    LEAP_MELEE
+    UNUSED_AFAICT
+    BERSERK
+End Enum
 
 <Flags>
 Public Enum s_object_flags As Byte
@@ -544,72 +590,74 @@ End Enum
 
 <StructLayout(LayoutKind.Sequential)>
 Public Structure s_object
-    Public ModelTag As s_ident ' 0x0000
-    Public Zero As Integer ' 0x0004
+    Public ModelTag As s_ident                      ' 0x0000
+    Public Zero As Integer                          ' 0x0004
     <MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst:=4)>
-    Public Flags As Byte() ' 0x0008
-    Public Timer As Integer ' 0x000C
-    'public byte            Flags2[4];              ' 0x0010
-    Public Flags1 As s_object_flags '0x0010
+    Public Flags As Byte()                          ' 0x0008
+    Public Timer As Integer                         ' 0x000C
+    '<MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst:=4)>
+    'Public Flags2 As Byte()                         ' 0x0010
+    Public Flags1 As s_object_flags                 ' 0x0010
     <MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst:=3)>
-    Public unkBytes1 As Byte() ' 0x0011
-    Public Timer2 As Integer ' 0x0014
+    Public unkBytes1 As Byte()                      ' 0x0011
+    Public Timer2 As Integer                        ' 0x0014
     <MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst:=17)>
-    Public Zero2 As Integer() ' 0x0018
-    Public World As real_vector3d ' 0x005C
-    Public Velocity As real_vector3d ' 0x0068
-    Public Rotation As real_vector3d ' 0x0074
-    Public Scale As real_vector3d ' 0x0080
-    Public VelocityPitchYawRoll As real_vector3d ' 0x008C  'current velocity for pitch, yaw, and roll
-    Public LocationID As Integer ' 0x0098
-    Public Unknown1 As Integer ' 0x009C
-    Public UnknownVector2d As real_vector3d ' 0x00A0
+    Public Zero2 As Integer()                       ' 0x0018
+    Public World As real_vector3d                   ' 0x005C
+    Public Velocity As real_vector3d                ' 0x0068
+    Public Rotation As real_vector3d                ' 0x0074
+    Public Scale As real_vector3d                   ' 0x0080
+    Public VelocityPitchYawRoll As real_vector3d    ' 0x008C  'current velocity for pitch, yaw, and roll
+    Public LocationID As Integer                    ' 0x0098
+    Public Unknown1 As Integer                      ' 0x009C
+    Public UnknownVector2d As real_vector3d         ' 0x00A0
     <MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst:=2)>
-    Public Unknown2 As Single() ' 0x00AC
-    Public Unknown3 As Integer ' 0x00B4
-    Public GameObject As Short ' 0x00B8    ' 0 >= is game object, -1 = is NOT game object
-    Public Unknown4 As Short ' 0x00BA
-    Public Unknown5 As Integer ' 0x00BD
-    Public Player As s_ident ' 0x00C0
+    Public Unknown2 As Single()                     ' 0x00AC
+    Public objType As Short                         ' 0x00B4
+    Public Unknown3 As Short                        ' 0x00B6
+    Public GameObject As Short                      ' 0x00B8    ' 0 >= is game object, -1 = is NOT game object
+    Public Unknown4 As Short                        ' 0x00BA
+    Public Unknown5 As Integer                      ' 0x00BD
+    Public Player As s_ident                        ' 0x00C0
     <MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst:=2)>
-    Public Unknown6 As Integer() ' 0x00C4
-    Public AntrMeta As s_ident ' 0x00CC
+    Public Unknown6 As Integer()                    ' 0x00C4
+    Public AntrMeta As s_ident                      ' 0x00CC
     <MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst:=2)>
-    Public Unknown7 As Integer() ' 0x00D0
-    Public HealthMax As Single ' 0x00D8
-    Public ShieldMax As Single ' 0x00DC
-    Public Health As Single ' 0x00E0
-    Public Shield1 As Single ' 0x00E4
+    Public Unknown7 As Integer()                    ' 0x00D0
+    Public HealthMax As Single                      ' 0x00D8
+    Public ShieldMax As Single                      ' 0x00DC
+    Public Health As Single                         ' 0x00E0
+    Public Shield1 As Single                        ' 0x00E4
     <MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst:=7)>
-    Public Unknown8 As Integer() ' 0x00E8
-    Public Unknown9 As Short ' 0x0104
-    Public damageFlag As damageFlags ' 0x0106
-    Public Unknown10 As Short ' 0x0108
-    Public Unknown11 As Short ' 0x010A
+    Public Unknown8 As Integer()                    ' 0x00E8
+    Public Unknown9 As Short                        ' 0x0104
+    Public damageFlag As damageFlags                ' 0x0106
+    Public Unknown10 As Short                       ' 0x0108
+    Public Unknown11 As Short                       ' 0x010A
     <MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst:=2)>
-    Public Unknown12 As Integer() ' 0x010C
-    Public VehicleWeapon As s_ident ' 0x0114
-    Public Weapon As s_ident ' 0x0118
-    Public Vehicle As s_ident ' 0x011C
-    Public SeatType As Short ' 0x0120
-    Public Unknown13 As Short ' 0x0122
-    Public Unknown14 As Integer ' 0x0124
-    Public Shield2 As Single ' 0x0128
-    Public Flashlight1 As Single ' 0x012C
-    Public Unknown15 As Single ' 0x0130
-    Public Flashlight2 As Single ' 0x0134
+    Public Unknown12 As Integer()                   ' 0x010C
+    Public VehicleWeapon As s_ident                 ' 0x0114
+    Public Weapon As s_ident                        ' 0x0118
+    Public Vehicle As s_ident                       ' 0x011C
+    Public SeatType As Short                        ' 0x0120
+    Public Unknown13 As Short                       ' 0x0122
+    Public Unknown14 As Integer                     ' 0x0124
+    Public Shield2 As Single                        ' 0x0128
+    Public Flashlight1 As Single                    ' 0x012C
+    Public Unknown15 As Single                      ' 0x0130
+    Public Flashlight2 As Single                    ' 0x0134
     <MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst:=5)>
-    Public Unknown16 As Integer() ' 0x0138
-    Public UnknownIdent1 As s_ident ' 0x014C
-    Public UnknownIdent2 As s_ident ' 0x0150
+    Public Unknown16 As Integer()                   ' 0x0138
+    Public UnknownIdent1 As s_ident                 ' 0x014C
+    Public UnknownIdent2 As s_ident                 ' 0x0150
     <MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst:=6)>
-    Public Zero3 As Integer() ' 0x0154
-    Public UnknownIdent3 As s_ident ' 0x016C
-    Public UnknownIdent4 As s_ident ' 0x0170
+    Public Zero3 As Integer()                       ' 0x0154
+    Public UnknownIdent3 As s_ident                 ' 0x016C
+    Public UnknownIdent4 As s_ident                 ' 0x0170
     <MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst:=16)>
-    Public UnknownMatrix0 As Integer() 'D3DXMATRIX UnknownMatrix;     ' 0x0174
+    Public UnknownMatrix0 As Integer()              'D3DXMATRIX UnknownMatrix;     ' 0x0174
     <MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst:=16)>
-    Public UnknownMatrix1 As Integer() 'D3DXMATRIX UnknownMatrix1;    ' 0x01B4 'Everything after this is 0x01F4
+    Public UnknownMatrix1 As Integer()              'D3DXMATRIX UnknownMatrix1;    ' 0x01B4 'Everything after this is 0x01F4
 End Structure
 
 <StructLayout(LayoutKind.Sequential)>
@@ -665,19 +713,18 @@ Public Structure s_biped
     <MarshalAs(UnmanagedType.ByValArray, SizeConst:=&H34)>
     Public Unknown2 As Byte()    '0x026C
     Public actionVehicle_crouch_stand As Byte   '0x02A0
-    <MarshalAs(UnmanagedType.ByValArray, SizeConst:=&H51)>
+    <MarshalAs(UnmanagedType.ByValArray, SizeConst:=&H2)>
     Public Unknown9 As Byte()                   '0x02A1
+    Public animation_state As e_action_state    '0x02A3
+    <MarshalAs(UnmanagedType.ByValArray, SizeConst:=&H4E)>
+    Public Unknown91 As Byte()                  '0x02A4
     Public CurWeaponIndex0 As UShort            '0x02F2    (Do not attempt to edit this, will crash Halo)
     Public CurWeaponIndex1 As UShort            '0x02F4    (Read only)
     Public Unknown6 As UShort                   '0x02F6
-    Public PrimaryWeapon As s_ident             '0x02F8
-    Public SecondaryWeapon As s_ident           '0x02FC
-    Public ThirdWeapon As s_ident               '0x0300
-    Public FourthWeapon As s_ident              '0x0304
-    Public PrimaryWeaponLastUse As UInteger     '0x0308
-    Public SecondaryWeaponLastUse As UInteger   '0x0308
-    Public ThirdWeaponLastUse As UInteger       '0x0308
-    Public FourthWeaponLastUse As UInteger      '0x0308
+    <MarshalAs(UnmanagedType.ByValArray, SizeConst:=4)>
+    Public Weapons As s_ident                   '0x02F8
+    <MarshalAs(UnmanagedType.ByValArray, SizeConst:=4)>
+    Public WeaponsLastUse As UInteger           '0x0308
     Public UnknownLongs2 As Integer             '0x031C <-- INCORRECT OFFSET?
     Public grenadeIndex As Byte                 '0x031C <-- INCORRECT OFFSET?
     Public grenadeIndex1 As Byte                '0x031D

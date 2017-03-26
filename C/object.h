@@ -33,10 +33,13 @@ CNATIVE{
     static_assert_check(sizeof(hTagHeader) == 0x20, "Incorrect size of hTagHeader");
     typedef struct objDamageFlags {
         bool isExplode : 1;  //0x00.0 grenade, banshee's secondary weapon, flamethrower applies here. Need better name.
-        bool Unknown0 : 2;   //0x00.1-2
+        bool Unknown0 : 1;   //0x00.1
+        bool Unknown1 : 1;   //0x00.2
         bool isWeapon : 1;   //0x00.3 Confirmed player's weapon, vehicle's weapon show up here every time.
 
-        bool Unknown2 : 4;   //0x01.0-4
+        bool Unknown2 : 1;   //0x01.0
+        bool Unknown3 : 1;   //0x01.1
+        bool Unknown4 : 2;   //0x01.2-3
         unsigned char Unknown6[3];   //0x02-4
     } objDamageFlags;
     static_assert_check(sizeof(objDamageFlags) == 0x4, "Incorrect size of objDamageFlags");
@@ -183,7 +186,26 @@ CNATIVE{
         /// <param name="tag_group">Find specific object tag group.</param>
         /// <param name="tag_list">Output list of specific object tags.</param>
         /// <returns>Return true or false if unable to find tag group.</returns>
-        bool (*m_get_lookup_group_tag_list)(const e_tag_group tag_group, objTagGroupList* tag_list);
+        bool (*m_get_lookup_group_tag_list)(e_tag_group tag_group, objTagGroupList* tag_list);
+        /// <summary>
+        /// Apply damage to specific object. (WARNING: May not be safe to use on certain custom maps.)
+        /// </summary>
+        /// <param name="receiver">An object receive the damage.</param>
+        /// <param name="causer">An object cause the damage.</param>
+        /// <param name="multiply">Mulitply the damage.</param>
+        /// <param name="flags">Type of damage flags</param>
+        /// <returns>Return true or false if unable to apply generic damage.</returns>
+        bool (*m_apply_damage_generic)(s_ident receiver, s_ident causer, float multiply, objDamageFlags flags);
+        /// <summary>
+        /// Apply damage to specific object.
+        /// </summary>
+        /// <param name="receiver">An object receive the damage.</param>
+        /// <param name="causer">An object cause the damage.</param>
+        /// <param name="tag">Apply type of tag damage to receiver.</param>
+        /// <param name="multiply">Mulitply the damage.</param>
+        /// <param name="flags">Type of damage flags</param>
+        /// <returns>Return true or false if unable to apply custom damage.</returns>
+        void (*m_apply_damage_custom)(s_ident receiver, s_ident causer, const hTagHeader* tag, float multiply, objDamageFlags flags);
     } IObject;
 
 CNATIVE dllport IObject* getIObject(unsigned int hash);

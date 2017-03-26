@@ -204,6 +204,10 @@ Namespace Addon_API
         Public Delegate Sub d_set_object_spawn_player_x(<[In]> pl_ind As Byte)
         <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
         Public Delegate Function d_get_lookup_group_tag_list(<[In]> tag_group As e_tag_group, <[In], Out> tag_list As objTagGroupList) As <MarshalAs(UnmanagedType.I1)> Boolean
+        <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
+        Public Delegate Function d_apply_damage_generic(<[In]> receiver As s_ident, <[In]> causer As s_ident, <[In]> multiply As Single, <[In]> flags As objDamageFlags) As <MarshalAs(UnmanagedType.I1)> Boolean
+        <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
+        Public Delegate Function d_apply_damage_custom(<[In]> receiver As s_ident, <[In]> causer As s_ident, <[In], Out> tag As hTagHeaderPtr, <[In]> multiply As Single, <[In]> flags As objDamageFlags) As <MarshalAs(UnmanagedType.I1)> Boolean
 
         ''' <summary>
         ''' Get pointer of object's active structure.
@@ -320,6 +324,27 @@ Namespace Addon_API
         ''' <returns>Return true or false if unable to find tag group.</returns>
         <MarshalAs(UnmanagedType.FunctionPtr)>
         Public m_get_lookup_group_tag_list As d_get_lookup_group_tag_list
+        ''' <summary>
+        ''' Apply damage to specific object. (WARNING: May Not be safe to use on certain custom maps.)
+        ''' </summary>
+        ''' <param name="receiver">An object receive the damage.</param>
+        ''' <param name="causer">An object cause the damage.</param>
+        ''' <param name="multiply">Mulitply the damage.</param>
+        ''' <param name="flags">Type of damage flags</param>
+        ''' <returns>Return true Or false if unable to apply generic damage.</returns>
+        <MarshalAs(UnmanagedType.FunctionPtr)>
+        Public m_apply_damage_generic As d_apply_damage_generic
+        ''' <summary>
+        ''' Apply damage to specific object.
+        ''' </summary>
+        ''' <param name="receiver">An object receive the damage.</param>
+        ''' <param name="causer">An object cause the damage.</param>
+        ''' <param name="tag">Apply type of tag damage to receiver.</param>
+        ''' <param name="multiply">Mulitply the damage.</param>
+        ''' <param name="flags">Type of damage flags</param>
+        ''' <returns>Return true or false if unable to apply generic damage.</returns>
+        <MarshalAs(UnmanagedType.FunctionPtr)>
+        Public m_apply_damage_custom As d_apply_damage_custom
 
 
         'Simple & easier user-defined conversion + checker for null.

@@ -2,6 +2,9 @@
 #define iniFileH
 
 #define INIFILELENMAX 512
+#define INIFILESECTIONMAX 128
+#define INIFILEKEYMAX 128
+#define INIFILEVALUEMAX 128
 
 #ifdef __cplusplus
 CNATIVE {

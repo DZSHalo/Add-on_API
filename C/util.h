@@ -17,6 +17,9 @@ typedef struct tm {
     int tm_isdst;   /* daylight savings time flag */
 } tm;
 #define _TM_DEFINED
+#define _INC_TIME
+#else
+typedef struct tm tm;
 #endif
 
 //Complete replacement to fix the nasty ellpsis' method.
@@ -71,7 +74,7 @@ typedef struct VARIANTconvert {
         variant.dblVal = val;
     }
 } VARIANTconvert;
-#else
+#endif
 inline void VARIANTstr(VARIANT* var, const char* val) {
     var->vt = VT_LPSTR;
     var->pcVal = (char*)val;
@@ -127,7 +130,6 @@ inline void VARIANTdouble(VARIANT* var, const double val) {
     var->vt = VT_R8;
     var->dblVal = val;
 }
-#endif
 
 #pragma pack(push,1)
     struct haloConsole {

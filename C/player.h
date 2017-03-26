@@ -115,8 +115,9 @@ typedef struct IPlayer {
     /// </summary>
     /// <param name="m_ind">Machine index</param>
     /// <param name="playerInfo">PlayerInfo</param>
+    /// <param name="fullRequest">Get full request detail, if partial are found. Then it will reset to null and return false.</param>
     /// <returns>Return true or false if not found.</returns>
-    bool (*m_get_m_index)(machineindex m_ind, PlayerInfo* playerInfo);
+    bool (*m_get_m_index)(machineindex m_ind, PlayerInfo* playerInfo, bool fullRequest);
     /// <summary>
     /// Get PlayerInfo from player index if in used.
     /// </summary>

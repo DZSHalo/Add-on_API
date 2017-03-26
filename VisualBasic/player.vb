@@ -203,7 +203,7 @@ Namespace Addon_API
     <StructLayout(LayoutKind.Sequential)>
     Public Structure IPlayer
         <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
-        Public Delegate Function d_get_m_index(<[In]> m_ind As Byte, <[In], Out> ByRef plI As PlayerInfo) As <MarshalAs(UnmanagedType.I1)> Boolean
+        Public Delegate Function d_get_m_index(<[In]> m_ind As Byte, <[In], Out> ByRef plI As PlayerInfo, <[In], MarshalAs(UnmanagedType.I1)> fullRequest As Boolean) As <MarshalAs(UnmanagedType.I1)> Boolean
         <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
         Public Delegate Function d_get_id(<[In]> playerId As UInteger, <[In], Out> ByRef plI As PlayerInfo) As <MarshalAs(UnmanagedType.I1)> Boolean
         <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
@@ -269,6 +269,7 @@ Namespace Addon_API
         ''' </summary>
         ''' <param name="m_ind">Machine index</param>
         ''' <param name="plI">PlayerInfo</param>
+        ''' <param name="fullRequest">Get full request detail, if partial are found. Then it will reset to null and return false.</param>
         ''' <returns>Return true or false if not found.</returns>
         <MarshalAs(UnmanagedType.FunctionPtr)>
         Public m_get_m_index As d_get_m_index

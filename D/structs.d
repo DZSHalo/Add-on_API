@@ -66,9 +66,9 @@ enum chatType {
 }
 
 struct chatData {
-    chatType    type;       //range of 0 - 3, sort from Global, Team, Vehicle, and Server (CE only)
-    uint        player;     //range of 0 - 15
-    wchar*      msg_ptr;    //range of 0 - TBA
+    chatType        type;       //range of 0 - 3, sort from Global, Team, Vehicle, and Server (CE only)
+    uint            player;     //range of 0 - 15
+    const wchar*    msg_ptr;    //range of 0 - TBA
 }
 static assert(chatData.sizeof == 0xC, "Incorrect size of chatData");
 
@@ -221,8 +221,8 @@ struct s_player_slot {//Verified offsets.
     s_ident[4]      UnknownIdent3;                  //0x070
     uint            Unknown2;                       //0x080
     uint            LastDeathTime;                  //0x084        // since game start(0)
-    ushort          killInOrderObjective;           //0x088
-    char[18]        Unknown3;                       //0x08A
+    s_ident         killInOrderObjective;           //0x088
+    char[16]        Unknown3;                       //0x08C
     short           KillsCount;                     //0x09C
     char[6]         Unknown4;                       //0x09E
     short           AssistsCount;                   //0x0A4
@@ -436,10 +436,56 @@ struct s_server_header {
     ubyte[128]  Unknown3;       //0x165
     char        player_max;     //0x1E5     // Note: there is another place that also says MaxPlayers - i think it's the ServerInfo socket buffer.
     short       Unknown09;      //0x1E6
-    short       totalPlayers;   //0x1E8
+    ushort      totalPlayers;   //0x1E8
     short       Unknown10;      //0x1EA     // i think LastSlotFilled
 }
 
+enum e_action_state : ubyte {
+    ACTION_IDLE = 0,
+    ACTION_GESTURE,
+    ACTION_TURN_LEFT,
+    ACTION_TURN_RIGHT,
+    ACTION_MOVE_FRONT,
+    ACTION_MOVE_BACK,
+    ACTION_MOVE_LEFT,
+    ACTION_MOVE_RIGHT,
+    ACTION_STUNNED_FRONT,
+    ACTION_STUNNED_BACK,
+    ACTION_STUNNED_LEFT,
+    ACTION_STUNNED_RIGHT,
+    ACTION_SLIDE_FRONT,
+    ACTION_SLIDE_BACK,
+    ACTION_SLIDE_LEFT,
+    ACTION_SLIDE_RIGHT,
+    ACTION_READY,
+    ACTION_PUT_AWAY,
+    ACTION_AIM_STILL,
+    ACTION_AIM_MOVE,
+    ACTION_AIRBORNE,
+    ACTION_LAND_SOFT,
+    ACTION_LAND_HARD,
+    ACTION_UNKNOWN0,
+    ACTION_AIRBORNE_DEAD,
+    ACTION_LAND_DEAD,
+    ACTION_SEAT_ENTER,
+    ACTION_SEAT_EXIT,
+    ACTION_CUSTOM_ANIMATION,
+    ACTION_IMPULSE,
+    ACTION_MELEE,
+    ACTION_MELEE_AIRBORNE,
+    ACTION_MELEE_CONTINUOUS,
+    ACTION_GRENADE_TOSS,
+    ACTION_RESURRECT_FRONT,
+    ACTION_RESURRECT_BACK,
+    ACTION_FEEDING,
+    ACTION_SURPRISE_FRONT,
+    ACTION_SURPRISE_BACK,
+    ACTION_LEAP_START,
+    ACTION_LEAP_AIRBORNE,
+    ACTION_LEAP_MELEE,
+    ACTION_UNUSED_AFAICT,
+    ACTION_BERSERK
+}
 
 struct damageFlags {
     align(1):
@@ -480,7 +526,8 @@ struct s_object {
     int             Unknown1;               // 0x009C
     real_vector3d   UnknownVect2;           // 0x00A0
     float[2]        Unknown2;               // 0x00AC
-    int             Unknown3;               // 0x00B4
+    short           objType;                // 0x00B4
+    short           Unknown3;               // 0x00B6
     short           GameObject;             // 0x00B8    // 0 >= is game object, -1 = is NOT game object
     short           Unknown4;               // 0x00BA
     int             Unknown5;               // 0x00BD
@@ -559,18 +606,14 @@ struct s_biped {
     real_vector3d   UnknownVect3;               // 0x0260
     char[0x34]      Unknown2;                   // 0x026C
     ubyte           actionVehicle_crouch_stand; // 0x02A0 Is this really true? Found this from Wizard's code (Standing = 4) (Crouching = 3) (Vehicle = 0)
-    char[0x51]      Unknown9;                   // 0x02A1
+    char[0x02]      Unknown9;                   // 0x02A1
+    e_action_state  animation_state;            // 0x02A3
+    char[0x4E]      Unknown91;                  // 0x02A4
     ushort          CurWeaponIndex0;            // 0x02F2    (Do not attempt to edit this, will crash Halo)
     ushort          CurWeaponIndex1;            // 0x02F4    (Read only)
     ushort          Unknown6;                   // 0x02F6
-    s_ident         PrimaryWeapon;              // 0x02F8
-    s_ident         SecondaryWeapon;            // 0x02FC
-    s_ident         ThirdWeapon;                // 0x0300
-    s_ident         FourthWeapon;               // 0x0304
-    uint            PrimaryWeaponLastUse;       // 0x0308
-    uint            SecondaryWeaponLastUse;     // 0x030C
-    uint            ThirdWeaponLastUse;         // 0x0310
-    uint            FourthWeaponLastUse;        // 0x0314
+    s_ident[4]      Weapons;                    // 0x02F8
+    uint[4]         WeaponsLastUse;             // 0x0308
     int             UnknownLongs2;              // 0x031C <-- INCORRECT OFFSET?
     char            grenadeIndex;               // 0x031C <-- INCORRECT OFFSET?
     char            grenadeIndex1;              // 0x031D
