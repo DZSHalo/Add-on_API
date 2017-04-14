@@ -733,8 +733,9 @@ public struct s_biped {
     public byte[]           Unknown3;                       //0x0322
     public s_ident          SlaveController;                //0x0324
     public s_ident          WeaponController;               //0x0328
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 468)]
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 464)]
     public byte[]           Unknown4;                       //0x032C
+    public s_ident          bump_objectId;                  //0x04FC
     public byte             Unknown7;                       //0x0500
     public ushort           inAirTicks;                     //0x0501
     public byte             isWalking;                      //0x0502

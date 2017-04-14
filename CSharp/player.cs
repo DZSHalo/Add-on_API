@@ -245,6 +245,9 @@ namespace Addon_API {
         public delegate bool d_get_CD_hash([In] ref s_machine_slot mS, [In, Out, MarshalAs(UnmanagedType.LPStr)] StringBuilder CDHash);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate ushort d_get_str_to_player_list([In, MarshalAs(UnmanagedType.LPWStr)] string regexSearch, [In, Out] ref PlayerInfoList plMatch, [In] PlayerInfoPtr plOwner);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate uint d_ban_id_get_ban_count([In] uint ban_id);
+
         /// <summary>
         /// Get PlayerInfo from machine index if in used.
         /// </summary>
@@ -495,6 +498,13 @@ namespace Addon_API {
         /// <returns>Return total count of matched player(s).</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_get_str_to_player_list m_get_str_to_player_list;
+        /// <summary>
+        /// To obtain ban count from ban ID number.
+        /// </summary>
+        /// <param name="ban_id">Ban ID</param>
+        /// <returns>Return ban count.</returns>
+        [MarshalAs(UnmanagedType.FunctionPtr)]
+        public d_ban_id_get_ban_count m_ban_id_get_ban_count;
 
         //Simple & easier user-defined conversion + checker for null.
         public IPlayer(IPlayerPtr data) {

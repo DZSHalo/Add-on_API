@@ -624,7 +624,8 @@ struct s_biped {
     char[2]         Unknown3;                   // 0x0322
     s_ident         SlaveController;            // 0x0324    Only effective for moving the Biped, sometimes does update the facing direction
     s_ident         WeaponController;           // 0x0328    Does update where to point, fire the weapon, and reload. Have not confirmed with other player's.
-    char[468]       Unknown4;                   // 0x032C
+    char[464]       Unknown4;                   // 0x032C
+    s_ident         bump_objectId;              // 0x04FC
     ubyte           Unknown7;                   // 0x0500    Relative to swap biped, not sure what else uses this.
     ushort          inAirticks;                 // 0x0501    Amount of time in the air?
     ubyte           isWalking;                  // 0x0503    0 = else, 1 = While on ground & is walking, 2 = rarely seen + seems to be using bit values

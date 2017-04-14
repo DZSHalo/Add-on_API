@@ -87,7 +87,7 @@ Namespace Addon_API
         Unknown1 = 3 << 1
         isWeapon = 4 << 1
         Unknown2 = 5 << 1
-        Unknown3 = 6 << 1
+        ignoreShield = 6 << 1
         Unknown4 = 7 << 1
         Unknown5 = 8 << 1
         Unknown6 = 2

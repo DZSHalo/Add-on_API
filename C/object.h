@@ -32,15 +32,14 @@ CNATIVE{
     } hTagHeader;
     static_assert_check(sizeof(hTagHeader) == 0x20, "Incorrect size of hTagHeader");
     typedef struct objDamageFlags {
-        bool isExplode : 1;  //0x00.0 grenade, banshee's secondary weapon, flamethrower applies here. Need better name.
-        bool Unknown0 : 1;   //0x00.1
-        bool Unknown1 : 1;   //0x00.2
-        bool isWeapon : 1;   //0x00.3 Confirmed player's weapon, vehicle's weapon show up here every time.
-
-        bool Unknown2 : 1;   //0x01.0
-        bool Unknown3 : 1;   //0x01.1
-        bool Unknown4 : 2;   //0x01.2-3
-        unsigned char Unknown6[3];   //0x02-4
+        bool isExplode : 1;         //0x00.0 grenade, banshee's secondary weapon, flamethrower applies here. Need better name.
+        bool Unknown0 : 1;          //0x00.1
+        bool Unknown1 : 1;          //0x00.2
+        bool isWeapon : 1;          //0x00.3 Confirmed player's weapon, vehicle's weapon show up here every time.
+        bool Unknown2 : 1;          //0x00.4
+        bool ignoreShield : 1;      //0x00.5
+        bool Unknown4 : 2;          //0x00.6-7
+        unsigned char Unknown6[3];  //0x01-4
     } objDamageFlags;
     static_assert_check(sizeof(objDamageFlags) == 0x4, "Incorrect size of objDamageFlags");
     typedef struct objDamageInfo {

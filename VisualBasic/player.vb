@@ -264,6 +264,9 @@ Namespace Addon_API
         Public Delegate Function d_get_CD_hash(<[In]> ByRef mS As s_machine_slot, <[In], Out, MarshalAs(UnmanagedType.LPStr)> CDHash As StringBuilder) As <MarshalAs(UnmanagedType.I1)> Boolean
         <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
         Public Delegate Function d_get_str_to_player_list(<[In], MarshalAs(UnmanagedType.LPWStr)> regexSearch As String, <[In], Out> ByRef plMatch As PlayerInfoList, <[In]> ByRef plOwner As PlayerInfo) As UShort
+        <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
+        Public Delegate Function d_ban_id_get_ban_count(<[In]> ban_id As UInteger) As UInteger
+
         ''' <summary>
         ''' Get PlayerInfo from machine index if in used.
         ''' </summary>
@@ -514,6 +517,13 @@ Namespace Addon_API
         ''' <returns>Return total count of matched player(s).</returns>
         <MarshalAs(UnmanagedType.FunctionPtr)>
         Public m_get_str_to_player_list As d_get_str_to_player_list
+        ''' <summary>
+        ''' To obtain ban count from ban ID number.
+        ''' </summary>
+        ''' <param name="ban_id">Ban ID</param>
+        ''' <returns>Return ban count.</returns>
+        <MarshalAs(UnmanagedType.FunctionPtr)>
+        Public d_ban_id_get_ban_count As m_ban_id_get_ban_count
 
         'Simple & easier user-defined conversion + checker for null.
         Public Shared Widening Operator CType(data As IPlayerPtr) As IPlayer

@@ -329,6 +329,12 @@ typedef struct IPlayer {
     /// <param name="plOwner">Optional, owner of player execution usually.</param>
     /// <returns>Return total count of matched player(s).</returns>
     unsigned short (*m_get_str_to_player_list)(const wchar_t* regexSearch, PlayerInfoList* plMatch, PlayerInfo* plOwner);
+    /// <summary>
+    /// To obtain ban count from ban ID number.
+    /// </summary>
+    /// <param name="ban_id">Ban ID</param>
+    /// <returns>Return ban count.</returns>
+    unsigned int(*m_ban_id_get_ban_count)(unsigned int ban_id);
 } IPlayer;
 #endif
 

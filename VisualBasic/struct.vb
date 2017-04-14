@@ -736,8 +736,9 @@ Public Structure s_biped
     Public Unknown3 As Byte()                   '0x0322
     Public SlaveController As s_ident           '0x0324
     Public WeaponController As s_ident          '0x0328
-    <MarshalAs(UnmanagedType.ByValArray, SizeConst:=468)>
+    <MarshalAs(UnmanagedType.ByValArray, SizeConst:=464)>
     Public Unknown4 As Byte()                   '0x032C
+    Public bump_objectId As s_ident             '0x04FC
     Public Unknown7 As Byte                     '0x0500
     Public inAirTicks As UShort                 '0x0501
     Public isWalking As Byte                    '0x0502

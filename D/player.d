@@ -324,7 +324,6 @@ static if(__traits(compiles, EXT_IPLAYER)) {
          * Returns: Return true or false if unable get CD hash.
          */
         bool function(const s_machine_slot* mH, char* hashKey) m_get_CD_hash;
-
         /*
          * Find a match of player(s) from regex expression search.
          * Params:
@@ -334,6 +333,13 @@ static if(__traits(compiles, EXT_IPLAYER)) {
          * Returns: Return total count of matched player(s).
          */
         ushort function(const wchar* src, PlayerInfoList* plMatch, PlayerInfo* plOwner) m_get_str_to_player_list;
+        /*
+         * To obtain ban count from ban ID number.
+         * Params:
+         * ban_id = Ban ID
+         * Returns: Return ban count.
+         */
+        uint function(uint ban_id) m_ban_id_get_ban_count;
     }
     export extern(C) IPlayer* getIPlayer(uint hash);
 }
