@@ -170,10 +170,10 @@ namespace Addon_API {
         private delegate bool d_FormatVarArgsListW([In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder writeTo, [In, MarshalAs(UnmanagedType.LPWStr)] string _Format, ArgIterator ArgList);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public delegate bool d_findSubStrFirstA([In, MarshalAs(UnmanagedType.LPStr)] string dest, [In, MarshalAs(UnmanagedType.LPStr)] string src);
+        public delegate bool d_findSubStrFirstA([In, MarshalAs(UnmanagedType.LPStr)] string src, [In, MarshalAs(UnmanagedType.LPStr)] string find);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public delegate bool d_findSubStrFirstW([In, MarshalAs(UnmanagedType.LPWStr)] string dest, [In, MarshalAs(UnmanagedType.LPWStr)] string src);
+        public delegate bool d_findSubStrFirstW([In, MarshalAs(UnmanagedType.LPWStr)] string src, [In, MarshalAs(UnmanagedType.LPWStr)] string find);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_isLettersA([In, MarshalAs(UnmanagedType.LPStr)] string str);
@@ -390,15 +390,15 @@ namespace Addon_API {
         /// <summary>
         /// Compare beginning of case-senitive string against another string.
         /// </summary>
-        /// <param name="str1">Beginning of string #1 to compare against.</param>
-        /// <param name="str2">String #2 to compare against.</param>
+        /// <param name="src">Source string compare against.</param>
+        /// <param name="find">Find string to use for comparison.</param>
         /// <returns>Only return true if is a match.</returns>
         public d_findSubStrFirstA m_findSubStrFirstA;
         /// <summary>
         /// Compare beginning of case-senitive string against another string.
         /// </summary>
-        /// <param name="str1">Beginning of string #1 to compare against.</param>
-        /// <param name="str2">String #2 to compare against.</param>
+        /// <param name="src">Source string compare against.</param>
+        /// <param name="find">Find string to use for comparison.</param>
         /// <returns>Only return true if is a match.</returns>
         public d_findSubStrFirstW m_findSubStrFirstW;
 

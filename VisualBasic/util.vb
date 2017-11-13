@@ -189,9 +189,9 @@ Namespace Addon_API
         <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
         Private Delegate Function d_FormatVarArgsListW(<[In], Out, MarshalAs(UnmanagedType.LPWStr)> writeTo As StringBuilder, <[In], MarshalAs(UnmanagedType.LPWStr)> _Format As String, ArgList As ArgIterator) As <MarshalAs(UnmanagedType.I1)> Boolean
         <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
-        Public Delegate Function d_findSubStrFirstA(<[In], MarshalAs(UnmanagedType.LPStr)> dest As String, <[In], MarshalAs(UnmanagedType.LPStr)> src As String) As <MarshalAs(UnmanagedType.I1)> Boolean
+        Public Delegate Function d_findSubStrFirstA(<[In], MarshalAs(UnmanagedType.LPStr)> src As String, <[In], MarshalAs(UnmanagedType.LPStr)> find As String) As <MarshalAs(UnmanagedType.I1)> Boolean
         <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
-        Public Delegate Function d_findSubStrFirstW(<[In], MarshalAs(UnmanagedType.LPWStr)> dest As String, <[In], MarshalAs(UnmanagedType.LPWStr)> src As String) As <MarshalAs(UnmanagedType.I1)> Boolean
+        Public Delegate Function d_findSubStrFirstW(<[In], MarshalAs(UnmanagedType.LPWStr)> src As String, <[In], MarshalAs(UnmanagedType.LPWStr)> find As String) As <MarshalAs(UnmanagedType.I1)> Boolean
         <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
         Public Delegate Function d_isLettersA(<[In], MarshalAs(UnmanagedType.LPStr)> str As String) As <MarshalAs(UnmanagedType.I1)> Boolean
         <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
@@ -395,15 +395,15 @@ Namespace Addon_API
         ''' <summary>
         ''' Compare beginning of case-senitive string against another string.
         ''' </summary>
-        ''' <param name="str1">Beginning of string #1 to compare against.</param>
-        ''' <param name="str2">String #2 to compare against.</param>
+        ''' <param name="src">Source string compare against.</param>
+        ''' <param name="find">Find string to use for comparison.</param>
         ''' <returns>Only return true if is a match.</returns>
         Public m_findSubStrFirstA As d_findSubStrFirstA
         ''' <summary>
         ''' Compare beginning of case-senitive string against another string.
         ''' </summary>
-        ''' <param name="str1">Beginning of string #1 to compare against.</param>
-        ''' <param name="str2">String #2 to compare against.</param>
+        ''' <param name="src">Source string compare against.</param>
+        ''' <param name="find">Find string to use for comparison.</param>
         ''' <returns>Only return true if is a match.</returns>
         Public m_findSubStrFirstW As d_findSubStrFirstW
 

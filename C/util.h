@@ -333,17 +333,17 @@ CNATIVE {
         /// <summary>
         /// Compare beginning of case-senitive string against another string.
         /// </summary>
-        /// <param name="str1">Beginning of string #1 to compare against.</param>
-        /// <param name="str2">String #2 to compare against.</param>
+        /// <param name="src">Source string compare against.</param>
+        /// <param name="find">Find string to use for comparison.</param>
         /// <returns>Only return true if is a match.</returns>
-        bool (*m_findSubStrFirstA)(const char* find, const char* src);
+        bool (*m_findSubStrFirstA)(const char* src, const char* find);
         /// <summary>
         /// Compare beginning of case-senitive string against another string.
         /// </summary>
-        /// <param name="str1">Beginning of string #1 to compare against.</param>
-        /// <param name="str2">String #2 to compare against.</param>
+        /// <param name="src">Source string compare against.</param>
+        /// <param name="find">Find string to use for comparison.</param>
         /// <returns>Only return true if is a match.</returns>
-        bool (*m_findSubStrFirstW)(const wchar_t* find, const wchar_t* src);
+        bool (*m_findSubStrFirstW)(const wchar_t* src, const wchar_t* find);
 
         /// <summary>
         /// Test if string contains a letters or not.

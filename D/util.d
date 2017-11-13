@@ -292,19 +292,19 @@ extern (C) struct IUtil {
     /*
         * Compare beginning of case-senitive string against another string.
         * Params:
-        * str1 = Beginning of string #1 to compare against.
-        * str2 = String #2 to compare against.
+        * src = Source string compare against.
+        * find = Find string to use for comparison.
         * Returns: Only return true if is a match.
         */
-    bool function(const char* dest, const char* src) m_findSubStrFirstA;
+    bool function(const char* src, const char* find) m_findSubStrFirstA;
     /*
         * Compare beginning of case-senitive string against another string.
         * Params:
-        * str1 = Beginning of string #1 to compare against.
-        * str2 = String #2 to compare against.
+        * src = Source string compare against.
+        * find = Find string to use for comparison.
         * Returns: Only return true if is a match.
         */
-    bool function(const wchar* dest, const wchar* src) m_findSubStrFirstW;
+    bool function(const wchar* src, const wchar* find) m_findSubStrFirstW;
 
     /*
         * Test if string contains a letters or not.
