@@ -25,23 +25,14 @@ Instruction of how to setup your first D Add-on with Visual Studio IDE.
     <File path="..\Add-on API\D\cseries\cseries.d" />
    </Folder>
    <Folder name="D">
-    <File path="..\Add-on API\D\admin.di" />
-    <File path="..\Add-on API\D\command.di" />
     <File path="..\Add-on API\D\database.d" />
-    <File path="..\Add-on API\D\haloEngine.di" />
     <File path="..\Add-on API\D\hext.d" />
-    <File path="..\Add-on API\D\iniFile.d" />
     <File path="..\Add-on API\D\object.d" />
     <File path="..\Add-on API\D\player.d" />
     <File path="..\Add-on API\D\structs.d" />
     <File path="..\Add-on API\D\util.d" />
    </Folder>
    <File path="..\Add-on API\Add_on_API.di" />  <!--Not required, yet recommend to keep-->
-   <Folder name="tags">
-    <File path="..\Add-on API\D\tags\tag_header.di" />
-    <File path="..\Add-on API\D\tags\tag_include.di" />
-   </Folder>
-   <File path="..\Add-on API\Add_on_API.di" />
   </Folder>
 ```
 
