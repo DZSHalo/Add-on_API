@@ -68,7 +68,7 @@ enum chatType {
 struct chatData {
     chatType        type;       //range of 0 - 3, sort from Global, Team, Vehicle, and Server (CE only)
     uint            player;     //range of 0 - 15
-    const wchar*    msg_ptr;    //range of 0 - TBA
+    const (wchar)*  msg_ptr;    //range of 0 - TBA
 }
 static assert(chatData.sizeof == 0xC, "Incorrect size of chatData");
 
