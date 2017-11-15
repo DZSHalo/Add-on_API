@@ -5,6 +5,8 @@ module Add_on_API;
 //what's neccessary and ensure developer of Add-on include specific functionality.
 public import global;
 
+public import std.bitmanip;
+
 //#define dllport __declspec(dllimport)
 //#define dllAPI __declspec(dllexport)
 //#define WINAPIC __cdecl
