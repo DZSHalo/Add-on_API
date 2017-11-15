@@ -523,7 +523,7 @@ Namespace Addon_API
         ''' <param name="ban_id">Ban ID</param>
         ''' <returns>Return ban count.</returns>
         <MarshalAs(UnmanagedType.FunctionPtr)>
-        Public d_ban_id_get_ban_count As m_ban_id_get_ban_count
+        Public m_ban_id_get_ban_count As d_ban_id_get_ban_count
 
         'Simple & easier user-defined conversion + checker for null.
         Public Shared Widening Operator CType(data As IPlayerPtr) As IPlayer
