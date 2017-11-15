@@ -109,21 +109,7 @@ struct addon_version {
     ushort size = addon_version.sizeof;  //Used by sizeof(versionEAO);
     ushort requiredAPI = 6;     //API requirement revision (Including command functions)
     ushort general = 5;         //General revision specifically for events in Halo.
-    static if (__traits(compiles, EXT_ICINIFILE)) {
-        ushort pICIniFile = 3;      //CiniFile interface revision
-    } else {
-        ushort pICIniFile = 0;              //iniFile - excluded
-    }
-    static if (__traits(compiles, EXT_IDATABASE)) {
-        ushort pIDatabase = 4;      //Database interface revision
-    } else {
-        ushort pIDatabase = 0;              //pIDatabase - excluded
-    }
-    static if (__traits(compiles, EXT_IEXTERNAL)) {
-        ushort external = 0;        //External account revision (for Remote Control or other external possiblities)
-    } else {
-        ushort external = 0;              //external - excluded
-    }
+    ushort eao_version = 4;     //eao_version revision
     static if (__traits(compiles, EXT_IHALOENGINE)) {
         ushort pIHaloEngine = 2;    //Halo Engine interface revision
     } else {
@@ -139,30 +125,69 @@ struct addon_version {
     } else {
         ushort pIPlayer = 0;              //pIPlayer - excluded
     }
+    static if (__traits(compiles, EXT_IADMIN)) {
+        ushort pIAdmin = 2;         //Admin interface revision
+    } else {
+        ushort pIAdmin = 0;              //pIAdmin - excluded
+    }
     static if (__traits(compiles, EXT_ICOMMAND)) {
         ushort pICommand = 2;       //Command interface revision
     } else {
         ushort pICommand = 0;              //pICommand - excluded
+    }
+    static if (__traits(compiles, EXT_IDATABASE)) {
+        ushort pIDatabase = 4;      //Database interface revision
+    } else {
+        ushort pIDatabase = 0;              //pIDatabase - excluded
+    }
+    static if (__traits(compiles, EXT_IDATABASESTATEMENT)) {
+        ushort pIDBStmt = 4;      //Database Statement interface revision
+    } else {
+        ushort pIDBStmt = 0;              //pIDatabase - excluded
+    }
+    static if (__traits(compiles, EXT_ICINIFILE)) {
+        ushort pICIniFile = 3;      //CiniFile interface revision
+    } else {
+        ushort pICIniFile = 0;              //iniFile - excluded
     }
     static if (__traits(compiles, EXT_ITIMER)) {
         ushort pITimer = 1;         //Timer interface revision
     } else {
         ushort pITimer = 0;              //pITimer - excluded
     }
-    static if (__traits(compiles, EXT_IADMIN)) {
-        ushort pIAdmin = 2;         //Admin interface revision
-    } else {
-        ushort pIAdmin = 0;              //pIAdmin - excluded
-    }
     static if (__traits(compiles, EXT_IUTIL)) {
         ushort pIUtil = 1;          //Util interface revision
     } else {
         ushort pIUtil = 0;              //pIUtil - excluded
     }
+    ushort reserved1 = 0;       //reserved
+    ushort reserved2 = 0;       //reserved
     ushort reserved3 = 0;       //reserved
     ushort reserved4 = 0;       //reserved
     ushort reserved5 = 0;       //reserved
+    ushort reserved6 = 0;       //reserved
+    static if (__traits(compiles, EXT_HKDATABASE)) {
+        ushort hkDatabase = 4;        //External account revision (for Remote Control or other external possiblities)
+    } else {
+        ushort hkDatabase = 0;              //external - excluded
+    }
+    static if (__traits(compiles, EXT_HKTIMER)) {
+        ushort hkTimer = 1;        //External account revision (for Remote Control or other external possiblities)
+    } else {
+        ushort hkTimer = 0;                 //external - excluded
+    }
+    static if (__traits(compiles, EXT_HKEXTERNAL)) {
+        ushort hkExternal = 0;        //External account revision (for Remote Control or other external possiblities)
+    } else {
+        ushort hkExternal = 0;              //external - excluded
+    }
+    ushort reserved7 = 0;       //reserved
+    ushort reserved8 = 0;       //reserved
+    ushort reserved9 = 0;       //reserved
+    ushort reserved10 = 0;      //reserved
+    ushort reserved11 = 0;      //reserved
 }
+static assert(addon_version.sizeof == 0x38, "Error, incorrect size of addon_version struct");
 // #pragma pack(pop)
 
 static if (__traits(compiles, EXT_ITIMER)) {
