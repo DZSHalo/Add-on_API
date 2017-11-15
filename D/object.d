@@ -22,8 +22,8 @@ static if(__traits(compiles, EXT_IOBJECT)) {
     struct hTagHeader {
         e_tag_group     group_tag;          //0x00 // ie weap
         e_tag_group[2]  parent_tags;        //0x04 & 0x08 // ie weap
-        s_ident         id;                 //0x0C // unique id for map
-        char*           tagName;            //0x10 // name of tag
+        s_ident         ident;              //0x0C // unique id for map
+        char*           tag_name;           //0x10 // name of tag
         uint*           group_meta_tag;     //0x14 // data for this group_tag
         uint*[2]        parent_meta_tag;    //0x18 // data for this parent_tags[i]
     };
@@ -57,15 +57,15 @@ static if(__traits(compiles, EXT_IOBJECT)) {
     };
     static assert(objHitInfo.sizeof == 0x48, "Incorrect size of objHitInfo");
     struct objManaged {
-        vect3 world = vect3( -1, -1, -1 );
-        vect3 velocity = vect3( -1, -1, -1 );
-        vect3 rotation = vect3( -1, -1, -1 );
-        vect3 scale = vect3( -1, -1, -1 );
+        real_vector3d world = real_vector3d( -1, -1, -1 );
+        real_vector3d velocity = real_vector3d( -1, -1, -1 );
+        real_vector3d rotation = real_vector3d( -1, -1, -1 );
+        real_vector3d scale = real_vector3d( -1, -1, -1 );
     };
     struct objCreationInfo {
         s_ident map_id = s_ident( -1 );
         s_ident parent_id = s_ident( -1 );
-        vect3   pos = vect3( -1, -1, -1 );
+        real_vector3d   pos = real_vector3d( -1, -1, -1 );
     };
     struct objTagGroupList {
         uint count;
@@ -108,7 +108,7 @@ static if(__traits(compiles, EXT_IOBJECT)) {
          * tag = Name of an asset tag.
          * Returns: Return pointer of tag header of an asset tag.
          */
-        hTagHeader* function(e_tag_group group_tag, const(char) * tag_name) m_lookup_tag_type_name;
+        hTagHeader* function(e_tag_group group_tag, const char* tag_name) m_lookup_tag_type_name;
         /*
          * To destroy an existing object.
          * Params:
@@ -155,7 +155,7 @@ static if(__traits(compiles, EXT_IOBJECT)) {
          * location = Location to spawn at.
          * Returns: Return true or false if unable to create an object.
          */
-        bool function(s_ident model_Tag, s_ident parentId, int idlingTime, ref s_ident out_objId, const(vect3)* location) m_create;
+        bool function(s_ident model_Tag, s_ident parentId, int idlingTime, s_ident* out_objId, const real_vector3d* location) m_create;
         /*
          * Assign equipment to biped.
          * Params:
@@ -186,7 +186,7 @@ static if(__traits(compiles, EXT_IOBJECT)) {
          * location = Location to move at.
          * Returns: Does not return any value.
          */
-        void function(s_ident obj_id, const(vect3)* location) m_move_and_reset;
+        void function(s_ident obj_id, const real_vector3d* location) m_move_and_reset;
         /*
          * Set object, usually cheats, to specific player. NOTE: Make sure you set it back to zero after you're done using it!
          * Params:
