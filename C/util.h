@@ -642,7 +642,7 @@ public:
     iterator end() {
         d_stack* src = stack;
         while (src && src->next_d_type) {
-            src = stack->next_d_type;
+            src = src->next_d_type;
         }
         return iterator(src);
     }
@@ -755,7 +755,7 @@ public:
             stack = 0;
         }
     }
-    //example of https:// gist.github.com/jeetsukumaran/307264 with nessary modifications.
+    //example of https:// gist.github.com/jeetsukumaran/307264 with necessary modifications.
     class iterator {
     private:
         d_stack* ptr_;

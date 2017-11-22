@@ -26,7 +26,7 @@ namespace Addon_API {
         public delegate bool d_delete_file(IntPtr self, [In, MarshalAs(UnmanagedType.LPWStr)] string fileName);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public delegate bool d_content(IntPtr self, [In, Out, MarshalAs(UnmanagedType.LPWStr)]ref string content, [In, Out]ref uint len);
+        public delegate bool d_content(IntPtr self, [In, Out, MarshalAs(UnmanagedType.LPWStr)] ref string content, [In, Out] ref uint len);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_section_add(IntPtr self, [In, MarshalAs(UnmanagedType.LPWStr)] string sectionName);
@@ -38,13 +38,13 @@ namespace Addon_API {
         public delegate bool d_section_exist(IntPtr self, [In, MarshalAs(UnmanagedType.LPWStr)] string sectionName);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public delegate bool d_key_exist(IntPtr self, [In, MarshalAs(UnmanagedType.LPWStr)] string keyName, [In, MarshalAs(UnmanagedType.LPWStr)] string sectionName);
+        public delegate bool d_key_exist(IntPtr self, [In, MarshalAs(UnmanagedType.LPWStr)] string sectionName, [In, MarshalAs(UnmanagedType.LPWStr)] string keyName);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public delegate bool d_value_set(IntPtr self, [In, MarshalAs(UnmanagedType.LPWStr)] string keyName, [In, MarshalAs(UnmanagedType.LPWStr)] string valueName, [In, MarshalAs(UnmanagedType.LPWStr)] string sectionName);
+        public delegate bool d_value_set(IntPtr self, [In, MarshalAs(UnmanagedType.LPWStr)] string sectionName, [In, MarshalAs(UnmanagedType.LPWStr)] string keyName, [In, MarshalAs(UnmanagedType.LPWStr)] string valueName);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public delegate bool d_value_get(IntPtr self, [In, MarshalAs(UnmanagedType.LPWStr)] string keyName, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder valueName, [In, MarshalAs(UnmanagedType.LPWStr)] string sectionName);
+        public delegate bool d_value_get(IntPtr self, [In, MarshalAs(UnmanagedType.LPWStr)] string sectionName, [In, MarshalAs(UnmanagedType.LPWStr)] string keyName, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder valueName);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_save(IntPtr self);
@@ -54,7 +54,18 @@ namespace Addon_API {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void d_clear(IntPtr self);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate bool d_key_delete(IntPtr self, [In, MarshalAs(UnmanagedType.LPWStr)] string keyName, [In, MarshalAs(UnmanagedType.LPWStr)] string sectionName);
+        [return: MarshalAs(UnmanagedType.I1)]
+        public delegate bool d_key_delete(IntPtr self, [In, MarshalAs(UnmanagedType.LPWStr)] string sectionName, [In, MarshalAs(UnmanagedType.LPWStr)] string keyName);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate uint d_section_count(IntPtr self);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public delegate bool d_section_index(IntPtr self, [In] uint index, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder sectionName);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate uint d_key_count(IntPtr self, [In, MarshalAs(UnmanagedType.LPWStr)] string sectionName);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public delegate bool d_key_index(IntPtr self, [In, MarshalAs(UnmanagedType.LPWStr)] string sectionName, [In] uint index, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder keyName, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder valueName);
 
         /// <summary>
         /// To release ICIniFile, cannot be re-used after release.
@@ -107,7 +118,7 @@ namespace Addon_API {
         /// To add a section in a file.
         /// </summary>
         /// <param name="self">Must include pointer of existing ICIniFile variable.</param>
-        /// <param name="sectionName">Name of a section to add. Maximum characters is 256 long.</param>
+        /// <param name="sectionName">Name of a section to add. Maximum characters is INIFILESECTIONMAX.</param>
         /// <returns>Return true or false.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_section_add m_section_add;
@@ -115,7 +126,7 @@ namespace Addon_API {
         /// To delete a section in a file.
         /// </summary>
         /// <param name="self">Must include pointer of existing ICIniFile variable.</param>
-        /// <param name="sectionName">Name of a section to delete. Maximum characters is 256 long. (This will delete all keys within a section!)</param>
+        /// <param name="sectionName">Name of a section to delete. Maximum characters is INIFILESECTIONMAX. (This will delete all keys within a section!)</param>
         /// <returns>Return true or false.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_section_delete m_section_delete;
@@ -123,7 +134,7 @@ namespace Addon_API {
         /// To verify a section in a file do exist.
         /// </summary>
         /// <param name="self">Must include pointer of existing ICIniFile variable.</param>
-        /// <param name="sectionName">Name of a section to verify if exist or not. Maximum characters is 256 long.</param>
+        /// <param name="sectionName">Name of a section to verify if exist or not. Maximum characters is INIFILESECTIONMAX.</param>
         /// <returns>Return true or false.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_section_exist m_section_exist;
@@ -131,8 +142,8 @@ namespace Addon_API {
         /// To verify key within existing section in a file do exist.
         /// </summary>
         /// <param name="self">Must include pointer of existing ICIniFile variable.</param>
-        /// <param name="keyName">Name of a key to verify if exist or not. Maximum characters is 256 long.</param>
-        /// <param name="sectionName">Name of an existing section. Maximum characters is 256 long.</param>
+        /// <param name="sectionName">Name of an existing section. Maximum characters is INIFILESECTIONMAX.</param>
+        /// <param name="keyName">Name of a key to verify if exist or not. Maximum characters is INIFILEKEYMAX.</param>
         /// <returns>Return true or false.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_key_exist m_key_exist;
@@ -140,9 +151,9 @@ namespace Addon_API {
         /// To set key within existing section in a file.
         /// </summary>
         /// <param name="self">Must include pointer of existing ICIniFile variable.</param>
-        /// <param name="keyName">Name of an existing key in a section. Maximum characters is 256 long. (INFO: If a key has not be create, it will create one automatically.)</param>
-        /// <param name="valueName">Name of a value to set in a key. Maximum characters is 256 long. (NOTICE: It will overwrite existing value!)</param>
-        /// <param name="sectionName">Name of an existing section. Maximum characters is 256 long. (INFO: If a section has not be create, it will create one automatically.)</param>
+        /// <param name="sectionName">Name of an existing section. Maximum characters is INIFILESECTIONMAX. (INFO: If a section has not been create, it will create one automatically.)</param>
+        /// <param name="keyName">Name of an existing key in a section. Maximum characters is INIFILEKEYMAX. (INFO: If a key has not been create, it will create one automatically.)</param>
+        /// <param name="valueName">Name of a value to set in a key. Maximum characters is INIFILEVALUEMAX. (NOTICE: It will overwrite existing value!)</param>
         /// <returns>Return true or false.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_value_set m_value_set;
@@ -150,9 +161,9 @@ namespace Addon_API {
         /// To get key within existing section in a file.
         /// </summary>
         /// <param name="self">Must include pointer of existing ICIniFile variable.</param>
-        /// <param name="keyName">Name of a key to get from a section. Maximum characters is 256 long.</param>
-        /// <param name="valueName">Name of a value to get from a key. Maximum characters is 256 long.</param>
-        /// <param name="sectionName">Name of an existing section. Maximum characters is 256 long.</param>
+        /// <param name="sectionName">Name of an existing section. Maximum characters is INIFILESECTIONMAX.</param>
+        /// <param name="keyName">Name of a key to get from a section. Maximum characters is INIFILEKEYMAX.</param>
+        /// <param name="valueName">Name of a value to get from a key. Maximum characters is INIFILEVALUEMAX.</param>
         /// <returns>Return true or false.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_value_get m_value_get;
@@ -180,12 +191,47 @@ namespace Addon_API {
         /// <summary>
         /// To delete a key within existing section in a file.
         /// </summary>
-        /// <param name="self">Must include pointer of an existing ICIniFile variable.</param>
-        /// <param name="keyName">Name of a key to delete from a section. Maximum characters is 256 long.</param>
-        /// <param name="sectionName">Name of an existing section. Maximum characters is 256 long.</param>
+        /// <param name="self">Must include pointer of existing ICIniFile variable.</param>
+        /// <param name="sectionName">Name of an existing section. Maximum characters is INIFILESECTIONMAX.</param>
+        /// <param name="keyName">Name of a key to delete from a section. Maximum characters is INIFILEKEYMAX.</param>
         /// <returns>Return true or false.</returns>
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public d_key_delete m_key_delete;
+        /// <summary>
+        /// Get total count of sections from a file.
+        /// </summary>
+        /// <param name="self">Must include pointer of existing ICIniFile variable.</param>
+        /// <returns>Return total count of keys.</returns>
+        [MarshalAs(UnmanagedType.FunctionPtr)]
+        public d_section_count m_section_count;
+        /// <summary>
+        /// Get a section name by index in a file.
+        /// </summary>
+        /// <param name="self">Must include pointer of existing ICIniFile variable.</param>
+        /// <param name="sectionIndex">Input section index.</param>
+        /// <param name="sectionName">Get name of section. Maximum characters is INIFILESECTIONMAX.</param>
+        /// <returns>Return true or false.</returns>
+        [MarshalAs(UnmanagedType.FunctionPtr)]
+        public d_section_index m_section_index;
+        /// <summary>
+        /// Get total count of keys from existing section in a file.
+        /// </summary>
+        /// <param name="self">Must include pointer of existing ICIniFile variable.</param>
+        /// <param name="sectionName">Name of an existing section. Maximum characters is INIFILESECTIONMAX.</param>
+        /// <returns>Return total count of keys.</returns>
+        [MarshalAs(UnmanagedType.FunctionPtr)]
+        public d_key_count m_key_count;
+        /// <summary>
+        /// Get a key and value from section's key index in a file.
+        /// </summary>
+        /// <param name="self">Must include pointer of existing ICIniFile variable.</param>
+        /// <param name="sectionName">Name of an existing section. Maximum characters is INIFILESECTIONMAX.</param>
+        /// <param name="keyIndex">Input key index.</param>
+        /// <param name="keyName">Name of a key to get from a section. Maximum characters is INIFILEKEYMAX.</param>
+        /// <param name="valueName">Name of a value to get from a section. Maximum characters is INIFILEVALUEMAX.</param>
+        /// <returns>Return true or false.</returns>
+        [MarshalAs(UnmanagedType.FunctionPtr)]
+        public d_key_index m_key_index;
 
         //Simple & easier user-defined conversion + checker for null.
         public ICIniFile(ICIniFilePtr data) {
@@ -229,7 +275,7 @@ namespace Addon_API {
             return _this.m_delete_file(ptr, fileName);
         }
         [return: MarshalAs(UnmanagedType.I1)]
-        public bool m_content([In, Out, MarshalAs(UnmanagedType.LPWStr)]ref string content, [In, Out]ref uint len) {
+        public bool m_content([In, Out, MarshalAs(UnmanagedType.LPWStr)] ref string content, [In, Out] ref uint len) {
             return _this.m_content(ptr, ref content, ref len);
         }
         [return: MarshalAs(UnmanagedType.I1)]
@@ -245,16 +291,16 @@ namespace Addon_API {
             return _this.m_section_exist(ptr, sectionName);
         }
         [return: MarshalAs(UnmanagedType.I1)]
-        public bool m_key_exist([In, MarshalAs(UnmanagedType.LPWStr)] string keyName, [In, MarshalAs(UnmanagedType.LPWStr)] string sectionName) {
-            return _this.m_key_exist(ptr, keyName, sectionName);
+        public bool m_key_exist([In, MarshalAs(UnmanagedType.LPWStr)] string sectionName, [In, MarshalAs(UnmanagedType.LPWStr)] string keyName) {
+            return _this.m_key_exist(ptr, sectionName, keyName);
         }
         [return: MarshalAs(UnmanagedType.I1)]
-        public bool m_value_set([In, MarshalAs(UnmanagedType.LPWStr)] string keyName, [In, MarshalAs(UnmanagedType.LPWStr)] string valueName, [In, MarshalAs(UnmanagedType.LPWStr)] string sectionName) {
-            return _this.m_value_set(ptr, keyName, valueName, sectionName);
+        public bool m_value_set([In, MarshalAs(UnmanagedType.LPWStr)] string sectionName, [In, MarshalAs(UnmanagedType.LPWStr)] string keyName, [In, MarshalAs(UnmanagedType.LPWStr)] string valueName) {
+            return _this.m_value_set(ptr, sectionName, keyName, valueName);
         }
         [return: MarshalAs(UnmanagedType.I1)]
-        public bool m_value_get([In, MarshalAs(UnmanagedType.LPWStr)] string keyName, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder valueName, [In, MarshalAs(UnmanagedType.LPWStr)] string sectionName) {
-            return _this.m_value_get(ptr, keyName, valueName, sectionName);
+        public bool m_value_get([In, MarshalAs(UnmanagedType.LPWStr)] string sectionName, [In, MarshalAs(UnmanagedType.LPWStr)] string keyName, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder valueName) {
+            return _this.m_value_get(ptr, sectionName, keyName, valueName);
         }
         [return: MarshalAs(UnmanagedType.I1)]
         public bool m_save() {
@@ -268,8 +314,22 @@ namespace Addon_API {
             _this.m_clear(ptr);
         }
         [return: MarshalAs(UnmanagedType.I1)]
-        public bool m_key_delete([In, MarshalAs(UnmanagedType.LPWStr)] string keyName, [In, MarshalAs(UnmanagedType.LPWStr)] string sectionName) {
-            return _this.m_key_delete(ptr, keyName, sectionName);
+        public bool m_key_delete([In, MarshalAs(UnmanagedType.LPWStr)] string sectionName, [In, MarshalAs(UnmanagedType.LPWStr)] string keyName) {
+            return _this.m_key_delete(ptr, sectionName, keyName);
+        }
+        public uint m_section_count() {
+            return _this.m_section_count(ptr);
+        }
+        [return: MarshalAs(UnmanagedType.I1)]
+        public bool m_section_index([In] uint sectionIndex, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder sectionName) {
+            return _this.m_section_index(ptr, sectionIndex, sectionName);
+        }
+        public uint m_key_count([In, MarshalAs(UnmanagedType.LPWStr)] string sectionName) {
+            return _this.m_key_count(ptr, sectionName);
+        }
+        [return: MarshalAs(UnmanagedType.I1)]
+        public bool m_key_index([In, MarshalAs(UnmanagedType.LPWStr)] string sectionName, [In] uint keyIndex, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder keyName, [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder valueName) {
+            return _this.m_key_index(ptr, sectionName, keyIndex, keyName, valueName);
         }
 
 

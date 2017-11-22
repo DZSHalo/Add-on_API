@@ -15,7 +15,7 @@ namespace addon {
     typedef void (WINAPIC* LPOnPlayerJoinQuitEvent)(PlayerInfo);
     typedef void (WINAPIC* LPOnPlayerUpdate)(PlayerInfo);
     typedef e_color_team_index (WINAPIC* LPOnPlayerJoinDefault)(s_machine_slot* mS, e_color_team_index);
-    typedef bool (WINAPIC* LPOnVehicleUserEntryEject)(PlayerInfo, bool);
+    typedef bool (WINAPIC* LPOnPlayerVehicleEntryEject)(PlayerInfo, bool);
     typedef bool (WINAPIC* LPOnPlayerChangeTeamAttempt)(PlayerInfo, e_color_team_index, bool);
     typedef bool (WINAPIC* LPOnPlayerSpawnColor)(PlayerInfo, bool);
     typedef void (WINAPIC* LPOnPlayerDeath)(PlayerInfo, PlayerInfo, int, bool*);
@@ -33,9 +33,9 @@ namespace addon {
     typedef bool (WINAPIC* LPOnObjectDeleteManagement)(s_object* cur_object, int curTicks, bool isManaged);
     typedef bool (WINAPIC* LPOnObjectDamageLookupProcess)(objDamageInfo* damageInfo, s_ident* obj_recv, bool* allowDamage, bool isManaged);
     typedef bool (WINAPIC* LPOnObjectDamageApplyProcess)(const objDamageInfo* damageInfo, s_ident* obj_recv, objHitInfo* hitInfo, bool isBacktap, bool* allowDamage, bool isManaged);
-    typedef void (WINAPIC* LPOnMapLoad)(s_ident, const wchar_t[32]);
-    typedef toggle (WINAPIC* LPOnVehicleAIEntry)(s_ident, s_ident, unsigned short, toggle);
-    typedef toggle (WINAPIC* LPOnWeaponDropCurrent)(PlayerInfo, s_ident, s_biped*, s_ident, s_weapon*, toggle);
+    typedef void (WINAPIC* LPOnMapLoad)(s_ident, const wchar_t*, GAME_MODE);
+    typedef toggle (WINAPIC* LPOnAIVehicleEntry)(s_ident, s_ident, unsigned short, toggle);
+    typedef void (WINAPIC* LPOnWeaponDropCurrent)(PlayerInfo, s_ident, s_biped*, s_ident, s_weapon*);
     typedef toggle (WINAPIC* LPOnServerStatus)(int, toggle);
     typedef bool (WINAPIC* LPOnObjectCreationAttempt)(PlayerInfo plOwner, objCreationInfo object_creation, objCreationInfo* change_object, bool isOverride);
     typedef bool (WINAPIC* LPOnGameSpyValidationCheck)(unsigned int UnqiueID, bool isValid, bool forceBypass);
@@ -127,12 +127,12 @@ namespace addon {
         static_assert_check(is_same<decltype(&EXTOnPlayerSpawn), LPOnPlayerSpawn>::value, "EXTOnPlayerSpawn is incorrect, please fix this.");
     }
 
-    __if_exists(EXTOnVehicleUserEntry) {
-        static_assert_check(is_same<decltype(&EXTOnVehicleUserEntry), LPOnVehicleUserEntryEject>::value, "EXTOnVehicleUserEntry is incorrect, please fix this.");
+    __if_exists(EXTOnPlayerVehicleEntry) {
+        static_assert_check(is_same<decltype(&EXTOnPlayerVehicleEntry), LPOnPlayerVehicleEntryEject>::value, "EXTOnPlayerVehicleEntry is incorrect, please fix this.");
     }
 
     __if_exists(EXTOnPlayerVehicleEject) {
-        static_assert_check(is_same<decltype(&EXTOnPlayerVehicleEject), LPOnVehicleUserEntryEject>::value, "EXTOnPlayerVehicleEject is incorrect, please fix this.");
+        static_assert_check(is_same<decltype(&EXTOnPlayerVehicleEject), LPOnPlayerVehicleEntryEject>::value, "EXTOnPlayerVehicleEject is incorrect, please fix this.");
     }
 
     __if_exists(EXTOnPlayerSpawnColor) {
@@ -179,8 +179,8 @@ namespace addon {
         static_assert_check(is_same<decltype(&EXTOnMapLoad), LPOnMapLoad>::value, "EXTOnMapLoad is incorrect, please fix this.");
     }
 
-    __if_exists(EXTOnVehicleAIEntry) {
-        static_assert_check(is_same<decltype(&EXTOnVehicleAIEntry), LPOnVehicleAIEntry>::value, "EXTOnVehicleAIEntry is incorrect, please fix this.");
+    __if_exists(EXTOnAIVehicleEntry) {
+        static_assert_check(is_same<decltype(&EXTOnAIVehicleEntry), LPOnAIVehicleEntry>::value, "EXTOnAIVehicleEntry is incorrect, please fix this.");
     }
 
     __if_exists(EXTOnWeaponDrop) {
