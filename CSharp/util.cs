@@ -29,9 +29,9 @@ public struct UIntPtrValue {
 namespace Addon_API {
     [StructLayoutAttribute(LayoutKind.Sequential, CharSet=CharSet.Unicode)]
     public struct ArgContainerVars {
-        [MarshalAs(UnmanagedType.LPWStr, SizeConst=256)]
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst=256)]
         public string arg;
-        uint arg_len;
+        public uint arg_len;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst=10)]
         public string[] args;
         public uint argc;

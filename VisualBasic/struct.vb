@@ -711,7 +711,7 @@ Public Structure s_biped
     Public RealLookVect As real_vector3d        '0x0254
     Public UnknownVect3 As real_vector3d        '0x0260
     <MarshalAs(UnmanagedType.ByValArray, SizeConst:=&H34)>
-    Public Unknown2 As Byte()    '0x026C
+    Public Unknown2 As Byte()                   '0x026C
     Public actionVehicle_crouch_stand As Byte   '0x02A0
     <MarshalAs(UnmanagedType.ByValArray, SizeConst:=&H2)>
     Public Unknown9 As Byte()                   '0x02A1
@@ -722,9 +722,9 @@ Public Structure s_biped
     Public CurWeaponIndex1 As UShort            '0x02F4    (Read only)
     Public Unknown6 As UShort                   '0x02F6
     <MarshalAs(UnmanagedType.ByValArray, SizeConst:=4)>
-    Public Weapons As s_ident                   '0x02F8
+    Public Weapons As s_ident()                 '0x02F8
     <MarshalAs(UnmanagedType.ByValArray, SizeConst:=4)>
-    Public WeaponsLastUse As UInteger           '0x0308
+    Public WeaponsLastUse As UInteger()         '0x0308
     Public UnknownLongs2 As Integer             '0x031C <-- INCORRECT OFFSET?
     Public grenadeIndex As Byte                 '0x031C <-- INCORRECT OFFSET?
     Public grenadeIndex1 As Byte                '0x031D
