@@ -1,10 +1,32 @@
 using System;
 using System.Runtime.InteropServices;
 
-
-public class boolOption {
+public struct boolStruct {
     [MarshalAs(UnmanagedType.I1)]
-    public bool boolean;
+    public bool bBool;
+}
+public struct boolOption {
+#pragma warning disable CS0649
+    private IntPtr ptr;
+#pragma warning restore CS0649
+    public bool boolean {
+        get {
+            if (ptr == IntPtr.Zero) return false;
+            boolStruct getBool;
+            getBool = (boolStruct)Marshal.PtrToStructure(ptr, typeof(boolStruct));
+            return getBool.bBool;
+        }
+        set {
+            if (ptr != IntPtr.Zero) {
+                boolStruct setBool;
+                setBool.bBool = value;
+                Marshal.StructureToPtr(setBool, ptr, false);
+            }
+        }
+    }
+    public bool isNotNull() {
+        return ptr != IntPtr.Zero;
+    }
 }
 
 namespace Addon_API {

@@ -265,17 +265,17 @@ public struct s_server_header_managed {
 }
 
 public struct s_object_managed {
-    private s_objectPtr gPtr;
+    private s_object_ptr gPtr;
     public s_object s_object_n;
-    public s_objectPtr getPtr() { return gPtr; }
-    public s_object_managed(s_objectPtr data) {
+    public s_object_ptr getPtr() { return gPtr; }
+    public s_object_managed(s_object_ptr data) {
         gPtr = data;
         if (data.ptr != IntPtr.Zero)
             s_object_n = (s_object)Marshal.PtrToStructure(data.ptr, typeof(s_object));
         else
             s_object_n = new s_object();
     }
-    static public implicit operator s_object_managed(s_objectPtr data) {
+    static public implicit operator s_object_managed(s_object_ptr data) {
         return new s_object_managed(data);
     }
     public void save() {
@@ -289,17 +289,17 @@ public struct s_object_managed {
 }
 
 public struct s_biped_managed {
-    private s_objectPtr gPtr;
+    private s_object_ptr gPtr;
     public s_biped s_object_n;
-    public s_objectPtr getPtr() { return gPtr; }
-    public s_biped_managed(s_objectPtr data) {
+    public s_object_ptr getPtr() { return gPtr; }
+    public s_biped_managed(s_object_ptr data) {
         gPtr = data;
         if (data.ptr != IntPtr.Zero)
             s_object_n = (s_biped)Marshal.PtrToStructure(data.ptr, typeof(s_biped));
         else
             s_object_n = new s_biped();
     }
-    static public implicit operator s_biped_managed(s_objectPtr data) {
+    static public implicit operator s_biped_managed(s_object_ptr data) {
         return new s_biped_managed(data);
     }
     public void save() {

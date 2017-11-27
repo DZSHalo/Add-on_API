@@ -315,22 +315,6 @@ CNATIVE {
         bool (*m_regexiMatchW)(const wchar_t* srcStr, const wchar_t* regex);
 
         /// <summary>
-        /// Format variable arguments list into given prefix string.
-        /// </summary>
-        /// <param name="writeTo">Output string</param>
-        /// <param name="_Format">Format message string</param>
-        /// <param name="ArgList">Variable arguments list</param>
-        /// <returns>Return true or false for format completion.</returns>
-        bool (*m_formatVarArgsListA)(char* writeTo, const char* _Format, char* ArgList);
-        /// <summary>
-        /// Format variable arguments list into given prefix string.
-        /// </summary>
-        /// <param name="writeTo">Output string</param>
-        /// <param name="_Format">Format message string</param>
-        /// <param name="ArgList">Variable arguments list</param>
-        /// <returns>Return true or false for format completion.</returns>
-        bool (*m_formatVarArgsListW)(wchar_t* writeTo, const wchar_t* _Format, char* ArgList);
-        /// <summary>
         /// Compare beginning of case-senitive string against another string.
         /// </summary>
         /// <param name="src">Source string compare against.</param>
@@ -447,22 +431,6 @@ CNATIVE {
         /// <param name="errorCode">Given error code if failed.</param>
         /// <returns>Return true if file exist, false with given errorCode.</returns>
         bool (*m_isFileExist)(const wchar_t* pathStr, unsigned int* errorCode);
-        /// <summary>
-        /// Format variable arguments into given prefix string.
-        /// </summary>
-        /// <param name="writeTo">Output string</param>
-        /// <param name="_Format">Format message string</param>
-        /// <param name="...">Variable arguments</param>
-        /// <returns>Return true or false for format completion.</returns>
-        bool (*m_formatVarArgsA)(char* writeTo, const char* _Format, ...);
-        /// <summary>
-        /// Format variable arguments into given prefix string.
-        /// </summary>
-        /// <param name="writeTo">Output string</param>
-        /// <param name="_Format">Format message string</param>
-        /// <param name="...">Variable arguments</param>
-        /// <returns>Return true or false for format completion.</returns>
-        bool (*m_formatVarArgsW)(wchar_t* writeTo, const wchar_t* _Format, ...);
         /// <summary>
         /// Format variant arguments into a custom prefix string.
         /// </summary>

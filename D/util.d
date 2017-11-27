@@ -23,13 +23,13 @@ static if(__traits(compiles, EXT_IUTIL)) {
 
 // #define _TM_DEFINED
 
-pragma(inline) void VARIANTstr(VARIANT* var, char* val) {
+pragma(inline) void VARIANTstr(VARIANT* var, const char* val) {
     var.vt = VARENUM.VT_LPSTR;
-    var.pcVal = val;
+    var.pcVal = cast(char*)val;
 }
-pragma(inline) void VARIANTwstr(VARIANT* var, wchar* val) {
+pragma(inline) void VARIANTwstr(VARIANT* var, const wchar* val) {
     var.vt = VARENUM.VT_LPWSTR;
-    var.bstrVal = val;
+    var.bstrVal = cast(wchar*)val;
 }
 pragma(inline) void VARIANTbool(VARIANT* var, const bool val) {
     var.vt = VARENUM.VT_BOOL;
@@ -37,6 +37,14 @@ pragma(inline) void VARIANTbool(VARIANT* var, const bool val) {
         var.boolVal = -1;
     else
         var.boolVal = 0;
+}
+pragma(inline) void VARIANTchar(VARIANT* var, const char val) {
+    var.vt = VARENUM.VT_I1;
+    var.cVal = val;
+}
+pragma(inline) void VARIANTuchar(VARIANT* var, const byte val) {
+    var.vt = VARENUM.VT_UI1;
+    var.bVal = val;
 }
 pragma(inline) void VARIANTshort(VARIANT* var, const short val) {
     var.vt = VARENUM.VT_I2;
@@ -272,24 +280,6 @@ extern (C) struct IUtil {
     bool function(const wchar* srcStr, const wchar* regex) m_regexiMatchW;
 
     /*
-        * Format variable arguments list into given prefix string.
-        * Params:
-        * writeTo = Output string
-        * _Format = Format message string
-        * ArgList = Variable arguments list
-        * Returns: Return true or false for format completion.
-        */
-    bool function(char* writeTo, const char* _Format, char * ArgList) m_formatVarArgsListA;
-    /*
-        * Format variable arguments list into given prefix string.
-        * Params:
-        * writeTo = Output string
-        * _Format = Format message string
-        * ArgList = Variable arguments list
-        * Returns: Return true or false for format completion.
-        */
-    bool function(wchar* writeTo, const wchar* _Format, char * ArgList) m_formatVarArgsListW;
-    /*
         * Compare beginning of case-senitive string against another string.
         * Params:
         * src = Source string compare against.
@@ -423,24 +413,6 @@ extern (C) struct IUtil {
         * Returns: Return true if file exist, false with given errorCode.
         */
     bool function(const wchar* str, uint* errorCode) m_isFileExist;
-    /*
-        * Format variable arguments into given prefix string.
-        * Params:
-        * writeTo = Output string
-        * _Format = Format message string
-        * ... = Variable arguments
-        * Returns: Return true or false for format completion.
-    */
-    bool function(char* writeTo, const char* _Format, ...) m_formatVarArgsA;
-    /*
-        * Format variable arguments into given prefix string.
-        * Params:
-        * writeTo = Output string
-        * _Format = Format message string
-        * ... = Variable arguments
-        * Returns: Return true or false for format completion.
-        */
-    bool function(wchar* writeTo, const wchar* _Format, ...) m_formatVarArgsW;
     /*
         * Format variant arguments into a custom prefix string.
         * Params:

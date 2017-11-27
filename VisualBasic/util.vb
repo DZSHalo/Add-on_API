@@ -182,12 +182,6 @@ Namespace Addon_API
         Public Delegate Function d_regexMatchW(<[In], MarshalAs(UnmanagedType.LPWStr)> srcStr As String, <[In], MarshalAs(UnmanagedType.LPWStr)> regex As String) As <MarshalAs(UnmanagedType.I1)> Boolean
         <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
         Public Delegate Function d_regexiMatchW(<[In], MarshalAs(UnmanagedType.LPWStr)> srcStr As String, <[In], MarshalAs(UnmanagedType.LPWStr)> regex As String) As <MarshalAs(UnmanagedType.I1)> Boolean
-        <Obsolete("Do not use FormatVarArgsListA function, will not work as expected.")>
-        <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
-        Private Delegate Function d_FormatVarArgsListA(<[In], Out, MarshalAs(UnmanagedType.LPStr)> writeTo As StringBuilder, <[In], MarshalAs(UnmanagedType.LPStr)> _Format As String, ArgList As ArgIterator) As <MarshalAs(UnmanagedType.I1)> Boolean
-        <Obsolete("Do not use FormatVarArgsListW function, will not work as expected.")>
-        <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
-        Private Delegate Function d_FormatVarArgsListW(<[In], Out, MarshalAs(UnmanagedType.LPWStr)> writeTo As StringBuilder, <[In], MarshalAs(UnmanagedType.LPWStr)> _Format As String, ArgList As ArgIterator) As <MarshalAs(UnmanagedType.I1)> Boolean
         <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
         Public Delegate Function d_findSubStrFirstA(<[In], MarshalAs(UnmanagedType.LPStr)> src As String, <[In], MarshalAs(UnmanagedType.LPStr)> find As String) As <MarshalAs(UnmanagedType.I1)> Boolean
         <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
@@ -222,14 +216,6 @@ Namespace Addon_API
         Public Delegate Function d_isDirExist(<[In], MarshalAs(UnmanagedType.LPWStr)> str1 As String, ByRef errorCode As UInteger) As <MarshalAs(UnmanagedType.I1)> Boolean
         <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
         Public Delegate Function d_isFileExist(<[In], MarshalAs(UnmanagedType.LPWStr)> str1 As String, ByRef errorCode As UInteger) As <MarshalAs(UnmanagedType.I1)> Boolean
-        ', ...
-        <Obsolete("Do not use FormatVarArgsListA function, will not work as expected.")>
-        <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
-        Private Delegate Function d_FormatVarArgsA(<[In], Out, MarshalAs(UnmanagedType.LPStr)> writeTo As StringBuilder, <[In], MarshalAs(UnmanagedType.LPStr)> _Format As String) As <MarshalAs(UnmanagedType.I1)> Boolean
-        ', ...
-        <Obsolete("Do not use FormatVarArgsListW function, will not work as expected.")>
-        <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
-        Private Delegate Function d_FormatVarArgsW(<[In], Out, MarshalAs(UnmanagedType.LPWStr)> writeTo As StringBuilder, <[In], MarshalAs(UnmanagedType.LPWStr)> _Format As String) As <MarshalAs(UnmanagedType.I1)> Boolean
         <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
         Public Delegate Function d_formatVariantW(<[In], Out, MarshalAs(UnmanagedType.LPWStr)> outputStr As StringBuilder, <[In]> maxOutput As UInteger, <[In], MarshalAs(UnmanagedType.LPWStr)> _Format As String, argTotal As UInteger, <[In], MarshalAs(UnmanagedType.LPArray), [ParamArray]> argList As Object()) As <MarshalAs(UnmanagedType.I1)> Boolean
 
@@ -377,22 +363,6 @@ Namespace Addon_API
         Public m_regexiMatchW As d_regexiMatchW
 
         ''' <summary>
-        ''' (DO NOT USE!) Format variable arguments list into given prefix string.
-        ''' </summary>
-        ''' <param name="writeTo">Output string</param>
-        ''' <param name="_Format">Format message string</param>
-        ''' <param name="ArgList">Variable arguments list</param>
-        ''' <returns>Return true or false for format completion.</returns>
-        Private m_FormatVarArgsListA As d_FormatVarArgsListA
-        ''' <summary>
-        ''' (DO NOT USE!) Format variable arguments list into given prefix string.
-        ''' </summary>
-        ''' <param name="writeTo">Output string</param>
-        ''' <param name="_Format">Format message string</param>
-        ''' <param name="ArgList">Variable arguments list</param>
-        ''' <returns>Return true or false for format completion.</returns>
-        Private m_FormatVarArgsListW As d_FormatVarArgsListW
-        ''' <summary>
         ''' Compare beginning of case-senitive string against another string.
         ''' </summary>
         ''' <param name="src">Source string compare against.</param>
@@ -509,22 +479,6 @@ Namespace Addon_API
         ''' <param name="errorCode">Given error code if failed.</param>
         ''' <returns>Return true if file exist, false with given errorCode.</returns>
         Public m_isFileExist As d_isFileExist
-        ''' <summary>
-        ''' (DO NOT USE!) Format variable arguments into given prefix string.
-        ''' </summary>
-        ''' <param name="writeTo">Output string</param>
-        ''' <param name="_Format">Format message string</param>
-        ''' <param name="...">Variable arguments</param>
-        ''' <returns>Return true or false for format completion.</returns>
-        Private m_FormatVarArgsA As d_FormatVarArgsA
-        ''' <summary>
-        ''' (DO NOT USE!) Format variable arguments into given prefix string.
-        ''' </summary>
-        ''' <param name="writeTo">Output string</param>
-        ''' <param name="_Format">Format message string</param>
-        ''' <param name="...">Variable arguments</param>
-        ''' <returns>Return true or false for format completion.</returns>
-        Private m_FormatVarArgsW As d_FormatVarArgsW
         ''' <summary>
         ''' Format variant arguments into a custom prefix string.
         ''' </summary>

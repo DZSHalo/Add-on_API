@@ -1,5 +1,9 @@
 using System.Runtime.InteropServices;
 
+// tag_name_length = uint;
+
+// tag_name_reference = UnmanagedType.LPStr;
+
 [StructLayout(LayoutKind.Sequential)]
 public struct real_range {
     public float min;

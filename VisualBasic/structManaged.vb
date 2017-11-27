@@ -316,12 +316,12 @@ Public Structure s_server_header_managed
 End Structure
 
 Public Structure s_object_managed
-    Private gPtr As s_objectPtr
+    Private gPtr As s_object_ptr
     Public s_object_n As s_object
-    Public Function getPtr() As s_objectPtr
+    Public Function getPtr() As s_object_ptr
         Return gPtr
     End Function
-    Public Sub New(data As s_objectPtr)
+    Public Sub New(data As s_object_ptr)
         gPtr = data
         If data.ptr <> IntPtr.Zero Then
             s_object_n = CType(Marshal.PtrToStructure(data.ptr, GetType(s_object)), s_object)
@@ -329,7 +329,7 @@ Public Structure s_object_managed
             s_object_n = New s_object()
         End If
     End Sub
-    Public Shared Widening Operator CType(data As s_objectPtr) As s_object_managed
+    Public Shared Widening Operator CType(data As s_object_ptr) As s_object_managed
         Return New s_object_managed(data)
     End Operator
     Public Sub save()
@@ -345,12 +345,12 @@ Public Structure s_object_managed
 End Structure
 
 Public Structure s_biped_managed
-    Private gPtr As s_objectPtr
+    Private gPtr As s_object_ptr
     Public s_object_n As s_biped
-    Public Function getPtr() As s_objectPtr
+    Public Function getPtr() As s_object_ptr
         Return gPtr
     End Function
-    Public Sub New(data As s_objectPtr)
+    Public Sub New(data As s_object_ptr)
         gPtr = data
         If data.ptr <> IntPtr.Zero Then
             s_object_n = CType(Marshal.PtrToStructure(data.ptr, GetType(s_biped)), s_biped)
@@ -358,7 +358,7 @@ Public Structure s_biped_managed
             s_object_n = New s_biped()
         End If
     End Sub
-    Public Shared Widening Operator CType(data As s_objectPtr) As s_biped_managed
+    Public Shared Widening Operator CType(data As s_object_ptr) As s_biped_managed
         Return New s_biped_managed(data)
     End Operator
     Public Sub save()

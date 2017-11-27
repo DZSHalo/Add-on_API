@@ -1,9 +1,32 @@
 Imports System.Runtime.InteropServices
 
-Public Class boolOption
+Public Structure boolStruct
     <MarshalAs(UnmanagedType.I1)>
-    Public [boolean] As Boolean
-End Class
+    Public bBool As Boolean
+End Structure
+Public Structure boolOption
+    Private ptr As IntPtr
+    Public Property [boolean] As Boolean
+        Get
+            If ptr = IntPtr.Zero Then
+                Return False
+            End If
+            Dim getBool As boolStruct
+            getBool = Marshal.PtrToStructure(ptr, GetType(boolStruct))
+            Return getBool.bBool
+        End Get
+        Set(value As Boolean)
+            If ptr <> IntPtr.Zero Then
+                Dim setBool As boolStruct
+                setBool.bBool = value
+                Marshal.StructureToPtr(setBool, ptr, False)
+            End If
+        End Set
+    End Property
+    Function isNotNull() As Boolean
+        Return ptr <> IntPtr.Zero
+    End Function
+End Structure
 
 Namespace Addon_API
     Public Enum EAO_RETURN
@@ -25,7 +48,7 @@ Namespace Addon_API
         [TRUE] = 1
     End Enum
 #If EXT_IUTIL Then
-    <UnmanagedFunctionPointer(CallingConvention.Cdecl)>    
+    <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
     Public Delegate Function CmdFunc(<[In]> plI As PlayerInfo, <[In], Out> ByRef arg As ArgContainerVars, <[In]> protocolMsg As MSG_PROTOCOL, <[In]> idTimer As UInteger, <[In]> showChat As boolOption) As CMD_RETURN
 #End If
     <StructLayout(LayoutKind.Sequential, CharSet:=CharSet.Unicode, Pack:=1)>

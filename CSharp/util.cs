@@ -160,14 +160,6 @@ namespace Addon_API {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_regexiMatchW([In, MarshalAs(UnmanagedType.LPWStr)] string srcStr, [In, MarshalAs(UnmanagedType.LPWStr)] string regex);
-        [Obsolete("Do not use FormatVarArgsListA function, will not work as expected.")]
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        private delegate bool d_FormatVarArgsListA([In, Out, MarshalAs(UnmanagedType.LPStr)] StringBuilder writeTo, [In, MarshalAs(UnmanagedType.LPStr)] string _Format, ArgIterator ArgList);
-        [Obsolete("Do not use FormatVarArgsListW function, will not work as expected.")]
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        private delegate bool d_FormatVarArgsListW([In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder writeTo, [In, MarshalAs(UnmanagedType.LPWStr)] string _Format, ArgIterator ArgList);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_findSubStrFirstA([In, MarshalAs(UnmanagedType.LPStr)] string src, [In, MarshalAs(UnmanagedType.LPStr)] string find);
@@ -216,14 +208,6 @@ namespace Addon_API {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_isFileExist([In, MarshalAs(UnmanagedType.LPWStr)] string str1, ref uint errorCode);
-        [Obsolete("Do not use FormatVarArgsListA function, will not work as expected.")]
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        private delegate bool d_FormatVarArgsA([In, Out, MarshalAs(UnmanagedType.LPStr)] StringBuilder writeTo, [In, MarshalAs(UnmanagedType.LPStr)] string _Format /*, ...*/);
-        [Obsolete("Do not use FormatVarArgsListW function, will not work as expected.")]
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        private delegate bool d_FormatVarArgsW([In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder writeTo, [In, MarshalAs(UnmanagedType.LPWStr)] string _Format /*, ...*/);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool d_formatVariantW([In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder outputStr, [In] uint maxOutput, [In, MarshalAs(UnmanagedType.LPWStr)] string _Format, uint argTotal, [In, MarshalAs(UnmanagedType.LPArray)] params object[] argList);
@@ -372,22 +356,6 @@ namespace Addon_API {
         public d_regexiMatchW m_regexiMatchW;
 
         /// <summary>
-        /// (DO NOT USE!) Format variable arguments list into given prefix string.
-        /// </summary>
-        /// <param name="writeTo">Output string</param>
-        /// <param name="_Format">Format message string</param>
-        /// <param name="ArgList">Variable arguments list</param>
-        /// <returns>Return true or false for format completion.</returns>
-        private d_FormatVarArgsListA m_FormatVarArgsListA;
-        /// <summary>
-        /// (DO NOT USE!) Format variable arguments list into given prefix string.
-        /// </summary>
-        /// <param name="writeTo">Output string</param>
-        /// <param name="_Format">Format message string</param>
-        /// <param name="ArgList">Variable arguments list</param>
-        /// <returns>Return true or false for format completion.</returns>
-        private d_FormatVarArgsListW m_FormatVarArgsListW;
-        /// <summary>
         /// Compare beginning of case-senitive string against another string.
         /// </summary>
         /// <param name="src">Source string compare against.</param>
@@ -504,22 +472,6 @@ namespace Addon_API {
         /// <param name="errorCode">Given error code if failed.</param>
         /// <returns>Return true if file exist, false with given errorCode.</returns>
         public d_isFileExist m_isFileExist;
-        /// <summary>
-        /// (DO NOT USE!) Format variable arguments into given prefix string.
-        /// </summary>
-        /// <param name="writeTo">Output string</param>
-        /// <param name="_Format">Format message string</param>
-        /// <param name="...">Variable arguments</param>
-        /// <returns>Return true or false for format completion.</returns>
-        private d_FormatVarArgsA m_FormatVarArgsA;
-        /// <summary>
-        /// (DO NOT USE!) Format variable arguments into given prefix string.
-        /// </summary>
-        /// <param name="writeTo">Output string</param>
-        /// <param name="_Format">Format message string</param>
-        /// <param name="...">Variable arguments</param>
-        /// <returns>Return true or false for format completion.</returns>
-        private d_FormatVarArgsW m_FormatVarArgsW;
         /// <summary>
         /// Format variant arguments into a custom prefix string.
         /// </summary>

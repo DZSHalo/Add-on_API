@@ -2,71 +2,72 @@ module D.object;
 
 import Add_on_API;
 
+// Structure definitions
+// #pragma pack(push, 1)
+// Structure of tag index table
+struct hTagIndexTableHeader {
+    uint        next_ptr;
+    uint        starting_index; // ??
+    uint        unk;
+    uint        entityCount;
+    uint        unk1;
+    uint        readOffset;
+    ubyte[8]    unk2;
+    uint        readSize;
+    uint        unk3;
+};
+// Structure of the tag header
+struct hTagHeader {
+    e_tag_group     group_tag;          //0x00 // ie weap
+    e_tag_group[2]  parent_tags;        //0x04 & 0x08 // ie weap
+    s_ident         ident;              //0x0C // unique id for map
+    char*           tag_name;           //0x10 // name of tag
+    uint*           group_meta_tag;     //0x14 // data for this group_tag
+    uint*[2]        parent_meta_tag;    //0x18 // data for this parent_tags[i]
+};
+static assert(hTagHeader.sizeof == 0x20, "Incorrect size of hTagHeader");
+struct objDamageFlags {
+    mixin(bitfields!(
+    bool, "isExplode", 1,       //0x00.0
+    bool, "Unknown0", 1,        //0x00.1
+    bool, "Unknown1", 1,        //0x00.2
+    bool, "isWeapon", 1,        //0x00.3
+    bool, "Unknown2", 1,        //0x00.4
+    bool, "ignoreShield", 1,    //0x00.5
+    ushort, "Unknown4", 2));    //0x00.6-7
+    ubyte[3] Unknown6;          //0x01-4
+};
+static assert(objDamageFlags.sizeof == 0x4, "Incorrect size of objDamageFlags");
+struct objDamageInfo {
+    s_ident         tag_id;
+    objDamageFlags  flags;
+    s_ident         player_causer;
+    s_ident         causer;         // obj of causer
+    char[0x30]      Unknown0;
+    float           modifier;       // 1.0 = max dmg, < 0 decreases dmg.
+    float           modifier1;      // 1.0 default > 1.0 increases dmg.
+    char[8]         Unknown1;
+};
+static assert(objDamageInfo.sizeof == 0x50, "Incorrect size of objDamageInfo");
+struct objHitInfo {
+    char[0x20]  desc;
+    char[0x28]  Unknown0;   // doesn't seem to be that useful, mostly 0s with a few 1.0 floats.    
+};
+static assert(objHitInfo.sizeof == 0x48, "Incorrect size of objHitInfo");
+struct objManaged {
+    real_vector3d world = real_vector3d( -1, -1, -1 );
+    real_vector3d velocity = real_vector3d( -1, -1, -1 );
+    real_vector3d rotation = real_vector3d( -1, -1, -1 );
+    real_vector3d scale = real_vector3d( -1, -1, -1 );
+};
+struct objCreationInfo {
+    s_ident map_id = s_ident( -1 );
+    s_ident parent_id = s_ident( -1 );
+    real_vector3d   pos = real_vector3d( -1, -1, -1 );
+};
+
 static if(__traits(compiles, EXT_IOBJECT)) {
 
-    // Structure definitions
-// #pragma pack(push, 1)
-    // Structure of tag index table
-    struct hTagIndexTableHeader {
-        uint        next_ptr;
-        uint        starting_index; // ??
-        uint        unk;
-        uint        entityCount;
-        uint        unk1;
-        uint        readOffset;
-        ubyte[8]    unk2;
-        uint        readSize;
-        uint        unk3;
-    };
-    // Structure of the tag header
-    struct hTagHeader {
-        e_tag_group     group_tag;          //0x00 // ie weap
-        e_tag_group[2]  parent_tags;        //0x04 & 0x08 // ie weap
-        s_ident         ident;              //0x0C // unique id for map
-        char*           tag_name;           //0x10 // name of tag
-        uint*           group_meta_tag;     //0x14 // data for this group_tag
-        uint*[2]        parent_meta_tag;    //0x18 // data for this parent_tags[i]
-    };
-    static assert(hTagHeader.sizeof == 0x20, "Incorrect size of hTagHeader");
-    struct objDamageFlags {
-        mixin(bitfields!(
-        bool, "isExplode", 1,       //0x00.0
-        bool, "Unknown0", 1,        //0x00.1
-        bool, "Unknown1", 1,        //0x00.2
-        bool, "isWeapon", 1,        //0x00.3
-        bool, "Unknown2", 1,        //0x00.4
-        bool, "ignoreShield", 1,    //0x00.5
-        ushort, "Unknown4", 2));    //0x00.6-7
-        ubyte[3] Unknown6;          //0x01-4
-    };
-    static assert(objDamageFlags.sizeof == 0x4, "Incorrect size of objDamageFlags");
-    struct objDamageInfo {
-        s_ident         tag_id;
-        objDamageFlags  flags;
-        s_ident         player_causer;
-        s_ident         causer;         // obj of causer
-        char[0x30]      Unknown0;
-        float           modifier;       // 1.0 = max dmg, < 0 decreases dmg.
-        float           modifier1;      // 1.0 default > 1.0 increases dmg.
-        char[8]         Unknown1;
-    };
-    static assert(objDamageInfo.sizeof == 0x50, "Incorrect size of objDamageInfo");
-    struct objHitInfo {
-        char[0x20]  desc;
-        char[0x28]  Unknown0;   // doesn't seem to be that useful, mostly 0s with a few 1.0 floats.    
-    };
-    static assert(objHitInfo.sizeof == 0x48, "Incorrect size of objHitInfo");
-    struct objManaged {
-        real_vector3d world = real_vector3d( -1, -1, -1 );
-        real_vector3d velocity = real_vector3d( -1, -1, -1 );
-        real_vector3d rotation = real_vector3d( -1, -1, -1 );
-        real_vector3d scale = real_vector3d( -1, -1, -1 );
-    };
-    struct objCreationInfo {
-        s_ident map_id = s_ident( -1 );
-        s_ident parent_id = s_ident( -1 );
-        real_vector3d   pos = real_vector3d( -1, -1, -1 );
-    };
     struct objTagGroupList {
         uint count;
         hTagHeader** tag_list;

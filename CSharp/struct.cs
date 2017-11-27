@@ -659,7 +659,7 @@ public struct s_object {
     public int[]            UnknownMatrix1;         //D3DXMATRIX UnknownMatrix1;    // 0x01B4
     //Everything after this is 0x01F4
 };
-public struct s_objectPtr {
+public struct s_object_ptr {
     public IntPtr ptr;
 }
 
@@ -838,8 +838,8 @@ public struct s_console_header_ptr {
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 public struct char32 {
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst=32)]
-    public string str;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst=32)]
+    public byte[] str;
 }
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 public struct s_ban_check {

@@ -30,7 +30,7 @@ public import std.bitmanip;
 #define UNKNOWN(size) char STR_CAT_DELAYED(_unused_,__COUNTER__)[size]
 #define PADDING UNKNOWN
 */
-alias toggle = char;
+alias toggle = byte;
 alias ext_boolean = int;
 
 enum EAO_RETURN:int {

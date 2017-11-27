@@ -8,17 +8,17 @@ Namespace Addon_API
         Public ptr As IntPtr
     End Structure
 
-    <StructLayoutAttribute(LayoutKind.Sequential)>    
+    <StructLayoutAttribute(LayoutKind.Sequential)>
     Public Structure IDatabase
-        <UnmanagedFunctionPointer(CallingConvention.Cdecl)>    
+        <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
         Public Delegate Function d_connect(<[In], MarshalAs(UnmanagedType.LPWStr)> ConnectionStr As String, <[In]> [Option] As Integer, <[In]> Param As IntPtr, <[In]> ParamLen As Integer) As <MarshalAs(UnmanagedType.I1)> Boolean
-        <UnmanagedFunctionPointer(CallingConvention.Cdecl)>    
+        <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
         Public Delegate Function d_connect_mdb(<[In], MarshalAs(UnmanagedType.LPWStr)> MDBPath As String, <[In], MarshalAs(UnmanagedType.LPWStr)> User As String, <[In], MarshalAs(UnmanagedType.LPWStr)> Pass As String, <[In], MarshalAs(UnmanagedType.I1)> Exclusive As Boolean) As <MarshalAs(UnmanagedType.I1)> Boolean
-        <UnmanagedFunctionPointer(CallingConvention.Cdecl)>    
+        <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
         Public Delegate Sub d_disconnect()
-        <UnmanagedFunctionPointer(CallingConvention.Cdecl)>    
+        <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
         Public Delegate Function d_status() As Integer
-        <UnmanagedFunctionPointer(CallingConvention.Cdecl)>    
+        <UnmanagedFunctionPointer(CallingConvention.Cdecl)>
         Public Delegate Sub d_check()
         ''' <summary>
         ''' To connect a supported database.
@@ -72,7 +72,7 @@ Namespace Addon_API
         Public ptr As IntPtr
     End Structure
 
-    <StructLayoutAttribute(LayoutKind.Sequential)>    
+    <StructLayoutAttribute(LayoutKind.Sequential)>
     Public Structure IDBStmt
 
         #Error Due to C# is using Command class instead of Statement plus other issues, this is on hold for further review.
@@ -101,8 +101,8 @@ Namespace Addon_API
         ''' </summary>
         ''' <param name="uniqueHash">Unique hash can be obtain from EXTOnEAOLoad</param>
         ''' <returns>Pointer of IDatabase class-like.</returns>
-        <DllImport("H-Ext.dll", EntryPoint := "#15", CallingConvention := CallingConvention.Cdecl)>    
-        <ComVisible(True)>    
+        <DllImport("H-Ext.dll", EntryPoint := "#15", CallingConvention := CallingConvention.Cdecl)>
+        <ComVisible(True)>
         Public Shared Function getIDatabase(<[In]> uniqueHash As UInteger) As IDatabasePtr
         End Function
         #End If
@@ -112,8 +112,8 @@ Namespace Addon_API
         ''' </summary>
         ''' <param name="uniqueHash">Unique hash can be obtain from EXTOnEAOLoad</param>
         ''' <returns>Pointer of IDBStmt class-like.</returns>
-        <DllImport("H-Ext.dll", EntryPoint := "#16", CallingConvention := CallingConvention.Cdecl)>    
-        <ComVisible(True)>    
+        <DllImport("H-Ext.dll", EntryPoint := "#16", CallingConvention := CallingConvention.Cdecl)>
+        <ComVisible(True)>
         Public Shared Function getIDBStmt(<[In]> uniqueHash As UInteger) As IDBStmtPtr
         End Function
         #End If

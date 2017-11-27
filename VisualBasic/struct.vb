@@ -661,7 +661,7 @@ Public Structure s_object
 End Structure
 
 <StructLayout(LayoutKind.Sequential)>
-Public Structure s_objectPtr
+Public Structure s_object_ptr
     Public ptr As IntPtr
 End Structure
 
@@ -840,8 +840,8 @@ End Structure
 
 <StructLayout(LayoutKind.Sequential, CharSet:=CharSet.Ansi)>
 Public Structure char32
-    <MarshalAs(UnmanagedType.ByValTStr, SizeConst:=32)>
-    Public str As String
+    <MarshalAs(UnmanagedType.ByValArray, SizeConst:=32)>
+    Public str As Byte()
 End Structure
 <StructLayout(LayoutKind.Sequential, CharSet:=CharSet.Unicode)>
 Public Structure s_ban_check

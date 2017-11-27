@@ -27,17 +27,17 @@ namespace addon {
     typedef void (WINAPIC* LPOnPlayerSpawn)(PlayerInfo, s_ident, s_biped*);
     typedef PLAYER_VALIDATE (WINAPIC* LPOnPlayerValidateConnect)(PlayerExtended, s_machine_slot, s_ban_check, bool, toggle, PLAYER_VALIDATE);
     typedef bool (WINAPIC* LPOnWeaponReload)(s_object*, bool);
-    typedef void (WINAPIC* LPOnObjectCreation)(s_object*, hTagHeader*);
+    typedef void (WINAPIC* LPOnObjectCreateDelete)(s_ident, s_object*, hTagHeader*);
     typedef void (WINAPIC* LPOnKillMultiplier)(PlayerInfo killer, unsigned int multiplier);
-    typedef bool (WINAPIC* LPOnVehicleRespawnProcess)(s_object* cur_object, objManaged* managedObj, bool isManaged);
-    typedef bool (WINAPIC* LPOnObjectDeleteManagement)(s_object* cur_object, int curTicks, bool isManaged);
+    typedef bool (WINAPIC* LPOnVehicleRespawnProcess)(s_ident, s_object* cur_object, objManaged* managedObj, bool isManaged);
+    typedef bool (WINAPIC* LPOnObjectDeleteAttempt)(s_ident, s_object* cur_object, hTagHeader* header, int curTicks, bool isManaged);
     typedef bool (WINAPIC* LPOnObjectDamageLookupProcess)(objDamageInfo* damageInfo, s_ident* obj_recv, bool* allowDamage, bool isManaged);
     typedef bool (WINAPIC* LPOnObjectDamageApplyProcess)(const objDamageInfo* damageInfo, s_ident* obj_recv, objHitInfo* hitInfo, bool isBacktap, bool* allowDamage, bool isManaged);
     typedef void (WINAPIC* LPOnMapLoad)(s_ident, const wchar_t*, GAME_MODE);
     typedef toggle (WINAPIC* LPOnAIVehicleEntry)(s_ident, s_ident, unsigned short, toggle);
     typedef void (WINAPIC* LPOnWeaponDropCurrent)(PlayerInfo, s_ident, s_biped*, s_ident, s_weapon*);
     typedef toggle (WINAPIC* LPOnServerStatus)(int, toggle);
-    typedef bool (WINAPIC* LPOnObjectCreationAttempt)(PlayerInfo plOwner, objCreationInfo object_creation, objCreationInfo* change_object, bool isOverride);
+    typedef bool (WINAPIC* LPOnObjectCreateAttempt)(PlayerInfo plOwner, objCreationInfo object_creation, objCreationInfo* change_object, bool isOverride);
     typedef bool (WINAPIC* LPOnGameSpyValidationCheck)(unsigned int UnqiueID, bool isValid, bool forceBypass);
     typedef bool (WINAPIC* LPOnWeaponExchangeAttempt)(PlayerInfo plOwner, s_ident bipedTag, s_biped* biped, int index, s_ident weaponTag, s_weapon* weapon, bool allowReplace);
     
@@ -62,7 +62,7 @@ namespace addon {
     static_assert_check(is_same<decltype(EXTPluginInfo), addon_info>::value, "EXTPluginInfo is incorrect, please fix this.");
 
 
-        //APIs verification
+    // APIs verification
     __if_exists(EXTOnLoop) {
         static_assert_check(0, "EXTOnLoop is not supported in H-Ext 0.5 and newer. Please use ITimer interface instead.");
         //#pragma WARNING("EXTOnLoop is not supported in H-Ext 0.5 and newer. Please use ITimer interface instead.");
@@ -147,23 +147,23 @@ namespace addon {
         static_assert_check(is_same<decltype(&EXTOnWeaponReload), LPOnWeaponReload>::value, "EXTOnWeaponReload is incorrect, please fix this.");
     }
 
-        //TODO: enable the ObjectCreation for addon support when ready.
-    __if_exists(EXTOnObjectCreation) {
-        static_assert_check(is_same<decltype(&EXTOnObjectCreation), LPOnObjectCreation>::value, "EXTOnObjectCreation is incorrect, please fix this.");
+    // Enabled in 0.5.3.4
+    __if_exists(EXTOnObjectCreate) {
+        static_assert_check(is_same<decltype(&EXTOnObjectCreate), LPOnObjectCreateDelete>::value, "EXTOnObjectCreate is incorrect, please fix this.");
     }
 
     __if_exists(EXTOnKillMultiplier) {
         static_assert_check(is_same<decltype(&EXTOnKillMultiplier), LPOnKillMultiplier>::value, "EXTOnKillMultiplier is incorrect, please fix this.");
     }
 
-        //TODO: enable the VehicleRespawnProcess for addon support when ready.
+    // Enabled in 0.5.3.4
     __if_exists(ExtOnVehicleRespawnProcess) {
         static_assert_check(is_same<decltype(&ExtOnVehicleRespawnProcess), LPOnVehicleRespawnProcess>::value, "EXTOnVehicleRespawnProcess is incorrect, please fix this.");
     }
 
-        //TODO: enable the ObjectDeleteManagement for addon support when ready.
-    __if_exists(ExtOnObjectDeleteManagement) {
-        static_assert_check(is_same<decltype(&ExtOnObjectDeleteManagement), LPOnObjectDeleteManagement>::value, "EXTOnObjectDeleteManagement is incorrect, please fix this.");
+    // Enabled in 0.5.3.4
+    __if_exists(ExtOnObjectDeleteAttempt) {
+        static_assert_check(is_same<decltype(&ExtOnObjectDeleteAttempt), LPOnObjectDeleteAttempt>::value, "ExtOnObjectDeleteAttempt is incorrect, please fix this.");
     }
 
     __if_exists(EXTOnObjectDamageLookupProcess) {
@@ -174,7 +174,7 @@ namespace addon {
         static_assert_check(is_same<decltype(&EXTOnObjectDamageApplyProcess), LPOnObjectDamageApplyProcess>::value, "EXTOnObjectDamageApplyProcess is incorrect, please fix this.");
     }
 
-    //0.5.1 listeners
+    // 0.5.1 listeners
     __if_exists(EXTOnMapLoad) {
         static_assert_check(is_same<decltype(&EXTOnMapLoad), LPOnMapLoad>::value, "EXTOnMapLoad is incorrect, please fix this.");
     }
@@ -191,7 +191,7 @@ namespace addon {
         static_assert_check(is_same<decltype(&EXTOnServerStatus), LPOnServerStatus>::value, "EXTOnServerStatus is incorrect, please fix this.");
     }
 
-    //0.5.2.3 listeners
+    // 0.5.2.3 listeners
     __if_exists(EXTOnPlayerUpdate) {
         static_assert_check(is_same<decltype(&EXTOnPlayerUpdate), LPOnPlayerUpdate>::value, "EXTOnPlayerUpdate is incorrect, please fix this.");
     }
@@ -199,17 +199,21 @@ namespace addon {
         static_assert_check(is_same<decltype(&EXTOnMapReset), LPVoidFunction>::value, "EXTOnMapReset is incorrect, please fix this.");
         //#pragma WARNING("EXTOnMapReset listener is NOT available in Halo Trial version!") //Always warn even if it's not within...
     }
-	//0.5.3.0 listener
-    __if_exists(EXTOnObjectCreationAttempt) {
-        static_assert_check(is_same<decltype(&EXTOnObjectCreationAttempt), LPVoidFunction>::value, "EXTOnObjectCreationAttempt is incorrect, please fix this.");
+    // 0.5.3.0 listener
+    __if_exists(EXTOnObjectCreateAttempt) {
+        static_assert_check(is_same<decltype(&EXTOnObjectCreateAttempt), LPOnObjectCreateAttempt>::value, "EXTOnObjectCreateAttempt is incorrect, please fix this.");
     }
-	//0.5.3.2 listener
+    // 0.5.3.2 listener
     __if_exists(EXTOnGameSpyValidationCheck) {
         static_assert_check(is_same<decltype(&EXTOnGameSpyValidationCheck), LPOnGameSpyValidationCheck>::value, "EXTOnGameSpyValidationCheck is incorrect, please fix this.");
     }
-	//0.5.3.3 listener
+    // 0.5.3.3 listener
     __if_exists(EXTOnWeaponExchangeAttempt) {
         static_assert_check(is_same<decltype(&EXTOnWeaponExchangeAttempt), LPOnWeaponExchangeAttempt>::value, "EXTOnWeaponExchangeAttempt is incorrect, please fix this.");
+    }
+    // 0.5.3.4 listener
+    __if_exists(EXTOnObjectDelete) {
+        static_assert_check(is_same<decltype(&EXTOnObjectDelete), LPOnObjectCreateDelete>::value, "EXTOnObjectDelete is incorrect, please fix this.");
     }
 
         //Database APIs verification
