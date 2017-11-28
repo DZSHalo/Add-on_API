@@ -29,15 +29,15 @@ namespace addon {
     typedef bool (WINAPIC* LPOnWeaponReload)(s_object*, bool);
     typedef void (WINAPIC* LPOnObjectCreateDelete)(s_ident, s_object*, hTagHeader*);
     typedef void (WINAPIC* LPOnKillMultiplier)(PlayerInfo killer, unsigned int multiplier);
-    typedef bool (WINAPIC* LPOnVehicleRespawnProcess)(s_ident, s_object* cur_object, objManaged* managedObj, bool isManaged);
-    typedef bool (WINAPIC* LPOnObjectDeleteAttempt)(s_ident, s_object* cur_object, hTagHeader* header, int curTicks, bool isManaged);
+    typedef VEHICLE_RESPAWN (WINAPIC* LPOnVehicleRespawnProcess)(s_ident, s_object* cur_object, objManaged* managedObj);
+    typedef OBJECT_ATTEMPT (WINAPIC* LPOnObjectDeleteAttempt)(s_ident, s_object* cur_object, hTagHeader* header, int curTicks);
     typedef bool (WINAPIC* LPOnObjectDamageLookupProcess)(objDamageInfo* damageInfo, s_ident* obj_recv, bool* allowDamage, bool isManaged);
     typedef bool (WINAPIC* LPOnObjectDamageApplyProcess)(const objDamageInfo* damageInfo, s_ident* obj_recv, objHitInfo* hitInfo, bool isBacktap, bool* allowDamage, bool isManaged);
     typedef void (WINAPIC* LPOnMapLoad)(s_ident, const wchar_t*, GAME_MODE);
     typedef toggle (WINAPIC* LPOnAIVehicleEntry)(s_ident, s_ident, unsigned short, toggle);
     typedef void (WINAPIC* LPOnWeaponDropCurrent)(PlayerInfo, s_ident, s_biped*, s_ident, s_weapon*);
     typedef toggle (WINAPIC* LPOnServerStatus)(int, toggle);
-    typedef bool (WINAPIC* LPOnObjectCreateAttempt)(PlayerInfo plOwner, objCreationInfo object_creation, objCreationInfo* change_object, bool isOverride);
+    typedef OBJECT_ATTEMPT (WINAPIC* LPOnObjectCreateAttempt)(PlayerInfo plOwner, objCreationInfo object_creation, objCreationInfo* change_object);
     typedef bool (WINAPIC* LPOnGameSpyValidationCheck)(unsigned int UnqiueID, bool isValid, bool forceBypass);
     typedef bool (WINAPIC* LPOnWeaponExchangeAttempt)(PlayerInfo plOwner, s_ident bipedTag, s_biped* biped, int index, s_ident weaponTag, s_weapon* weapon, bool allowReplace);
     

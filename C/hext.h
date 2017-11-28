@@ -47,6 +47,21 @@ CNATIVE {
         PLAYER_VALIDATE_BANNED,
         PLAYER_VALIDATE_PASS_REJECT
     } PLAYER_VALIDATE;
+
+    typedef enum VEHICLE_RESPAWN {
+        VEHICLE_RESPAWN_DEFAULT = -1,
+        VEHICLE_RESPAWN_BYPASS,         // Do not process
+        VEHICLE_RESPAWN_FORCE,          // Force default process
+        VEHICLE_RESPAWN_RELOCATE,       // Relocate with given data.
+        VEHICLE_RESPAWN_DESTROY         // Do not respawn, instead destroy it.
+    } VEHICLE_RESPAWN;
+
+    typedef enum OBJECT_ATTEMPT {
+        OBJECT_ATTEMPT_DEFAULT = -1,
+        OBJECT_ATTEMPT_BYPASS,          // Do not process
+        OBJECT_ATTEMPT_FORCE,           // Force default process
+        OBJECT_ATTEMPT_ALTERNATE        // NOTE: Only for create attempt
+    } OBJECT_ATTEMPT;
 #ifdef __cplusplus
 }
 #endif

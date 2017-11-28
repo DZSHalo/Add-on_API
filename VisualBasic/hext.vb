@@ -46,4 +46,19 @@ Public Class HEXT
         BANNED
         PASS_REJECT
     End Enum
+
+    Public Enum VEHICLE_RESPAWN As Integer
+        [DEFAULT] = -1
+        BYPASS         ' Do not process
+        FORCE          ' Force Default process
+        RELOCATE       ' Relocate With given data.
+        DESTROY         ' Do Not respawn, instead destroy it.
+    End Enum
+
+    Public Enum OBJECT_ATTEMPT As Integer
+        [DEFAULT] = -1
+        BYPASS          ' Do not process
+        FORCE           ' Force Default process
+        ALTERNATE       ' NOTE: Only for create attempt
+    End Enum
 End Class

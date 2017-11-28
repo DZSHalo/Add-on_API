@@ -48,4 +48,19 @@ public class HEXT {
         BANNED,
         PASS_REJECT
     }
+
+    public enum VEHICLE_RESPAWN {
+        DEFAULT = -1,
+        BYPASS,         // Do not process
+        FORCE,          // Force default process
+        RELOCATE,       // Relocate with given data.
+        DESTROY         // Do not respawn, instead destroy it.
+    }
+
+    public enum OBJECT_ATTEMPT {
+        DEFAULT = -1,
+        BYPASS,          // Do not process
+        FORCE,           // Force default process
+        ALTERNATE        // NOTE: Only for create attempt
+    }
 }
