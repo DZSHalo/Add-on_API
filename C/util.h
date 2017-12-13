@@ -1,6 +1,7 @@
 #ifndef utilH
 #define utilH
 #include <OAIdl.h>
+#include <time.h>
 
 #define WINAPIC     __cdecl
 

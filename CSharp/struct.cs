@@ -713,8 +713,9 @@ public struct s_biped {
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x02)]
     public byte[]           Unknown9;                       //0x02A1
     public e_action_state   animation_state;                //0x02A3
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x4E)]
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x4C)]
     public byte[]           Unknown91;                      //0x02A4
+    public short            vehicle_seat_index;             //0x02F0
     public ushort           CurWeaponIndex0;                //0x02F2    (Do not attempt to edit this, will crash Halo)
     public ushort           CurWeaponIndex1;                //0x02F4    (Read only)
     public ushort           Unknown6;                       //0x02F6
@@ -722,8 +723,8 @@ public struct s_biped {
     public s_ident[]        Weapons;                        //0x02F8
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
     public uint[]           WeaponsLastUse;                 //0x0308
-    public int              UnknownLongs2;                  //0x031C <-- INCORRECT OFFSET?
-    public byte             grenadeIndex;                   //0x031C <-- INCORRECT OFFSET?
+    public int              UnknownLongs2;                  //0x0318
+    public byte             grenadeIndex;                   //0x031C
     public byte             grenadeIndex1;                  //0x031D
     public byte             grenade0;                       //0x031E
     public byte             grenade1;                       //0x031F
@@ -733,8 +734,9 @@ public struct s_biped {
     public byte[]           Unknown3;                       //0x0322
     public s_ident          SlaveController;                //0x0324
     public s_ident          WeaponController;               //0x0328
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 464)]
-    public byte[]           Unknown4;                       //0x032C
+    public s_ident          vehicle_eject_last;             //0x032C
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 460)]
+    public byte[]           Unknown4;                       //0x0330
     public s_ident          bump_objectId;                  //0x04FC
     public byte             Unknown7;                       //0x0500
     public ushort           inAirTicks;                     //0x0501

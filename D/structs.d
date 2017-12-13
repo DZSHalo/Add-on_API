@@ -162,7 +162,8 @@ struct s_machine_slot {
     float       Yaw;                            //0x0028 // player's rotation - in radians, from 0 to 2*pi, (AKA heading)
     float       Pitch;                          //0x002C // Player's pitch - in radians, from -pi/2 to +pi/2, down to up. 
     float       Roll;                           //0x0030 // roll - unless walk-on-walls is enabled, this will always be 0.
-    ubyte[8]    Unknown1;                       //0x0034
+    ubyte[4]    Unknown1;                       //0x0034
+    uint        Unknown16;                      //0x0038
     float       ForwardVelocityMultiplier;      //0x003C
     float       HorizontalVelocityMultiplier;   //0x0040
     float       ROFVelocityMultiplier;          //0x0044
@@ -608,14 +609,15 @@ struct s_biped {
     ubyte           actionVehicle_crouch_stand; // 0x02A0 Is this really true? Found this from Wizard's code (Standing = 4) (Crouching = 3) (Vehicle = 0)
     char[0x02]      Unknown9;                   // 0x02A1
     e_action_state  animation_state;            // 0x02A3
-    char[0x4E]      Unknown91;                  // 0x02A4
+    char[0x4C]      Unknown91;                  // 0x02A4
+    short           vehicle_seat_index;         // 0x02F0
     ushort          CurWeaponIndex0;            // 0x02F2    (Do not attempt to edit this, will crash Halo)
     ushort          CurWeaponIndex1;            // 0x02F4    (Read only)
     ushort          Unknown6;                   // 0x02F6
     s_ident[4]      Weapons;                    // 0x02F8
     uint[4]         WeaponsLastUse;             // 0x0308
-    int             UnknownLongs2;              // 0x031C <-- INCORRECT OFFSET?
-    char            grenadeIndex;               // 0x031C <-- INCORRECT OFFSET?
+    int             UnknownLongs2;              // 0x0318
+    char            grenadeIndex;               // 0x031C
     char            grenadeIndex1;              // 0x031D
     char            grenade0;                   // 0x031E
     char            grenade1;                   // 0x031F
@@ -624,7 +626,8 @@ struct s_biped {
     char[2]         Unknown3;                   // 0x0322
     s_ident         SlaveController;            // 0x0324    Only effective for moving the Biped, sometimes does update the facing direction
     s_ident         WeaponController;           // 0x0328    Does update where to point, fire the weapon, and reload. Have not confirmed with other player's.
-    char[464]       Unknown4;                   // 0x032C
+    s_ident         vehicle_eject_last;         // 0x032C
+    char[460]       Unknown4;                   // 0x0330
     s_ident         bump_objectId;              // 0x04FC
     ubyte           Unknown7;                   // 0x0500    Relative to swap biped, not sure what else uses this.
     ushort          inAirticks;                 // 0x0501    Amount of time in the air?
@@ -751,6 +754,9 @@ align (1) struct s_vehicle {
     bool            isNotAllowPlayerEntry;  // 0x206
     char[0x11D]     UnknownVeh1;            // 0x18C
     s_ident         SlaveController;        // 0x324
+    int[0xA1]       UnknownInt;             // 0x328
+    int             respawn_idle;           // 0x5AC
+    short           respawn_id;             // 0x5B0
     //Anything goes after this?
 } // Size - 3580(0xDFC)
 //Major WIP Halo Structure End

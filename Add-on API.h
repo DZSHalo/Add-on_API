@@ -11,7 +11,7 @@
 #ifndef dllport
 #define dllport __declspec(dllimport)
 #endif
-#define dllAPI __declspec(dllexport)
+#define dllAPI CNATIVE __declspec(dllexport)
 #define WINAPIC __cdecl
 #if _MSC_VER >= 1600
 #define static_assert_check static_assert //This is needed to verify correctly and prevent to compile if something is incorrect.
@@ -57,7 +57,8 @@ typedef enum CMD_RETURN {
     CMD_FAIL = -1,
     CMD_NO_MATCH = 0,
     CMD_SUCCESS = 1,
-    CMD_SUCCESS_DELAY = 2
+    CMD_SUCCESS_SILENT = 2,
+    CMD_FAIL_SILENT = 3
 } CMD_RETURN;
 
 typedef enum e_boolean {
@@ -85,7 +86,7 @@ typedef enum e_boolean {
 #include "C\iniFile.h"
 #endif
 
-#ifdef EXT_IDATABASE
+#if defined(EXT_IDATABASE) || defined(EXT_IDATABASESTATEMENT)
 #include "C\database.h"
 #endif
 

@@ -13,6 +13,7 @@ CNATIVE {
         pound = L'#',
         semiColon = L';'
     } commentChar;
+
     typedef struct ICIniFile ICIniFile;
     typedef struct ICIniFile {
         /// <summary>
@@ -164,6 +165,14 @@ CNATIVE {
 #ifdef EXT_ICINIFILE
     CNATIVE dllport ICIniFile* getICIniFile(unsigned int hash);
 #endif
+
+    inline void initValuePreset(ICIniFile* pICIniFile, const wchar_t* section_name, const wchar_t* key_name, wchar_t* value_name) {
+        if (CALL_MEMBER_FN(pICIniFile, m_key_exist, section_name, key_name)) {
+            CALL_MEMBER_FN(pICIniFile, m_value_get, section_name, key_name, value_name);
+        } else {
+            CALL_MEMBER_FN(pICIniFile, m_value_set, section_name, key_name, value_name);
+        }
+    }
 #ifdef __cplusplus
 }
 #endif

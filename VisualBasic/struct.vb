@@ -716,8 +716,9 @@ Public Structure s_biped
     <MarshalAs(UnmanagedType.ByValArray, SizeConst:=&H2)>
     Public Unknown9 As Byte()                   '0x02A1
     Public animation_state As e_action_state    '0x02A3
-    <MarshalAs(UnmanagedType.ByValArray, SizeConst:=&H4E)>
+    <MarshalAs(UnmanagedType.ByValArray, SizeConst:=&H4C)>
     Public Unknown91 As Byte()                  '0x02A4
+    Public vehicle_seat_index As Short          '0x02F0
     Public CurWeaponIndex0 As UShort            '0x02F2    (Do not attempt to edit this, will crash Halo)
     Public CurWeaponIndex1 As UShort            '0x02F4    (Read only)
     Public Unknown6 As UShort                   '0x02F6
@@ -725,8 +726,8 @@ Public Structure s_biped
     Public Weapons As s_ident()                 '0x02F8
     <MarshalAs(UnmanagedType.ByValArray, SizeConst:=4)>
     Public WeaponsLastUse As UInteger()         '0x0308
-    Public UnknownLongs2 As Integer             '0x031C <-- INCORRECT OFFSET?
-    Public grenadeIndex As Byte                 '0x031C <-- INCORRECT OFFSET?
+    Public UnknownLongs2 As Integer             '0x0318
+    Public grenadeIndex As Byte                 '0x031C
     Public grenadeIndex1 As Byte                '0x031D
     Public grenade0 As Byte                     '0x031E
     Public grenade1 As Byte                     '0x031F
@@ -736,8 +737,9 @@ Public Structure s_biped
     Public Unknown3 As Byte()                   '0x0322
     Public SlaveController As s_ident           '0x0324
     Public WeaponController As s_ident          '0x0328
-    <MarshalAs(UnmanagedType.ByValArray, SizeConst:=464)>
-    Public Unknown4 As Byte()                   '0x032C
+    Public vehicle_eject_last As s_ident        '0x032C
+    <MarshalAs(UnmanagedType.ByValArray, SizeConst:=460)>
+    Public Unknown4 As Byte()                   '0x0330
     Public bump_objectId As s_ident             '0x04FC
     Public Unknown7 As Byte                     '0x0500
     Public inAirTicks As UShort                 '0x0501
