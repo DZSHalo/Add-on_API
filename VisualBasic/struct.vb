@@ -479,7 +479,7 @@ End Structure
 
 <StructLayout(LayoutKind.Sequential, CharSet:=CharSet.Ansi)>
 Public Structure map_name_ansi
-    <MarshalAs(UnmanagedType.ByValTStr, SizeConst:=128)>
+    <MarshalAs(UnmanagedType.ByValTStr, SizeConst:=32)>
     Public name As String
 End Structure
 <StructLayout(LayoutKind.Sequential, CharSet:=CharSet.Unicode)>
@@ -490,6 +490,8 @@ Public Structure s_server_header
     <MarshalAs(UnmanagedType.ByValTStr, SizeConst:=66)>
     Public server_name As String        '0x008
     Public map_name As map_name_ansi    '0x08C
+    <MarshalAs(UnmanagedType.ByValArray, SizeConst:=96)>
+    Public Unknown12 As Byte            '0x0AC
     <MarshalAs(UnmanagedType.ByValTStr, SizeConst:=24)>
     Public gametype_name As String      '0x10C
     'IMPORTANT: DO NOT USE! Below this does Not match with other Halo PC platforms, it Is base on Halo CE version.

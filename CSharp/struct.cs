@@ -480,7 +480,7 @@ public struct s_gametype_globals_ptr {
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 public struct map_name_ansi {
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
     public string name;
 }
 [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Unicode)]
@@ -491,6 +491,8 @@ public struct s_server_header {
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 66)]
     public string           server_name;    //0x008
     public map_name_ansi    map_name;       //0x08C
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 96)]
+    public byte[]           Unknown12;      //0x0AC
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 24)]
     public string           gametype_name;  //0x10C
     //IMPORTANT: DO NOT USE! Below this does not match with other Halo PC platforms, it is base on Halo CE version.

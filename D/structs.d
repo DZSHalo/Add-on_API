@@ -429,7 +429,8 @@ struct s_server_header {
     ushort      state;          //0x004
     ushort      Unknown2;       //0x006
     wchar[66]   server_name;    //0x008
-    char[128]   map_name;       //0x08C
+    char[32]    map_name;       //0x08C
+    ubyte[96]   Unknown12;      //0x0AC
     wchar[24]   gametype_name;  //0x10C
     //IMPORTANT: DO NOT USE! Below this does not match with other Halo PC platforms, it is base on Halo CE version.
     ubyte[40]   Unknown11;      //0x13C     // partial of Gametype need to break them down.
@@ -770,7 +771,7 @@ align (1) struct s_map_header {
     uint        offset;         //0x10
     uint        metaSize;       //0x14
     ubyte[8]    PADDING1;       //0x18 //Nulls
-    char[32]    mapName;        //0x20
+    char[32]    name;           //0x20
     char[32]    builddate;      //0x40
     uint        type;           //0x060 // 0 = Campaign, 1 = Multi-player, 2 = Menu
     uint        unknown07;      //0x064

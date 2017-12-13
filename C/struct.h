@@ -424,7 +424,8 @@ typedef struct s_server_header {
     unsigned short  state;              //0x004
     unsigned short  Unknown2;           //0x006
     wchar_t         server_name[66];    //0x008
-    char            map_name[128];      //0x08C
+    char            map_name[32];       //0x08C
+    unsigned char   Unknown12[96];      //0x0AC
     wchar_t         gametype_name[24];  //0x10C
     //IMPORTANT: DO NOT USE! Below this does not match with other Halo PC platforms, it is base on Halo CE version.
     unsigned char   Unknown11[40];      //0x13C // partial of Gametype need to break them down.
